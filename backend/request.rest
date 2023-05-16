@@ -1,0 +1,67 @@
+//CRETE USER
+POST http://localhost:5000/users
+Content-Type: application/json
+
+{
+    "name": "yusnita putri",
+    "email": "momoy2@gmail.com",
+    "password": "12345678",
+    "confPassword": "12345678",
+    "role": "user"
+}
+
+###
+// GET ALL USER
+GET http://localhost:5000/users
+
+###
+//GET SINGLE USER
+GET http://localhost:5000/users/d606eb30-594c-45bb-9cd5-1f2ee67d27a6
+
+### Update Uset
+PATCH http://localhost:5000/users/d606eb30-594c-45bb-9cd5-1f2ee67d27a6
+Content-Type: application/json
+
+{
+    "name": "Prins Naval Updated",
+    "email": "prinserenn@gmail.com",
+    "password": "12345678",
+    "confPassword": "12345678",
+    "role": "admin"
+}
+
+###
+//DELETE USER
+DELETE http://localhost:5000/users/88342f45-d8b7-4e20-a4ee-44832d85745b
+
+
+###
+//Login User
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "email": "prinsnnuzeren@gmail.com",
+    "password": "12345678"
+}
+
+###
+//ME
+GET  http://localhost:5000/me
+
+###
+//LOGOUT
+DELETE http://localhost:5000/logout
+
+###
+//Register
+POST http://localhost:5000/register
+Content-Type: application/json
+
+{
+    "name": "hjfbhcjBDIB",
+    "email": "fbsivsb@gmail.com",
+    "password": "12345678",
+    "confPassword": "12345678",
+    "role": "admin"
+}
