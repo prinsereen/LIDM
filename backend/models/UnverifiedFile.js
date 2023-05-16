@@ -39,18 +39,14 @@ const UnverifiedFile = db.define('unverifiedfile', {
     file:{
         type: DataTypes.STRING,
         defaultValue: "Menunggu Verifikasi",
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        }
-    },
+    }/* ,
     userId:{
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
             notEmpty: true
         }
-    }
+    } */
 }, {
     freezeTableName: true
 })

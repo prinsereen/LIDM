@@ -30,8 +30,7 @@ export const createUnverifiedFile = async(req, res ) => {
         await UnverifiedFile.create({
             title: title,
             classification: classification,
-            staus: status,
-            role: role,
+            status: status,
             file: req.file.path
         });
         res.status(201).json({msg : "Unverified File Uploaded"});
@@ -42,53 +41,49 @@ export const createUnverifiedFile = async(req, res ) => {
 
 
 export const updateUnverifiedFile = async(req, res ) => {
-    const UnverifiedFile = await UnverifiedFile.findOne({
+    const File = await UnverifiedFile.findOne({
         where: {
-            uuid: req.params.id
+          uuid: req.params.id
         }
-    });
-    if(!UnverifiedFile) return res.status(404).json({msg : "UnverifiedFile not found"});
-    const {title, classification, password, confPassword, role} = req.body;
-    let hashPassword;
-    if (password === "" || password == null){
-        hashPassword = UnverifiedFile.password;
-    }else {
-        hashPassword = await argon2.hash(password);
-    }
-    if (password !== confPassword) return res.status(400).json({msg : "Password and Confirmation Password not match"});
-    try {
+      });
+      
+      if (!File) {
+        return res.status(404).json({ msg: "UnverifiedFile not found" });
+      }
+      
+      const { title, classification, status } = req.body;
+      
+      try {
         await UnverifiedFile.update({
-            title: title,
-            classification: classification,
-            password: hashPassword,
-            role: role
+          title: title,
+          classification: classification,
+          status: status,
+          file: req.file.file // Assuming want to update the file name in the database
         }, {
-            where: {
-                id : UnverifiedFile.id
-            }
+          where: {
+            id: UnverifiedFile.id
+          }
         });
-        res.status(201).json({msg : "UnverifiedFile Updated"});
-    } catch (error) {
-        res.status(400).json({msg: error.message});
-    }
+      
+        res.status(201).json({ msg: "UnverifiedFile Updated" });
+      } catch (error) {
+        res.status(400).json({ msg: error.message });
+      }
+      
 };
-export const deleteUnverifiedFile = async(req, res ) => {
-    const UnverifiedFile = await UnverifiedFile.findOne({
-        where: {
-            uuid: req.params.id
-        }
-    });
-    if(!UnverifiedFile) return res.status(404).json({msg : "UnverifiedFile not found"});
+export const deleteUnverifiedFile = async (req, res) => {
     try {
-        await UnverifiedFile.destroy({
-            where: {
-                id : UnverifiedFile.id
-            }
-        });
-        res.status(201).json({msg : "UnverifiedFile Deleted"});
+      const unverifiedFile = await UnverifiedFile.findOne({
+        where: {
+          uuid: req.params.id,
+        },
+      });
+      if (!unverifiedFile) {
+        return res.status(404).json({ msg: "UnverifiedFile not found" });
+      }
+      await unverifiedFile.destroy();
+      res.status(201).json({ msg: "UnverifiedFile Deleted" });
     } catch (error) {
-        res.status(400).json({msg: error.message});
+      res.status(400).json({ msg: error.message });
     }
-};
-
-//['uuid', 'title', 'class', 'status', 'userId']
+};  
