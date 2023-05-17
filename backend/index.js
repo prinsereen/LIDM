@@ -7,6 +7,7 @@ import sequelizeStore from "connect-session-sequelize"
 import UserRoute from "./routes/UserRoute.js";
 import UnverifiedFileRoute from "./routes/FileRoute.js"
 import AuthRoute from "./routes/AuthRoute.js"
+import UserProfileRoute from "./routes/UserProfileRoute.js"
 
 dotenv.config();
 
@@ -20,8 +21,8 @@ const store = new sessionStore({
 
 /* (async()=>{
     await db.sync();
-})(); 
- */
+})();  */
+
 app.use(cors({
     credentials: true,
     origin: 'http://localhost:3000'
@@ -41,6 +42,7 @@ app.use(express.json());
 app.use(UserRoute);
 app.use(UnverifiedFileRoute);
 app.use(AuthRoute);
+app.use(UserProfileRoute)
 
 /* store.sync() */
 
