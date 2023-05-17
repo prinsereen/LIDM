@@ -65,3 +65,11 @@ Content-Type: application/json
     "confPassword": "12345678",
     "role": "admin"
 }
+
+###
+//Patch Unverified File
+PATCH http://localhost:5000/UnverifiedFiles/18b4a86d-3ba7-4a3c-b53c-aac50bac35ee
+
+
+### Get All File
+GET http://localhost:5000/Files/f78783c4-52a3-44a9-9b51-7253869b1d99

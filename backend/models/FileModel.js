@@ -5,7 +5,7 @@ import Users from "./UserModel.js";
 
 const {DataTypes} = Sequelize;
 
-const UnverifiedFile = db.define('unverifiedfile', {
+const File = db.define('file', {
     uuid:{
         type: DataTypes.STRING,
         defaultValue: DataTypes.UUIDV4,
@@ -30,28 +30,42 @@ const UnverifiedFile = db.define('unverifiedfile', {
     },
     status:{
         type: DataTypes.STRING,
-        defaultValue: "Menunggu Verifikasi",
+        allowNull: false,
+        defaultValue: "Menunggu Verifikasi"
+    },
+    author:{
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         }
     },
-    file:{
+    type:{
         type: DataTypes.STRING,
-        defaultValue: "Menunggu Verifikasi",
-    }/* ,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
+    },
+    file: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
+    },
     userId:{
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
             notEmpty: true
         }
-    } */
+    }
 }, {
     freezeTableName: true
 })
 
-Users.hasMany(UnverifiedFile);
-UnverifiedFile.belongsTo(Users, {foreignKey: 'userId'});
+Users.hasMany(File);
+File.belongsTo(Users, {foreignKey: 'userId'});
 
-export default UnverifiedFile;
+export default File;

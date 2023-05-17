@@ -5,7 +5,7 @@ import dotenv from "dotenv"
 import db from "./config/Database.js";
 import sequelizeStore from "connect-session-sequelize"
 import UserRoute from "./routes/UserRoute.js";
-import UnverifiedFileRoute from "./routes/UnverifiedFileRoute.js"
+import UnverifiedFileRoute from "./routes/FileRoute.js"
 import AuthRoute from "./routes/AuthRoute.js"
 
 dotenv.config();
@@ -20,8 +20,8 @@ const store = new sessionStore({
 
 /* (async()=>{
     await db.sync();
-})();  */
-
+})(); 
+ */
 app.use(cors({
     credentials: true,
     origin: 'http://localhost:3000'
