@@ -39,7 +39,3 @@ router.patch('/Files/:id', verifyUser,  updateFile);
 router.delete('/Files/:id', verifyUser, deleteFile);
 
 export default router;
-
-
-
-/* upload.single('file'), */
