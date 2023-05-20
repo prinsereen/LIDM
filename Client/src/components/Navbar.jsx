@@ -1,11 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { logo } from "../assets";
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const Navbar = () => {
-  const [active, setActive] = useState("read");
-  const [toggle, setToggle] = useState(false);
+  const [active, setActive] = useState("");
+  const location = useLocation();
+  const pathSegments = location.pathname.split("/");
+  const firstPath = pathSegments[1];
+
+  useEffect(() => {
+    setActive(firstPath);
+  }, [firstPath]);
 
   return (
     <div className="flex flex-col items-center fixed h-full w-40 bg-white">
@@ -19,7 +26,21 @@ const Navbar = () => {
         <img src={logo} className="mt-9 ml-4" />
       </Link>
       <div className="bg-black h-[1px] w-32 mt-6" />
-
+      <Link
+        to="/profile"
+        onClick={() => {
+          setActive("profile");
+        }}
+        className=" mt-8"
+      >
+        <svg
+          width="45"
+          height="45"
+          fill={`${active === "profile" ? "blue" : "black"}`}
+        >
+          <path d="M16.875 20.625a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15Zm0-11.25a3.75 3.75 0 1 1 0 7.5 3.75 3.75 0 0 1 0-7.5ZM31.875 24.375a5.625 5.625 0 1 0 0-11.25 5.625 5.625 0 0 0 0 11.25Zm0-7.5a1.875 1.875 0 1 1 0 3.75 1.875 1.875 0 0 1 0-3.75ZM31.875 26.25a9.375 9.375 0 0 0-5.738 1.969A13.125 13.125 0 0 0 3.75 37.5a1.875 1.875 0 1 0 3.75 0 9.375 9.375 0 0 1 18.75 0 1.875 1.875 0 1 0 3.75 0 12.938 12.938 0 0 0-1.613-6.281 5.625 5.625 0 0 1 9.113 4.406 1.875 1.875 0 1 0 3.75 0 9.375 9.375 0 0 0-9.375-9.375Z" />
+        </svg>
+      </Link>
       <Link
         to="/read"
         onClick={() => {
@@ -69,21 +90,7 @@ const Navbar = () => {
           <path d="M30 20.625h-5.625V15a1.875 1.875 0 1 0-3.75 0v7.5a1.875 1.875 0 0 0 1.875 1.875H30a1.875 1.875 0 1 0 0-3.75Z" />
         </svg>
       </Link>
-      <Link
-        to="/profile"
-        onClick={() => {
-          setActive("profile");
-        }}
-        className=" mt-8"
-      >
-        <svg
-          width="45"
-          height="45"
-          fill={`${active === "profile" ? "blue" : "black"}`}
-        >
-          <path d="M16.875 20.625a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15Zm0-11.25a3.75 3.75 0 1 1 0 7.5 3.75 3.75 0 0 1 0-7.5ZM31.875 24.375a5.625 5.625 0 1 0 0-11.25 5.625 5.625 0 0 0 0 11.25Zm0-7.5a1.875 1.875 0 1 1 0 3.75 1.875 1.875 0 0 1 0-3.75ZM31.875 26.25a9.375 9.375 0 0 0-5.738 1.969A13.125 13.125 0 0 0 3.75 37.5a1.875 1.875 0 1 0 3.75 0 9.375 9.375 0 0 1 18.75 0 1.875 1.875 0 1 0 3.75 0 12.938 12.938 0 0 0-1.613-6.281 5.625 5.625 0 0 1 9.113 4.406 1.875 1.875 0 1 0 3.75 0 9.375 9.375 0 0 0-9.375-9.375Z" />
-        </svg>
-      </Link>
+
       <Link to="/" className=" mt-48">
         <svg width="45" height="45" fill="none" className="">
           <path
