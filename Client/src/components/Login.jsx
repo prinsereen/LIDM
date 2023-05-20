@@ -1,7 +1,43 @@
 import { logo1, logo2, logo3 } from "../assets";
 import { Link } from "react-router-dom";
+import { Formik } from "formik";
+import * as yup from "yup";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setLogin } from "../state";
+
+const initialValuesLogin = {
+  email: "",
+  password: "",
+};
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const login = async (values, onSubmitProps) => {
+    const loggedInResponse = await fetch("http://localhost:3000/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    });
+    const loggedIn = await loggedInResponse.json();
+    onSubmitProps.resetForm();
+    if (loggedIn) {
+      dispatch(
+        setLogin({
+          user: loggedIn.user,
+          token: loggedIn.token,
+        })
+      );
+      navigate("/profile");
+    }
+  };
+
+  const handleSubmit = async (values, onSubmitProps) => {
+    await login(values, onSubmitProps);
+  };
+
   return (
     <section className="h-full w-full flex justify-evenly overflow-hidden">
       <div className="mx-[103px] my-[47px] h-full w-[50%] bg-tertiary flex flex-col  items-center rounded-xl">
@@ -36,7 +72,10 @@ const Login = () => {
             Buat Akun
           </Link>
         </h2>
-        <form className=" text-[25px] font-bold mr-[90px]">
+        <form
+          onSubmit={handleSubmit}
+          className=" text-[25px] font-bold mr-[90px]"
+        >
           <div className="mt-2" />
           <label>Email</label>
           <br />
