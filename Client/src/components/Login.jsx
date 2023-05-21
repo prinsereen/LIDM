@@ -84,7 +84,7 @@ const Login = () => {
             type="email"
             id="email"
             placeholder="alamat email"
-            className="w-full bg-white py-3 px-5 rounded-xl text-[#939FB1] text-[20px] focus:text-black"
+            className="w-full bg-white py-3 px-5 rounded-xl  text-black text-[20px] placeholder-[#939FB1]"
           />
           <div className="mt-2" />
           <label>Sandi</label>
@@ -94,13 +94,13 @@ const Login = () => {
             type="password"
             id="password"
             placeholder="kata sandi"
-            className="w-full bg-white py-3 px-5 rounded-xl text-[#939FB1] text-[20px] focus:text-black"
+            className="w-full bg-white py-3 px-5 rounded-xl text-black text-[20px] placeholder-[#939FB1]"
           />
 
           <input
             value="Masuk"
             type="submit"
-            className="bg-[#0868F9] px-10 py-3 mt-8 rounded-lg text-[white] text-[20px]"
+            className="bg-[#0868F9] px-10 py-3 mt-8 rounded-lg text-[white] text-[20px] cursor-pointer"
           />
 
           <h2 className="text-left text-[20px] text-[#939FB1] font-bold mt-3">

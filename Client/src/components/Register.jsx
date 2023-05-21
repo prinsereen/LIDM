@@ -1,7 +1,31 @@
 import { logo1, logo2, logo3 } from "../assets";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
+
+  const register = async (values, onSubmitProps) => {
+    const formData = new FormData();
+    for (let value in values) {
+      formData.append(value, values[value]);
+    }
+
+    const savedUserResponse = await fetch("http://localhost:3000/register", {
+      method: "POST",
+      body: formData,
+    });
+    const savedUser = await savedUserResponse.json();
+    onSubmitProps.resetForm();
+
+    if (savedUser) {
+      navigate("/login");
+    }
+  };
+
+  const handleSubmit = async (values, onSubmitProps) => {
+    await register(values, onSubmitProps);
+  };
+
   return (
     <section className="h-full w-full flex justify-evenly overflow-hidden">
       <div className="mx-[103px] my-[47px] h-full w-[50%] bg-tertiary flex flex-col  items-center rounded-xl">
@@ -34,7 +58,10 @@ const Register = () => {
             Masuk
           </Link>
         </h2>
-        <form className=" text-[25px] font-bold mr-[90px]">
+        <form
+          onSubmit={handleSubmit}
+          className=" text-[25px] font-bold mr-[90px]"
+        >
           <div className="mt-2" />
           <label>Nama Lengkap</label>
           <br />
@@ -43,7 +70,7 @@ const Register = () => {
             type="text"
             id="name"
             placeholder="nama lengkap"
-            className="w-full bg-white py-3 px-5 rounded-xl text-[#939FB1] text-[20px] focus:text-black"
+            className="w-full bg-white py-3 px-5 rounded-xl text-black text-[20px] placeholder-[#939FB1]"
           />
           <div className="mt-2" />
           <label>Email</label>
@@ -53,7 +80,7 @@ const Register = () => {
             type="email"
             id="email"
             placeholder="alamat email"
-            className="w-full bg-white py-3 px-5 rounded-xl text-[#939FB1] text-[20px] focus:text-black"
+            className="w-full bg-white py-3 px-5 rounded-xl text-black text-[20px] placeholder-[#939FB1]"
           />
           <div className="mt-2" />
           <label>Sandi</label>
@@ -63,7 +90,7 @@ const Register = () => {
             type="password"
             id="password"
             placeholder="kata sandi"
-            className="w-full bg-white py-3 px-5 rounded-xl text-[#939FB1] text-[20px] focus:text-black"
+            className="w-full bg-white py-3 px-5 rounded-xl  text-black text-[20px] placeholder-[#939FB1]"
           />
           <div className="mt-2" />
           <label>Konfirmasi Sandi</label>
@@ -73,13 +100,13 @@ const Register = () => {
             type="password"
             id="konfirmasi"
             placeholder="konfirmasi kata sandi"
-            className="w-full bg-white py-3 px-5 rounded-xl text-[#939FB1] text-[20px] focus:text-black"
+            className="w-full bg-white py-3 px-5 rounded-xl  text-black text-[20px] placeholder-[#939FB1]"
           />
 
           <input
             value="Daftar"
             type="submit"
-            className="bg-[#0868F9] px-10 py-3 mt-8 rounded-lg text-[white] text-[20px]"
+            className="bg-[#0868F9] px-10 py-3 mt-8 rounded-lg text-[white] text-[20px] cursor-pointer"
           />
 
           <h2 className="text-left text-[20px] text-[#939FB1] font-bold mt-3">
