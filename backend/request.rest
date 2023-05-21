@@ -16,7 +16,7 @@ GET http://localhost:5000/users
 
 ###
 //GET SINGLE USER
-GET http://localhost:5000/users/d606eb30-594c-45bb-9cd5-1f2ee67d27a6
+GET http://localhost:5000/users/ad0a3178-68b4-414e-842f-fd787f92767c
 
 ### Update Uset
 PATCH http://localhost:5000/users/d606eb30-594c-45bb-9cd5-1f2ee67d27a6
@@ -41,7 +41,7 @@ POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-    "email": "prinsnnuzeren@gmail.com",
+    "email": "hanrocky@gmail.com",
     "password": "12345678"
 }
 

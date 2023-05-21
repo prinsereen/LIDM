@@ -15,6 +15,7 @@ export const verifyUser = async(req, res, next) => {
     next()
 }
 
+
 export const adminOnly = async(req, res, next) => {
     if(!req.session.userId) {
         return res.status(401).json({msg: "Please Login to Your Account"});
