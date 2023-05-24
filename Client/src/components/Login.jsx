@@ -1,42 +1,34 @@
 import { logo1, logo2, logo3 } from "../assets";
 import { Link } from "react-router-dom";
-import { Formik } from "formik";
-import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setLogin } from "../state";
-
-const initialValuesLogin = {
-  email: "",
-  password: "",
-};
+import React, {useState, useEffect} from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {LoginUser, reset} from "../state/index.js"
 
 const Login = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const login = async (values, onSubmitProps) => {
-    const loggedInResponse = await fetch("http://localhost:3000/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
-    });
-    const loggedIn = await loggedInResponse.json();
-    onSubmitProps.resetForm();
-    if (loggedIn) {
-      dispatch(
-        setLogin({
-          user: loggedIn.user,
-          token: loggedIn.token,
-        })
-      );
-      navigate("/profile");
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const { user, isError, isSuccess, isLoading, message } = useSelector(
+    (state) => state.auth
+  );
+
+  useEffect(()=>{
+    if(user){
+      navigate("/Profile");
     }
-  };
+    dispatch(reset());
+  }, [user, isSuccess, dispatch, navigate]);
 
-  const handleSubmit = async (values, onSubmitProps) => {
-    await login(values, onSubmitProps);
-  };
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(LoginUser({email, password}));
+  }
 
   return (
     <section className="h-full w-full flex justify-evenly overflow-hidden">
@@ -64,7 +56,7 @@ const Login = () => {
       </div>
       <div className="w-[50%] flex flex-col justify-start my-[50px] mb-[50px] mt-[30px] ">
         <h1 className="text-[50px] text-center font-bold mr-[20px] mt-[50px]">
-          Masuk
+          {isLoading? "Loading ..." : "Masuk"}
         </h1>
         <h2 className="text-left text-[30px] text-[#939FB1] font-bold pl-3">
           Belum punya akun?{" "}
@@ -76,6 +68,7 @@ const Login = () => {
           onSubmit={handleSubmit}
           className=" text-[25px] font-bold mr-[90px]"
         >
+          {isError && <p className="items-center">{message}</p>}
           <div className="mt-2" />
           <label>Email</label>
           <br />
@@ -84,6 +77,8 @@ const Login = () => {
             type="email"
             id="email"
             placeholder="alamat email"
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)}
             className="w-full bg-white py-3 px-5 rounded-xl  text-black text-[20px] placeholder-[#939FB1]"
           />
           <div className="mt-2" />
@@ -94,6 +89,8 @@ const Login = () => {
             type="password"
             id="password"
             placeholder="kata sandi"
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)}
             className="w-full bg-white py-3 px-5 rounded-xl text-black text-[20px] placeholder-[#939FB1]"
           />
 

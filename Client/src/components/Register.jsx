@@ -10,10 +10,12 @@ const Register = () => {
       formData.append(value, values[value]);
     }
 
-    const savedUserResponse = await fetch("http://localhost:3000/register", {
+    const savedUserResponse = await fetch("http://localhost:5173/register", {
       method: "POST",
       body: formData,
     });
+
+    console.log(body)
     const savedUser = await savedUserResponse.json();
     onSubmitProps.resetForm();
 
@@ -96,12 +98,21 @@ const Register = () => {
           <label>Konfirmasi Sandi</label>
           <br />
           <input
-            name="konfirmasi"
+            name="confpassword"
             type="password"
             id="konfirmasi"
             placeholder="konfirmasi kata sandi"
             className="w-full bg-white py-3 px-5 rounded-xl  text-black text-[20px] placeholder-[#939FB1]"
           />
+          <div className="mt-2" />
+          <label>Daftar Sebagai</label>
+          <br />
+          <select name="role" 
+          id="role" 
+          className="w-full bg-white py-3 px-5 rounded-xl  text-black text-[20px] placeholder-[#939FB1]">
+            <option value="pembaca">Pembaca</option>
+            <option value="donatur">Donatur</option>
+          </select>
 
           <input
             value="Daftar"

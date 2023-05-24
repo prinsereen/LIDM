@@ -8,7 +8,6 @@ export const Login = async(req, res) => {
             email: req.body.email
         }
     })
-    console.log(user.email)
     if (!user) return res.status(404).json({msg : "user not found"});
     const match = await argon2.verify(user.password, req.body.password);
     if (!match) return res.status(400).json({msg: "Wrong Password"});
