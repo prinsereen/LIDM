@@ -1,18 +1,21 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import {
   Hero,
   Login,
   Register,
   Profile,
+  History,
   Read,
   Star,
-  History,
+  KategoriBaca,
 } from "./components";
 
 import "./index.css";
 
 function App() {
+  const isAuth = Boolean(useSelector((state) => state.user));
   return (
     <BrowserRouter>
       <Routes>
@@ -21,8 +24,12 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/read" element={<Read />} />
-        <Route path="/Star" element={<Star />} />
-        <Route path="/History" element={<History />} />
+        <Route path="/star" element={isAuth ? <Star /> : <Navigate to="/" />} />
+        <Route
+          path="/history"
+          element={isAuth ? <History /> : <Navigate to="/" />}
+        />
+        <Route path="/read/kategori1" element={<KategoriBaca />} />
       </Routes>
     </BrowserRouter>
   );

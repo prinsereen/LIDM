@@ -1,34 +1,32 @@
 import { logo1, logo2, logo3 } from "../assets";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {LoginUser, reset} from "../state/index.js"
+import { LoginUser, reset } from "../state/index.js";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { user, isError, isSuccess, isLoading, message } = useSelector(
     (state) => state.auth
   );
 
-  useEffect(()=>{
-    if(user){
-      navigate("/Profile");
+  useEffect(() => {
+    if (user) {
+      navigate("/profile");
     }
     dispatch(reset());
   }, [user, isSuccess, dispatch, navigate]);
 
-
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(LoginUser({email, password}));
-  }
+    dispatch(LoginUser({ email, password }));
+  };
 
   return (
     <section className="h-full w-full flex justify-evenly overflow-hidden">
@@ -56,7 +54,7 @@ const Login = () => {
       </div>
       <div className="w-[50%] flex flex-col justify-start my-[50px] mb-[50px] mt-[30px] ">
         <h1 className="text-[50px] text-center font-bold mr-[20px] mt-[50px]">
-          {isLoading? "Loading ..." : "Masuk"}
+          {isLoading ? "Loading ..." : "Masuk"}
         </h1>
         <h2 className="text-left text-[30px] text-[#939FB1] font-bold pl-3">
           Belum punya akun?{" "}
@@ -77,7 +75,7 @@ const Login = () => {
             type="email"
             id="email"
             placeholder="alamat email"
-            value={email} 
+            value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full bg-white py-3 px-5 rounded-xl  text-black text-[20px] placeholder-[#939FB1]"
           />
@@ -89,7 +87,7 @@ const Login = () => {
             type="password"
             id="password"
             placeholder="kata sandi"
-            value={password} 
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full bg-white py-3 px-5 rounded-xl text-black text-[20px] placeholder-[#939FB1]"
           />
