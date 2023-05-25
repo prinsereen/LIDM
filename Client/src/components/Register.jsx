@@ -110,7 +110,7 @@ const Register = () => {
           <select name="role" 
           id="role" 
           className="w-full bg-white py-3 px-5 rounded-xl  text-black text-[20px] placeholder-[#939FB1]">
-            <option value="pembaca">Pembaca</option>
+            <option value="user">Pembaca</option>
             <option value="donatur">Donatur</option>
           </select>
 

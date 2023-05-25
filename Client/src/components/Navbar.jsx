@@ -12,7 +12,7 @@ const Navbar = () => {
 
   useEffect(() => {
     setActive(firstPath);
-  }, [firstPath]);
+  }, []);
 
   return (
     <div className="flex flex-col items-center fixed h-full w-40 bg-white">
