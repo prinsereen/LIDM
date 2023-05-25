@@ -1,13 +1,13 @@
 import express from "express";
 import cors from "cors";
 import session from "express-session";
-import dotenv from "dotenv"
+import dotenv from "dotenv";
 import db from "./config/Database.js";
-import sequelizeStore from "connect-session-sequelize"
+import sequelizeStore from "connect-session-sequelize";
 import UserRoute from "./routes/UserRoute.js";
-import UnverifiedFileRoute from "./routes/FileRoute.js"
-import AuthRoute from "./routes/AuthRoute.js"
-import SummaryRoute from "./routes/SummaryRoute.js"
+import UnverifiedFileRoute from "./routes/FileRoute.js";
+import AuthRoute from "./routes/AuthRoute.js";
+import SummaryRoute from "./routes/SummaryRoute.js";
 
 dotenv.config();
 
@@ -16,36 +16,40 @@ const app = express();
 const sessionStore = sequelizeStore(session.Store);
 
 const store = new sessionStore({
-    db: db
+  db: db,
 });
 
-/* (async()=>{
-    await db.sync();
-})();  */
+// (async () => {
+//   await db.sync();
+// })();
 
-app.use(cors({
+app.use(
+  cors({
     credentials: true,
-    origin: 'http://localhost:5173'
-}));
+    origin: "http://localhost:5173",
+  })
+);
 
-app.use(session({
+app.use(
+  session({
     secret: process.env.SESS_SECRET,
     resave: false,
     saveUninitialized: true,
     store: store,
     cookie: {
-        secure: 'auto'
-    }
-}));
+      secure: "auto",
+    },
+  })
+);
 
 app.use(express.json());
 app.use(UserRoute);
 app.use(UnverifiedFileRoute);
 app.use(AuthRoute);
-app.use(SummaryRoute)
+app.use(SummaryRoute);
 
 /* store.sync() */
 
-app.listen(process.env.APP_PORT, ()=> {
-    console.log('server up and running');
+app.listen(process.env.APP_PORT, () => {
+  console.log("server up and running");
 });

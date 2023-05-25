@@ -19,7 +19,7 @@ const Navbar = () => {
       <Link
         to="/profile"
         onClick={() => {
-          setActive("");
+          setActive("profile");
           window.scrollTo(0, 0);
         }}
       >
