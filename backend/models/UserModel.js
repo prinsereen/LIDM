@@ -54,6 +54,10 @@ const Users = db.define('users', {
     tanggal_lahir:{
         type: DataTypes.DATE,
         allowNull: true,
+    },
+    user_photo:{
+        type: DataTypes.STRING,
+        allowNull: true,
     }
 }, {
     freezeTableName: true

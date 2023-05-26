@@ -4,7 +4,7 @@ import argon2 from "argon2";
 export const getUser = async(req, res ) => {
     try {
         const respons = await Users.findAll({
-            attributes: ['uuid', 'name', 'email', 'role', 'asal_instansi', 'jenjang', 'tanggal_lahir']
+            attributes: ['uuid', 'name', 'email', 'role', 'asal_instansi', 'jenjang', 'tanggal_lahir', 'user_photo']
         });
         res.status(200).json(respons);
     } catch (error) {
@@ -14,7 +14,7 @@ export const getUser = async(req, res ) => {
 export const getUserById = async(req, res ) => {
     try {
         const respons = await Users.findOne({
-            attributes: ['uuid', 'name', 'email', 'role', 'asal_instansi', 'jenjang', 'tanggal_lahir'],
+            attributes: ['uuid', 'name', 'email', 'role', 'asal_instansi', 'jenjang', 'tanggal_lahir', 'user_photo'],
             where: {
                 uuid: req.params.id
             }
@@ -47,7 +47,8 @@ export const createUser = async(req, res ) => {
             role: role,
             asal_instansi: null,
             jenjang: null,
-            tanggal_lahir: null
+            tanggal_lahir: null,
+            user_photo: null
         });
         res.status(201).json({msg : "Registered"});
     } catch (error) {
@@ -79,12 +80,14 @@ export const updateUser = async(req, res ) => {
             role: role, 
             asal_instansi: asal_instansi,
             jenjang: jenjang,
-            tanggal_lahir: tanggal_lahir
+            tanggal_lahir: tanggal_lahir ,
+            user_photo: req.file.path 
         }, {
             where: {
                 id : user.id
             }
         });
+        console.log(req.file)
         res.status(201).json({msg : "User Updated"});
     } catch (error) {
         res.status(400).json({msg: error.message});

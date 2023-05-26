@@ -104,6 +104,7 @@ export const createFile = async(req, res ) => {
                 userId: req.userId,
                 file: req.file.path
             })
+            console.log(req.file)
             res.status(201).json({msg: "File Created Succsessfully"})
         }else {
             res.status(403).json({msg: "Access Forbidden"})
