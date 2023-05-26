@@ -42,6 +42,18 @@ const Users = db.define('users', {
         validate: {
             notEmpty: true
         }
+    },
+    asal_instansi:{
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+    jenjang:{
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+    tanggal_lahir:{
+        type: DataTypes.DATE,
+        allowNull: true,
     }
 }, {
     freezeTableName: true

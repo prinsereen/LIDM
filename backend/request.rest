@@ -3,8 +3,8 @@ POST http://localhost:5000/users
 Content-Type: application/json
 
 {
-    "name": "yusnita putri",
-    "email": "momoy2@gmail.com",
+    "name": "Yusnita Putri",
+    "email": "momoy@gmail.com",
     "password": "12345678",
     "confPassword": "12345678",
     "role": "user"

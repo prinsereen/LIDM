@@ -4,7 +4,7 @@ import argon2 from "argon2";
 export const getUser = async(req, res ) => {
     try {
         const respons = await Users.findAll({
-            attributes: ['uuid', 'name', 'email', 'role']
+            attributes: ['uuid', 'name', 'email', 'role', 'asal_instansi', 'jenjang', 'tanggal_lahir']
         });
         res.status(200).json(respons);
     } catch (error) {
@@ -14,7 +14,7 @@ export const getUser = async(req, res ) => {
 export const getUserById = async(req, res ) => {
     try {
         const respons = await Users.findOne({
-            attributes: ['uuid', 'name', 'email', 'role'],
+            attributes: ['uuid', 'name', 'email', 'role', 'asal_instansi', 'jenjang', 'tanggal_lahir'],
             where: {
                 uuid: req.params.id
             }
@@ -44,7 +44,10 @@ export const createUser = async(req, res ) => {
             name: name,
             email: email,
             password: hashPassword,
-            role: role
+            role: role,
+            asal_instansi: null,
+            jenjang: null,
+            tanggal_lahir: null
         });
         res.status(201).json({msg : "Registered"});
     } catch (error) {
@@ -60,7 +63,7 @@ export const updateUser = async(req, res ) => {
         }
     });
     if(!user) return res.status(404).json({msg : "user not found"});
-    const {name, email, password, confPassword, role} = req.body;
+    const {name, email, password, confPassword, role, asal_instansi, jenjang,  tanggal_lahir} = req.body;
     let hashPassword;
     if (password === "" || password == null){
         hashPassword = user.password;
@@ -73,7 +76,10 @@ export const updateUser = async(req, res ) => {
             name: name,
             email: email,
             password: hashPassword,
-            role: role
+            role: role, 
+            asal_instansi: asal_instansi,
+            jenjang: jenjang,
+            tanggal_lahir: tanggal_lahir
         }, {
             where: {
                 id : user.id
