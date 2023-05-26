@@ -58,6 +58,26 @@ const Users = db.define('users', {
     user_photo:{
         type: DataTypes.STRING,
         allowNull: true,
+    },
+    sosial:{
+        type: DataTypes.INTEGER,
+        allowNull: true,
+    },
+    sains:{
+        type: DataTypes.INTEGER,
+        allowNull: true,
+    },
+    sastra:{
+        type: DataTypes.INTEGER,
+        allowNull: true,
+    },
+    bahasa:{
+        type: DataTypes.INTEGER,
+        allowNull: true,
+    },
+    rekomendasi_kompetisi:{
+        type: DataTypes.INTEGER,
+        allowNull: true,
     }
 }, {
     freezeTableName: true

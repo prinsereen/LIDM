@@ -48,7 +48,12 @@ export const createUser = async(req, res ) => {
             asal_instansi: null,
             jenjang: null,
             tanggal_lahir: null,
-            user_photo: null
+            user_photo: null,
+            sosial: 0,
+            sains: 0,
+            sastra: 0,
+            bahasa: 0,
+            rekomendasi_kompetisi: 0
         });
         res.status(201).json({msg : "Registered"});
     } catch (error) {
@@ -93,6 +98,35 @@ export const updateUser = async(req, res ) => {
         res.status(400).json({msg: error.message});
     }
 };
+
+export const updateRecomendation = async(req, res ) => {
+    const user = await Users.findOne({
+        where: {
+            uuid: req.params.id
+        }
+    });
+    if(!user) return res.status(404).json({msg : "user not found"});
+    const {sosial, sains, sastra, bahasa} = req.body;
+    let model = 0;
+    try {
+        await Users.update({
+            sosial: sosial,
+            sains: sains,
+            sastra: sastra,
+            bahasa: bahasa, 
+            rekomendasi_kompetisi: model /* Predicting Model Here */
+        }, {
+            where: {
+                id : user.id
+            }
+        });
+        console.log(req.file)
+        res.status(201).json({msg : "Recomendation Updated"});
+    } catch (error) {
+        res.status(400).json({msg: error.message});
+    }
+};
+
 export const deleteUser = async(req, res ) => {
     const user = await Users.findOne({
         where: {
