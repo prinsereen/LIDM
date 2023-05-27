@@ -45,7 +45,7 @@ export const register = async(req, res ) => {
     if (password !== confPassword) return res.status(400).json({msg : "Password and Confirmation Password not match"});
     const hashPassword = await argon2.hash(password);
 
-    if (role === "admin") return res.status(403).json({msg: "Admin Forbidden for Register"});
+    if (role === "admin") return res.status(403).json({msg: "Admin Forbidden to Register"});
 
     // Check if email already exists in database
     const user = await User.findOne({

@@ -38,7 +38,10 @@ router.get('/Files', verifyUser, getFile);
 router.get('/PdfFiles', verifyUser, getPdfFile);
 router.get('/Mp3Files', verifyUser, getMp3File);
 router.get('/Files/:id', verifyUser, getFileById);
-router.post('/Files',  upload.single('file'), verifyUser,  createFile); 
+router.post('/Files',  upload.fields([
+    { name: 'file_pdf', maxCount : 1},
+    { name: 'file_mp3', maxCount : 1},
+]), verifyUser,  createFile); 
 router.patch('/Files/:id', verifyUser,  updateFile);
 router.delete('/Files/:id', verifyUser, deleteFile);
 

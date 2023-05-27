@@ -40,19 +40,23 @@ const File = db.define('file', {
             notEmpty: true
         }
     },
-    type:{
+/*     type:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
+    }, */
+    file_pdf: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         }
     },
-    file: {
+    file_mp3: {
         type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        }
+        allowNull: true
     },
     userId:{
         type: DataTypes.INTEGER,
