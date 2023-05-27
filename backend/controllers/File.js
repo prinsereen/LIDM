@@ -41,6 +41,7 @@ export const getFile = async(req, res ) => {
         res.status(500).json({msg : error.message});
     }
 };
+
 export const getFileById = async(req, res ) => {
     try {
         const file = await File.findOne({
@@ -85,6 +86,57 @@ export const getFileById = async(req, res ) => {
                 }]
             })
         }
+        res.status(200).json(response);
+    } catch (error) {
+        res.status(500).json({msg : error.message});
+    }
+};
+
+export const getPdfFile = async(req, res ) => {
+    try {
+        const file = await File.findAll({
+            where: {
+                type: "pdf" 
+            }
+        });
+        if (!file) return res.status(404).json({msg : "File Not Found"});
+        let response;
+        response = await File.findAll({
+            attributes:['uuid', 'title', 'classification', 'status', 'type'],
+            where: {
+                type: "pdf",
+                status: "disetujui"
+            },
+            include: [{
+                model: User,
+                attributes: ['name', 'email']
+            }]
+        })
+        res.status(200).json(response);
+    } catch (error) {
+        res.status(500).json({msg : error.message});
+    }
+};
+export const getMp3File = async(req, res ) => {
+    try {
+        const file = await File.findAll({
+            where: {
+                type: "mp3" 
+            }
+        });
+        if (!file) return res.status(404).json({msg : "File Not Found"});
+        let response;
+        response = await File.findAll({
+            attributes:['uuid', 'title', 'classification', 'status', 'type'],
+            where: {
+                type: "mp3",
+                status: "disetujui"
+            },
+            include: [{
+                model: User,
+                attributes: ['name', 'email']
+            }]
+        })
         res.status(200).json(response);
     } catch (error) {
         res.status(500).json({msg : error.message});

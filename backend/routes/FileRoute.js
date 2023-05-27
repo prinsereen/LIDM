@@ -4,7 +4,9 @@ import {
     getFileById,
     createFile,
     updateFile,
-    deleteFile
+    deleteFile,
+    getPdfFile,
+    getMp3File
 } from "../controllers/File.js";
 import { verifyUser } from "../middleware/AuthUser.js";
 import multer from "multer";
@@ -33,6 +35,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.get('/Files', verifyUser, getFile);
+router.get('/PdfFiles', verifyUser, getPdfFile);
+router.get('/Mp3Files', verifyUser, getMp3File);
 router.get('/Files/:id', verifyUser, getFileById);
 router.post('/Files',  upload.single('file'), verifyUser,  createFile); 
 router.patch('/Files/:id', verifyUser,  updateFile);
