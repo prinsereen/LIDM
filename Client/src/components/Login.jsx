@@ -23,9 +23,15 @@ const Login = () => {
     dispatch(reset());
   }, [user, isSuccess, dispatch, navigate]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(LoginUser({ email, password }));
+    loggedIn = dispatch(LoginUser({ email, password }));
+    const response = await loggedIn.json();
+    dispatch(
+      LoginUser.fulfilled({
+        user: user,
+      })
+    );
   };
 
   return (
