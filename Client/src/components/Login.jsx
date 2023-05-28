@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { LoginUser, reset } from "../state/index.js";
+import { LoginUser, reset, getMe } from "../state/index.js";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -23,15 +23,10 @@ const Login = () => {
     dispatch(reset());
   }, [user, isSuccess, dispatch, navigate]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    loggedIn = dispatch(LoginUser({ email, password }));
-    const response = await loggedIn.json();
-    dispatch(
-      LoginUser.fulfilled({
-        user: user,
-      })
-    );
+    dispatch(LoginUser({ email, password }));
+    dispatch(getMe());
   };
 
   return (
