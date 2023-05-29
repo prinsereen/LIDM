@@ -21,8 +21,8 @@ const store = new sessionStore({
 
 /* (async () => {
 await db.sync();
-})();
- */
+})(); */
+
 app.use(
   cors({
     credentials: true,

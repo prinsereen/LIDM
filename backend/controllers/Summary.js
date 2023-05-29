@@ -1,19 +1,12 @@
 import Summary from "../models/Summary.js"
 import User from "../models/UserModel.js";
+import File from "../models/FileModel.js";
 import {Op} from "sequelize"
 
 export const getSummary = async(req, res ) => {
     try {
         let response;
-        if (req.role === "admin"){
-            response = await Summary.findAll({
-                attributes:['uuid', 'summary', 'grade'],
-                include: [{
-                    model: User,
-                    attributes: ['name', 'email']
-                }]
-            })
-        }else if (req.role === "user"){
+        if (req.role === "user"){
             response = await Summary.findAll({
                 attributes:['uuid', 'summary', 'grade'],
                 where: {
@@ -22,6 +15,10 @@ export const getSummary = async(req, res ) => {
                 include: [{
                     model: User,
                     attributes: ['name', 'email']
+                },
+                {
+                  model: File, // Include the "File" model
+                  attributes: ['title', 'classification', 'author', 'file_pdf'] // Specify the desired attributes from the "File" model
                 }]
             })
         }else {
@@ -50,6 +47,10 @@ export const getSummaryById = async(req, res ) => {
                 include: [{
                     model: User,
                     attributes: ['name', 'email']
+                },
+                {
+                  model: File, // Include the "File" model
+                  attributes: ['title', 'classification', 'author', 'file_pdf'] // Specify the desired attributes from the "File" model
                 }]
             })
         }else if (req.role === "user"){
@@ -61,6 +62,10 @@ export const getSummaryById = async(req, res ) => {
                 include: [{
                     model: User,
                     attributes: ['name', 'email']
+                },
+                {
+                  model: File, // Include the "File" model
+                  attributes: ['title', 'classification', 'author', 'file_pdf'] // Specify the desired attributes from the "File" model
                 }]
             })
         }else {
@@ -73,13 +78,14 @@ export const getSummaryById = async(req, res ) => {
 };
 
 export const createSummary = async(req, res ) => {
-    const {summary, grade} = req.body; // Perlu Konfigurasi Nanti ketika fetch api ML
+    const {summary, fileId, } = req.body; // Perlu Konfigurasi Nanti ketika fetch api ML
     try {
         if ( req.role === "user"){            
             await Summary.create({
                 summary : summary,
-                grade: grade,
-                userId : req.userId
+                userId : req.userId,
+                grade : null,
+                fileId : fileId
             })
             res.status(201).json({msg: "Summary Created Succsessfully"})
         }else {
@@ -89,3 +95,32 @@ export const createSummary = async(req, res ) => {
         res.status(500).json({msg: error.message})
     }
 };
+
+export const getSummaryByUser = async (req, res) => {
+    try {
+      let response;
+      if (req.role === "user") {
+        response = await Summary.findAll({
+          attributes: ['uuid', 'summary', 'grade'],
+          include: [
+            {
+              model: User,
+              attributes: ['name', 'email'],
+              where: { id: req.userId } // Filter by user ID
+            },
+            {
+              model: File,
+              attributes: ['title', 'classification', 'author', 'file_pdf']
+            }
+          ]
+        });
+      } else {
+        return res.status(403).json({ msg: "Access Forbidden" });
+      }
+  
+      res.status(200).json(response);
+    } catch (error) {
+      res.status(500).json({ msg: error.message });
+    }
+  };
+  
