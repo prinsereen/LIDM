@@ -78,7 +78,7 @@ export const getSummaryById = async(req, res ) => {
 };
 
 export const createSummary = async(req, res ) => {
-    const {summary, fileId, } = req.body; // Perlu Konfigurasi Nanti ketika fetch api ML
+    const {summary, fileId } = req.body; // Perlu Konfigurasi Nanti ketika fetch api ML
     try {
         if ( req.role === "user"){            
             await Summary.create({

@@ -8,6 +8,7 @@ import UserRoute from "./routes/UserRoute.js";
 import UnverifiedFileRoute from "./routes/FileRoute.js";
 import AuthRoute from "./routes/AuthRoute.js";
 import SummaryRoute from "./routes/SummaryRoute.js";
+import LeeaderBoardRoute from "./routes/LeaderBoardRoute.js"
 
 dotenv.config();
 
@@ -47,6 +48,7 @@ app.use(UserRoute);
 app.use(UnverifiedFileRoute);
 app.use(AuthRoute);
 app.use(SummaryRoute);
+app.use(LeeaderBoardRoute)
 
 /* store.sync() */
 

@@ -14,5 +14,4 @@ router.get('/Summary/:id', verifyUser, getSummaryById);
 router.get('/UserSummary', verifyUser, getSummaryByUser)
 router.post('/Summary',  verifyUser,  createSummary); 
 
-
 export default router;

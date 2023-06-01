@@ -28,7 +28,7 @@ export const getFile = async(req, res ) => {
             response = await File.findAll({
                 attributes:['uuid', 'title', 'classification', 'status'],
                 where: {
-                    status: "disetujui"
+                    status: "diterima"
                 },
                 include: [{
                     model: User,
@@ -78,7 +78,7 @@ export const getFileById = async(req, res ) => {
                 attributes:['uuid', 'title', 'classification', 'status'],
                 where: {
                     id: file.id,
-                    status: "disetujui"
+                    status: "diterima"
                 },
                 include: [{
                     model: User,
@@ -113,7 +113,7 @@ export const getPdfFile = async (req, res) => {
           file_pdf: {
             [Op.not]: null // Check if file_pdf is not null
           },
-          status: "disetujui"
+          status: "diterima"
         },
         include: [{
           model: User,
@@ -148,7 +148,7 @@ export const getMp3File = async(req, res ) => {
             file_mp3: {
               [Op.not]: null // Check if file_mp3 is not null
             },
-            status: "disetujui"
+            status: "diterima"
           },
           include: [{
             model: User,
