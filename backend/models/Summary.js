@@ -1,6 +1,7 @@
 import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
 import Users from "./UserModel.js";
+import File from "./FileModel.js";
 
 
 const {DataTypes} = Sequelize;
@@ -23,12 +24,16 @@ const Summary = db.define('summary', {
     },
     grade:{
         type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    userId:{
+        type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
             notEmpty: true
         }
     },
-    userId:{
+    fileId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
@@ -40,6 +45,8 @@ const Summary = db.define('summary', {
 })
 
 Users.hasMany(Summary);
+File.hasMany(Summary)
 Summary.belongsTo(Users, {foreignKey: 'userId'});
+Summary.belongsTo(File, {foreignKey: 'fileId'});
 
 export default Summary;

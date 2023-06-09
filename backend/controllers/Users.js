@@ -1,5 +1,6 @@
 import Users from "../models/UserModel.js";
 import argon2 from "argon2";
+import axios from "axios";
 
 export const getUser = async(req, res ) => {
     try {
@@ -99,31 +100,60 @@ export const updateUser = async(req, res ) => {
     }
 };
 
-export const updateRecomendation = async(req, res ) => {
+
+export const updateRecomendation = async (req, res) => {
     const user = await Users.findOne({
-        where: {
-            uuid: req.params.id
-        }
+      where: {
+        uuid: req.params.id,
+      },
     });
-    if(!user) return res.status(404).json({msg : "user not found"});
-    const {sosial, sains, sastra, bahasa} = req.body;
-    let model = 0;
+  
+    if (!user) {
+      return res.status(404).json({ msg: 'user not found' });
+    }
+  
+    const { sosial, sains, sastra, bahasa, seni } = req.body;
+  
+    // Prepare the data to send in the POST request
+    const postData = {
+      seni: seni,
+      sosial: sosial,
+      sains: sains,
+      sastra: sastra,
+      bahasa: bahasa,
+    };
+  
     try {
-        await Users.update({
-            sosial: sosial,
-            sains: sains,
-            sastra: sastra,
-            bahasa: bahasa, 
-            rekomendasi_kompetisi: model /* Predicting Model Here */
-        }, {
-            where: {
-                id : user.id
-            }
-        });
-        console.log(req.file)
-        res.status(201).json({msg : "Recomendation Updated"});
+      // Make a POST request to the external API
+      const response = await axios.post('https://1a7c-34-68-74-137.ngrok.io/rekomendation', JSON.stringify(postData), {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      // Extract the prediction value from the response
+      const prediction = response.data.prediction;
+  
+      await Users.update(
+        {
+          sosial: sosial,
+          sains: sains,
+          sastra: sastra,
+          bahasa: bahasa,
+          seni: seni,
+          rekomendasi_kompetisi: prediction,
+        },
+        {
+          where: {
+            id: user.id,
+          },
+        }
+      );
+  
+      console.log(req.file);
+      res.status(201).json({ msg: 'Recomendation Updated' });
     } catch (error) {
-        res.status(400).json({msg: error.message});
+      res.status(400).json({ msg: error.message });
     }
 };
 
