@@ -9,6 +9,7 @@ import UnverifiedFileRoute from "./routes/FileRoute.js";
 import AuthRoute from "./routes/AuthRoute.js";
 import SummaryRoute from "./routes/SummaryRoute.js";
 import LeeaderBoardRoute from "./routes/LeaderBoardRoute.js";
+const PDFDocument = require("pdfkit");
 
 dotenv.config();
 
@@ -42,6 +43,11 @@ app.use(
     },
   })
 );
+
+// Start the Express server
+app.listen(3000, () => {
+  console.log("Server started on port 3000");
+});
 
 app.use(express.json());
 app.use(UserRoute);
