@@ -9,6 +9,8 @@ import read from "./Rectangle 83.png";
 import bubble from "./Ellipse 2.png";
 import bubble2 from "./Ellipse 1.png";
 import picture from "./Rectangle 27.png";
+import filter from "./filter.png";
+import search from "./search.png";
 
 export {
   logo,
@@ -21,4 +23,6 @@ export {
   profile,
   read,
   listen,
+  filter,
+  search,
 };

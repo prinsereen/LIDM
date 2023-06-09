@@ -19,10 +19,10 @@ const store = new sessionStore({
   db: db,
 });
 
-/* (async () => {
-await db.sync();
-})();
- */
+// (async () => {
+//   await db.sync();
+// })();
+
 app.use(
   cors({
     credentials: true,
