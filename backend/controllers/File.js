@@ -1,6 +1,8 @@
 import File from "../models/FileModel.js";
 import User from "../models/UserModel.js";
 import {Op} from "sequelize"
+import fs from 'fs';
+import { Console } from "console";
 
 export const getFile = async(req, res ) => {
     try {
@@ -53,7 +55,7 @@ export const getFileById = async(req, res ) => {
         let response;
         if (req.role === "admin"){
             response = await File.findOne({
-                attributes:['uuid', 'title', 'classification', 'status'],
+                attributes:['uuid', 'title', 'classification', 'status', 'file_pdf'],
                 where: {
                     id: file.id
                 },
@@ -64,9 +66,9 @@ export const getFileById = async(req, res ) => {
             })
         }else if (req.role === "donatur"){
             response = await File.findOne({
-                attributes:['uuid', 'title', 'classification', 'status'],
+                attributes:['uuid', 'title', 'classification', 'status','file_pdf'],
                 where: {
-                    [Op.and] : [{id : product.id}, {userId: req.userId}]
+                    [Op.and] : [{id : file.id}, {userId: req.userId}]
                 },
                 include: [{
                     model: User,
@@ -75,7 +77,7 @@ export const getFileById = async(req, res ) => {
             })
         }else {
             response = await File.findOne({
-                attributes:['uuid', 'title', 'classification', 'status'],
+                attributes:['uuid', 'title', 'classification', 'status', 'file_pdf'],
                 where: {
                     id: file.id,
                     status: "diterima"
@@ -245,3 +247,73 @@ export const deleteFile = async (req, res) => {
         res.status(500).json({msg : error.message});
     }
 };  
+
+export const getPdfById = async (req, res) => {
+  try {
+    const file = await File.findOne({
+      where: {
+        uuid: req.params.id
+      }
+    });
+
+    if (!file) {
+      return res.status(404).json({ msg: "File Not Found" });
+    }
+
+    let response;
+    if (req.role === "admin") {
+      response = await File.findOne({
+        attributes: ['uuid', 'title', 'classification', 'status', 'file_pdf'],
+        where: {
+          id: file.id
+        },
+        include: [{
+          model: User,
+          attributes: ['name', 'email']
+        }]
+      });
+    } else if (req.role === "donatur") {
+      response = await File.findOne({
+        attributes: ['uuid', 'title', 'classification', 'status', 'file_pdf'],
+        where: {
+          [Op.and]: [{ id: file.id }, { userId: req.userId }]
+        },
+        include: [{
+          model: User,
+          attributes: ['name', 'email']
+        }]
+      });
+    } else {
+      response = await File.findOne({
+        attributes: ['uuid', 'title', 'classification', 'status', 'file_pdf'],
+        where: {
+          id: file.id,
+          status: "diterima"
+        },
+        include: [{
+          model: User,
+          attributes: ['name', 'email']
+        }]
+      });
+    }
+
+    if (!response) {
+      return res.status(404).json({ msg: "File Not Found" });
+    }
+
+   /*  console.log(response) */
+
+    const filePath = response.file_pdf; // Update with the actual file path
+    /* console.log(filePath) */
+
+    fs.readFile(filePath, (error, data) => {
+      if (error) {
+        return res.status(500).json({ msg: "Error reading file" });
+      }
+      res.contentType("application/pdf");
+      res.send(data);
+    });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};

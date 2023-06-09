@@ -59,6 +59,10 @@ const Users = db.define('users', {
         type: DataTypes.STRING,
         allowNull: true,
     },
+    seni:{
+        type: DataTypes.INTEGER,
+        allowNull: true,
+    },
     sosial:{
         type: DataTypes.INTEGER,
         allowNull: true,

@@ -6,7 +6,8 @@ import {
     updateFile,
     deleteFile,
     getPdfFile,
-    getMp3File
+    getMp3File,
+    getPdfById
 } from "../controllers/File.js";
 import { verifyUser } from "../middleware/AuthUser.js";
 import multer from "multer";
@@ -38,11 +39,13 @@ router.get('/Files', verifyUser, getFile);
 router.get('/PdfFiles', verifyUser, getPdfFile);
 router.get('/Mp3Files', verifyUser, getMp3File);
 router.get('/Files/:id', verifyUser, getFileById);
+router.get('/Pdf/:id', verifyUser, getPdfById)
 router.post('/Files',  upload.fields([
     { name: 'file_pdf', maxCount : 1},
     { name: 'file_mp3', maxCount : 1},
 ]), verifyUser,  createFile); 
 router.patch('/Files/:id', verifyUser,  updateFile);
 router.delete('/Files/:id', verifyUser, deleteFile);
+
 
 export default router;
