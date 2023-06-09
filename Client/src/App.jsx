@@ -10,27 +10,41 @@ import {
   Read,
   Star,
   KategoriBaca,
+  Book,
 } from "./components";
 
 import "./index.css";
 
-function App() {
-  const isAuth = Boolean(useSelector((state) => state.user));
+function Root() {
+  const user = Boolean(useSelector((state) => state.auth));
+
   return (
-    <BrowserRouter>
+    <div>
       <Routes>
         <Route path="/" element={<Hero />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/read" element={<Read />} />
-        <Route path="/star" element={isAuth ? <Star /> : <Navigate to="/" />} />
+        <Route
+          path="/profile"
+          element={user ? <Profile /> : <Navigate to="/" />}
+        />
+        <Route path="/read" element={user ? <Read /> : <Navigate to="/" />} />
+        <Route path="/star" element={user ? <Star /> : <Navigate to="/" />} />
         <Route
           path="/history"
-          element={isAuth ? <History /> : <Navigate to="/" />}
+          element={user ? <History /> : <Navigate to="/" />}
         />
         <Route path="/read/kategori1" element={<KategoriBaca />} />
+        <Route path="/read/kategori1/book/:id" element={<Book />} />
       </Routes>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Root />
     </BrowserRouter>
   );
 }

@@ -1,14 +1,35 @@
 import { useState, useEffect } from "react";
 
 import { logo } from "../assets";
-import { Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logOut, reset, getMe } from "../state/index.js";
 
 const Navbar = () => {
   const [active, setActive] = useState("");
   const location = useLocation();
   const pathSegments = location.pathname.split("/");
   const firstPath = pathSegments[1];
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { isError } = useSelector((state) => state.auth);
+
+  const logout = () => {
+    dispatch(logOut());
+    dispatch(reset());
+    navigate("/");
+  };
+
+  useEffect(() => {
+    dispatch(getMe());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (isError) {
+      navigate("/");
+    }
+  }, [isError, navigate]);
 
   useEffect(() => {
     setActive(firstPath);
@@ -91,7 +112,7 @@ const Navbar = () => {
         </svg>
       </Link>
 
-      <Link to="/" className=" mt-48">
+      <button onClick={logout} className=" mt-48">
         <svg width="45" height="45" fill="none" className="">
           <path
             stroke="#3B3A5B"
@@ -101,7 +122,7 @@ const Navbar = () => {
             d="M29.5 2H37a5 5 0 0 1 5 5v30a5 5 0 0 1-5 5h-7.5M12 12 2 22l10 10M2 22h30"
           />
         </svg>
-      </Link>
+      </button>
     </div>
   );
 };

@@ -1,6 +1,13 @@
 import Navbar from "./Navbar";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getMe } from "../state/index.js";
 
 const Profile = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   return (
     <section className="w-full h-full flex justify-start">
       <Navbar />
