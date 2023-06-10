@@ -117,15 +117,16 @@ export const updateRecomendation = async (req, res) => {
     // Prepare the data to send in the POST request
     const postData = {
       seni: seni,
-      sosial: sosial,
-      sains: sains,
+      science: sains,
       sastra: sastra,
+      sosial: sosial,
       bahasa: bahasa,
     };
-  
+
+
     try {
       // Make a POST request to the external API
-      const response = await axios.post('https://1a7c-34-68-74-137.ngrok.io/rekomendation', JSON.stringify(postData), {
+      const response = await axios.post('https://3fac-35-230-182-255.ngrok.io/rekomendation', JSON.stringify(postData), {
         headers: {
           'Content-Type': 'application/json',
         },
