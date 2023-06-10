@@ -35,7 +35,7 @@ const upload = multer({ storage: storage });
 
 router.get("/users", verifyUser, adminOnly, getUser);
 router.get("/users/:id", verifyUser, adminOnly, getUserById);
-router.post("/users/", verifyUser, createUser);
+router.post("/users/", createUser);
 router.patch("/users/:id", verifyUser, upload.single("user_photo"), updateUser);
 router.patch("/userrec/:id", verifyUser, updateRecomendation);
 router.delete("/users/:id", verifyUser, adminOnly, deleteUser);

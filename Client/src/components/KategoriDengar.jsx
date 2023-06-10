@@ -6,7 +6,7 @@ import Card from "./Card";
 import axios from "axios";
 import { useEffect } from "react";
 
-const KategoriBaca = () => {
+const KategoriDengar = () => {
   const [find, setFind] = useState();
   const [selectedValue, setSelectedValue] = useState();
   const [files, setFiles] = useState([]);
@@ -18,7 +18,7 @@ const KategoriBaca = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/PdfFiles");
+        const response = await axios.get("http://localhost:5000/Mp3Files");
         setFiles(response.data);
       } catch (error) {
         console.log(error);
@@ -27,6 +27,8 @@ const KategoriBaca = () => {
 
     fetchData();
   }, []);
+
+  const type = "listen";
 
   return (
     <div>
@@ -84,8 +86,8 @@ const KategoriBaca = () => {
           {/* Render the files */}
           {files.map((file) => (
             // eslint-disable-next-line react/jsx-key
-            <Link to={`/read/kategori1/book/${file.uuid}`}>
-              <Card key={file.uuid} file={file} />
+            <Link to={`/read/kategori2/audio/${file.uuid}`}>
+              <Card key={file.uuid} file={file} type={type} />
             </Link>
           ))}
         </div>
@@ -94,4 +96,4 @@ const KategoriBaca = () => {
   );
 };
 
-export default KategoriBaca;
+export default KategoriDengar;

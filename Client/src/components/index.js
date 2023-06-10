@@ -7,8 +7,11 @@ import Read from "./Read";
 import Star from "./Star";
 import History from "./History";
 import KategoriBaca from "./KategoriBaca";
+import KategoriDengar from "./KategoriDengar";
 import Card from "./Card";
 import Book from "./Book";
+import Audio from "./Audio";
+import Summary from "./Summary";
 
 export {
   Hero,
@@ -22,4 +25,7 @@ export {
   KategoriBaca,
   Card,
   Book,
+  Audio,
+  Summary,
+  KategoriDengar,
 };

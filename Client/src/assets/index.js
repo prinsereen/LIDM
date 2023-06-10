@@ -11,6 +11,9 @@ import bubble2 from "./Ellipse 1.png";
 import picture from "./Rectangle 27.png";
 import filter from "./filter.png";
 import search from "./search.png";
+import user from "./user.png";
+import cover from "./cover.png";
+import play from "./play.png";
 
 export {
   logo,
@@ -25,4 +28,7 @@ export {
   listen,
   filter,
   search,
+  user,
+  cover,
+  play,
 };
