@@ -15,8 +15,17 @@ const Book = () => {
   useEffect(() => {
     const fetchFileData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/Pdf/${id}`);
-        setFileData(response.data);
+        const response = await axios.get(`http://localhost:5001/Pdf/${id}`, {
+          responseType: 'blob'
+        });
+        // var file = new File([response.data], "name");
+        const reader = new FileReader();
+        reader.readAsDataURL(response.data);
+        reader.onloadend = function () {
+          var base64data = reader.result;
+          console.log(base64data);
+          setFileData(base64data);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -41,14 +50,18 @@ const Book = () => {
               </Link>
             </div>
           </div>
-          {fileData.type.includes("application/pdf") && (
+          {/* {fileData.type.includes("application/pdf") && (
             <embed
-              src={URL.createObjectURL(fileData)}
+              // src={URL.createObjectURL(fileData)}
+              src={fileData}
               width="500"
               height="600"
               type="application/pdf"
             />
-          )}
+          )} */}
+          <object data={fileData} type="application/pdf" className="h-screen">
+            <p>Alternative text - include a link <a href="http://africau.edu/images/default/sample.pdf">to the PDF!</a></p>
+          </object>
           {/* <Document file={pdfPath}>
             <Page />
           </Document> */}
