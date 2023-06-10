@@ -10,7 +10,10 @@ import {
   Read,
   Star,
   KategoriBaca,
+  KategoriDengar,
   Book,
+  Summary,
+  Audio,
 } from "./components";
 
 import "./index.css";
@@ -35,7 +38,13 @@ function Root() {
           element={user ? <History /> : <Navigate to="/" />}
         />
         <Route path="/read/kategori1" element={<KategoriBaca />} />
+        <Route path="/read/kategori2" element={<KategoriDengar />} />
         <Route path="/read/kategori1/book/:id" element={<Book />} />
+        <Route path="/read/kategori2/audio/:id" element={<Audio />} />
+        <Route
+          path="/read/kategori1/book/ringkasan/:id"
+          element={<Summary />}
+        />
       </Routes>
     </div>
   );

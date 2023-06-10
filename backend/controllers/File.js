@@ -61,7 +61,15 @@ export const getFileById = async (req, res) => {
     let response;
     if (req.role === "admin") {
       response = await File.findOne({
-        attributes: ["uuid", "title", "classification", "status", "file_pdf"],
+        attributes: [
+          "uuid",
+          "title",
+          "classification",
+          "status",
+          "author",
+          "file_pdf",
+          "createdAt",
+        ],
         where: {
           id: file.id,
         },
@@ -74,7 +82,15 @@ export const getFileById = async (req, res) => {
       });
     } else if (req.role === "donatur") {
       response = await File.findOne({
-        attributes: ["uuid", "title", "classification", "status", "file_pdf"],
+        attributes: [
+          "uuid",
+          "title",
+          "classification",
+          "status",
+          "author",
+          "file_pdf",
+          "createdAt",
+        ],
         where: {
           [Op.and]: [{ id: file.id }, { userId: req.userId }],
         },
@@ -87,7 +103,15 @@ export const getFileById = async (req, res) => {
       });
     } else {
       response = await File.findOne({
-        attributes: ["uuid", "title", "classification", "status", "file_pdf"],
+        attributes: [
+          "uuid",
+          "title",
+          "classification",
+          "status",
+          "author",
+          "file_pdf",
+          "createdAt",
+        ],
         where: {
           id: file.id,
           status: "diterima",
@@ -289,7 +313,14 @@ export const getPdfById = async (req, res) => {
     let response;
     if (req.role === "admin") {
       response = await File.findOne({
-        attributes: ["uuid", "title", "classification", "status", "file_pdf"],
+        attributes: [
+          "uuid",
+          "title",
+          "classification",
+          "status",
+          "author",
+          "file_pdf",
+        ],
         where: {
           id: file.id,
         },
@@ -302,7 +333,14 @@ export const getPdfById = async (req, res) => {
       });
     } else if (req.role === "donatur") {
       response = await File.findOne({
-        attributes: ["uuid", "title", "classification", "status", "file_pdf"],
+        attributes: [
+          "uuid",
+          "title",
+          "classification",
+          "status",
+          "author",
+          "file_pdf",
+        ],
         where: {
           [Op.and]: [{ id: file.id }, { userId: req.userId }],
         },
@@ -315,7 +353,14 @@ export const getPdfById = async (req, res) => {
       });
     } else {
       response = await File.findOne({
-        attributes: ["uuid", "title", "classification", "status", "file_pdf"],
+        attributes: [
+          "uuid",
+          "title",
+          "classification",
+          "status",
+          "author",
+          "file_pdf",
+        ],
         where: {
           id: file.id,
           status: "diterima",
@@ -343,6 +388,103 @@ export const getPdfById = async (req, res) => {
         return res.status(500).json({ msg: "Error reading file" });
       }
       res.contentType("application/pdf");
+      res.send(data);
+    });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+
+export const getMp3ById = async (req, res) => {
+  try {
+    const file = await File.findOne({
+      where: {
+        uuid: req.params.id,
+      },
+    });
+
+    if (!file) {
+      return res.status(404).json({ msg: "File Not Found" });
+    }
+
+    let response;
+    if (req.role === "admin") {
+      response = await File.findOne({
+        attributes: [
+          "uuid",
+          "title",
+          "classification",
+          "status",
+          "author",
+          "file_mp3",
+        ],
+        where: {
+          id: file.id,
+        },
+        include: [
+          {
+            model: User,
+            attributes: ["name", "email"],
+          },
+        ],
+      });
+    } else if (req.role === "donatur") {
+      response = await File.findOne({
+        attributes: [
+          "uuid",
+          "title",
+          "classification",
+          "status",
+          "author",
+          "file_mp3",
+        ],
+        where: {
+          [Op.and]: [{ id: file.id }, { userId: req.userId }],
+        },
+        include: [
+          {
+            model: User,
+            attributes: ["name", "email"],
+          },
+        ],
+      });
+    } else {
+      response = await File.findOne({
+        attributes: [
+          "uuid",
+          "title",
+          "classification",
+          "status",
+          "author",
+          "file_mp3",
+        ],
+        where: {
+          id: file.id,
+          status: "diterima",
+        },
+        include: [
+          {
+            model: User,
+            attributes: ["name", "email"],
+          },
+        ],
+      });
+    }
+
+    if (!response) {
+      return res.status(404).json({ msg: "File Not Found" });
+    }
+
+    /*  console.log(response) */
+
+    const filePath = response.file_mp3; // Update with the actual file path
+    /* console.log(filePath) */
+
+    fs.readFile(filePath, (error, data) => {
+      if (error) {
+        return res.status(500).json({ msg: "Error reading file" });
+      }
+      res.contentType("audio/mp3"); // Set the content type to "audio/mp3"
       res.send(data);
     });
   } catch (error) {

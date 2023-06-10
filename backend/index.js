@@ -9,7 +9,7 @@ import UnverifiedFileRoute from "./routes/FileRoute.js";
 import AuthRoute from "./routes/AuthRoute.js";
 import SummaryRoute from "./routes/SummaryRoute.js";
 import LeeaderBoardRoute from "./routes/LeaderBoardRoute.js";
-const PDFDocument = require("pdfkit");
+// const PDFDocument = require("pdfkit");
 
 dotenv.config();
 
@@ -21,10 +21,9 @@ const store = new sessionStore({
   db: db,
 });
 
-/* (async () => {
-await db.sync();
-})(); */
-
+// (async () => {
+//   await db.sync();
+// })();
 app.use(
   cors({
     credentials: true,
