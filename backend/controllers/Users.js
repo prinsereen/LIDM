@@ -1,6 +1,7 @@
 import Users from "../models/UserModel.js";
 import argon2 from "argon2";
 import axios from "axios";
+import Competition from "../models/CompetitionModel.js";
 
 export const getUser = async(req, res ) => {
     try {
@@ -12,12 +13,20 @@ export const getUser = async(req, res ) => {
         res.status(500).json({msg: error.message});
     }
 };
+
 export const getUserById = async(req, res ) => {
     try {
         const respons = await Users.findOne({
-            attributes: ['uuid', 'name', 'email', 'role', 'asal_instansi', 'jenjang', 'tanggal_lahir', 'user_photo'],
+            attributes: ['uuid', 'name', 'email', 'role', 'asal_instansi', 'jenjang', 'tanggal_lahir', 'user_photo', 'rekomendasi_kompetisi'],
             where: {
                 uuid: req.params.id
+            },
+            include : {
+                model : Competition,
+                attributes : ['competition_id', 'competition_name', 'tanggal_pelaksanaan', 'tingkat', 'competition_logo'],
+                where : {
+                    competition_id: req.params.rekomendasi_kompetisi
+                }
             }
         });
         res.status(200).json(respons);
@@ -126,7 +135,7 @@ export const updateRecomendation = async (req, res) => {
 
     try {
       // Make a POST request to the external API
-      const response = await axios.post('https://3fac-35-230-182-255.ngrok.io/rekomendation', JSON.stringify(postData), {
+      const response = await axios.post('https://48da-104-199-113-173.ngrok.io/rekomendation', JSON.stringify(postData), {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -157,6 +166,8 @@ export const updateRecomendation = async (req, res) => {
       res.status(400).json({ msg: error.message });
     }
 };
+
+
 
 export const deleteUser = async(req, res ) => {
     const user = await Users.findOne({

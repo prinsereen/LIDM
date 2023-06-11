@@ -5,64 +5,48 @@ import Users from "./UserModel.js";
 
 const {DataTypes} = Sequelize;
 
-const File = db.define('file', {
-    uuid:{
-        type: DataTypes.STRING,
-        defaultValue: DataTypes.UUIDV4,
-        allowNull: false,
-        validate: {
-            notEmpty: true,
-        }
-    },
-    title:{
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        }
-    },
-    classification:{
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        }
-    },
-    status:{
-        type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: "Menunggu Verifikasi"
-    },
-    author:{
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        }
-    },
-    file_pdf: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        }
-    },
-    file_mp3: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-    userId:{
+const Competition = db.define('competition', {
+    competition_id:{
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
             notEmpty: true
         }
-    }
+    },
+    competition_name:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
+    },
+    tanggal_pelaksanaaan:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
+    },
+    tingkat:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
+    },
+    competition_logo:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
+    },
 }, {
     freezeTableName: true
 })
 
-Users.hasMany(File);
-File.belongsTo(Users, {foreignKey: 'userId'});
+/* Competition.belongsTo(Users, { foreignKey: 'competition_id', targetKey: 'rekomendasi_kompetisi' });
+Users.hasOne(Competition, { foreignKey: 'rekomendasi_kompetisi', sourceKey: 'competition_id' }); */
 
-export default File;
+
+export default Competition;

@@ -9,6 +9,7 @@ import UnverifiedFileRoute from "./routes/FileRoute.js";
 import AuthRoute from "./routes/AuthRoute.js";
 import SummaryRoute from "./routes/SummaryRoute.js";
 import LeeaderBoardRoute from "./routes/LeaderBoardRoute.js";
+import CompetitionRoute from "./routes/CompetitionRoute.js"
 // const PDFDocument = require("pdfkit");
 
 dotenv.config();
@@ -21,9 +22,10 @@ const store = new sessionStore({
   db: db,
 });
 
-// (async () => {
-//   await db.sync();
-// })();
+/*  (async () => {
+   await db.sync();
+ })(); */
+
 app.use(
   cors({
     credentials: true,
@@ -43,10 +45,7 @@ app.use(
   })
 );
 
-// Start the Express server
-app.listen(3000, () => {
-  console.log("Server started on port 3000");
-});
+
 
 app.use(express.json());
 app.use(UserRoute);
@@ -54,6 +53,8 @@ app.use(UnverifiedFileRoute);
 app.use(AuthRoute);
 app.use(SummaryRoute);
 app.use(LeeaderBoardRoute);
+app.use(CompetitionRoute)
+
 
 /* store.sync() */
 
