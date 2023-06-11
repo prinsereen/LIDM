@@ -74,15 +74,18 @@ const Book = () => {
               </Link>
             </div>
           </div>
-          <Link to={`/read/kategori1/book/ringkasan/${id}`}>
-            <button className="bg-[#0868F9] rounded-lg my-10 h-12 w-44 text-white">
+          <Link
+            to={`/read/kategori1/book/ringkasan/${id}`}
+            className="h-12 w-44 mb-10"
+          >
+            <button className="bg-[#0868F9] rounded-lg my-10 h-12 w-44  text-white">
               Buat Ringkasan
             </button>
           </Link>
           <object
             data={`${fileData}#toolbar=0`}
             type="application/pdf"
-            className="h-screen w-[70%] "
+            className="h-screen w-[70%] mt-10"
           >
             {/* <p>
               Alternative text - include a link{" "}

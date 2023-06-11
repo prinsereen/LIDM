@@ -43,11 +43,6 @@ app.use(
   })
 );
 
-// Start the Express server
-app.listen(3000, () => {
-  console.log("Server started on port 3000");
-});
-
 app.use(express.json());
 app.use(UserRoute);
 app.use(UnverifiedFileRoute);

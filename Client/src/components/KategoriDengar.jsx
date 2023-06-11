@@ -7,13 +7,30 @@ import axios from "axios";
 import { useEffect } from "react";
 
 const KategoriDengar = () => {
-  const [find, setFind] = useState();
-  const [selectedValue, setSelectedValue] = useState();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterOption, setFilterOption] = useState("");
   const [files, setFiles] = useState([]);
 
-  const handleInputChange = (e) => {
-    setSelectedValue(e.target.value);
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
   };
+
+  const handleFilterChange = (event) => {
+    setFilterOption(event.target.value);
+  };
+
+  // Filter the files based on search query and filter option
+  const filteredFiles = files.filter((file) => {
+    const matchesSearch =
+      file.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      file.classification.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesFilter =
+      filterOption === "" ||
+      filterOption === "All" ||
+      file.classification === filterOption;
+
+    return matchesSearch && matchesFilter;
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,8 +72,8 @@ const KategoriDengar = () => {
             <input
               className="rounded-xl  text-black text-[20px] placeholder-[#939FB1] py-3 px-5 w-[40rem]"
               placeholder="Cari judul dan kategori"
-              value={find}
-              // onChange=""
+              value={searchQuery}
+              onChange={handleSearchChange}
             />
             <img
               src={search}
@@ -68,26 +85,26 @@ const KategoriDengar = () => {
             <div className="bg-[#939FB1] h-full w-[1px] mr-2 " />
             <select
               id="Kategori"
-              value={selectedValue}
-              onChange={handleInputChange}
+              value={filterOption}
+              onChange={handleFilterChange}
               placeholder="Kategori"
               className="w-56"
             >
-              <option value="Option 1">Sains</option>
-              <option value="Option 2">Sosial</option>
-              <option value="Option 3">Seni</option>
-              <option value="Option 1">Sastra</option>
-              <option value="Option 2">Bahasa</option>
+              <option value="">All</option>
+              <option value="Sains">Sains</option>
+              <option value="Sosial">Sosial</option>
+              <option value="Seni">Seni</option>
+              <option value="Sastra">Sastra</option>
+              <option value="Bahasa">Bahasa</option>
             </select>
           </div>
         </div>
         <div className="bg-[#939FB1] h-[1px] w-[90%] my-10  " />
         <div className="flex flex-wrap gap-10 ">
           {/* Render the files */}
-          {files.map((file) => (
-            // eslint-disable-next-line react/jsx-key
-            <Link to={`/read/kategori2/audio/${file.uuid}`}>
-              <Card key={file.uuid} file={file} type={type} />
+          {filteredFiles.map((file) => (
+            <Link to={`/read/kategori2/audio/${file.uuid}`} key={file.uuid}>
+              <Card file={file} />
             </Link>
           ))}
         </div>
