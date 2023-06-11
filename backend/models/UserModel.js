@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
+import Competition from "./CompetitionModel.js";
 
 
 const {DataTypes} = Sequelize;
@@ -86,5 +87,8 @@ const Users = db.define('users', {
 }, {
     freezeTableName: true
 })
+
+/* Users.belongsTo(Competition, { foreignKey: 'rekomendasi_kompetisi', targetKey: 'competition_id' });
+Competition.hasOne(Users, { foreignKey: 'rekomendasi_kompetisi', sourceKey: 'competition_id' }); */
 
 export default Users;

@@ -48,7 +48,6 @@ export const register = async(req, res ) => {
 
     if (role === "admin") return res.status(403).json({msg: "Admin Forbidden to Register"});
 
-    // Check if email already exists in database
     const user = await User.findOne({
         where: {
             email: req.body.email
