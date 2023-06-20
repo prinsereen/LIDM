@@ -1,7 +1,7 @@
 import Users from "../models/UserModel.js";
 import argon2 from "argon2";
 import axios from "axios";
-import Competition from "../models/CompetitionModel.js";
+
 
 export const getUser = async(req, res ) => {
     try {
@@ -14,26 +14,72 @@ export const getUser = async(req, res ) => {
     }
 };
 
-export const getUserById = async(req, res ) => {
+export const getUserById = async (req, res) => {
     try {
-        const respons = await Users.findOne({
-            attributes: ['uuid', 'name', 'email', 'role', 'asal_instansi', 'jenjang', 'tanggal_lahir', 'user_photo', 'rekomendasi_kompetisi'],
-            where: {
-                uuid: req.params.id
-            },
-            include : {
-                model : Competition,
-                attributes : ['competition_id', 'competition_name', 'tanggal_pelaksanaan', 'tingkat', 'competition_logo'],
-                where : {
-                    competition_id: req.params.rekomendasi_kompetisi
-                }
-            }
-        });
-        res.status(200).json(respons);
+      const respons = await Users.findOne({
+        attributes: ['uuid', 'name', 'email', 'role', 'asal_instansi', 'jenjang', 'tanggal_lahir', 'user_photo', 'rekomendasi_kompetisi'],
+        where: {
+          uuid: req.params.id,
+        }
+      });
+  
+      const fls2n = {
+        "nama_kompetisi": "FLS2N",
+        "tanggal_penyelanggaraan": "5-7 juli 2023",
+        "tingkat": "Nasional",
+        "path_logo": "../assets/compLogo/undefined_1686415524583.jpg"
+      };
+
+      const notYet = {
+        "msfg" : "Belum Ada Rekomendasi nih :) Ayo Mulai Baca !!"
+      };
+
+      const kospi = {
+        "nama_kompetisi": "KOSPI",
+        "tanggal_penyelanggaraan": "8 - 9 Agustus 2023",
+        "tingkat": "Nasional",
+        "path_logo": "../assets/compLogo/undefined_1686416568733.png"
+      };
+
+      const osn = {
+        "nama_kompetisi": "OSN",
+        "tanggal_penyelanggaraan": "1 - 17 Desember 2023",
+        "tingkat": "Nasional",
+        "path_logo": "../assets/compLogo/undefined_1686416184250.jpg"
+      };
+      let rek
+      if (respons.rekomendasi_kompetisi === -1) {
+        rek = notYet
+      }else if (respons.rekomendasi_kompetisi === 0){
+        rek = fls2n
+      }else if (respons.rekomendasi_kompetisi === 1){
+        rek = osn
+      }else if (respons.rekomendasi_kompetisi === 2){
+        rek = kospi
+      }
+      const responseData = {
+        uuid: respons.uuid,
+        name: respons.name,
+        email: respons.email,
+        role: respons.role,
+        asal_instansi: respons.asal_instansi,
+        jenjang: respons.jenjang,
+        tanggal_lahir: respons.tanggal_lahir,
+        user_photo: respons.user_photo,
+        rekomendasi_kompetisi: respons.rekomendasi_kompetisi,
+        rek: rek
+      };
+  
+      res.status(200).json(responseData);
     } catch (error) {
-        res.status(500).json({msg: error.message});
+      res.status(500).json({ msg: error.message });
     }
-};
+  };
+  
+  
+
+
+
 export const createUser = async(req, res ) => {
     const {name, email, password, confPassword, role} = req.body;
     if (password !== confPassword) return res.status(400).json({msg : "Password and Confirmation Password not match"});

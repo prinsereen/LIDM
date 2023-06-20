@@ -9,7 +9,6 @@ import UnverifiedFileRoute from "./routes/FileRoute.js";
 import AuthRoute from "./routes/AuthRoute.js";
 import SummaryRoute from "./routes/SummaryRoute.js";
 import LeeaderBoardRoute from "./routes/LeaderBoardRoute.js";
-import CompetitionRoute from "./routes/CompetitionRoute.js"
 // const PDFDocument = require("pdfkit");
 
 dotenv.config();
@@ -52,7 +51,7 @@ app.use(UnverifiedFileRoute);
 app.use(AuthRoute);
 app.use(SummaryRoute);
 app.use(LeeaderBoardRoute);
-app.use(CompetitionRoute)
+
 
 
 /* store.sync() */

@@ -1,6 +1,5 @@
 import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
-import Competition from "./CompetitionModel.js";
 
 
 const {DataTypes} = Sequelize;
