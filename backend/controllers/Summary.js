@@ -114,7 +114,7 @@ export const getSummaryByUser = async (req, res) => {
     let response;
     if (req.role === "user") {
       response = await Summary.findAll({
-        attributes: ["uuid", "summary", "grade"],
+        attributes: ["uuid", "summary", "grade", "createdAt"],
         include: [
           {
             model: User,
