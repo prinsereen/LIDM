@@ -17,7 +17,7 @@ export const getUser = async(req, res ) => {
 export const getUserById = async (req, res) => {
     try {
       const respons = await Users.findOne({
-        attributes: ['uuid', 'name', 'email', 'role', 'asal_instansi', 'jenjang', 'tanggal_lahir', 'user_photo', 'rekomendasi_kompetisi'],
+        attributes: ['uuid', 'name', 'email', 'role', 'asal_instansi', 'jenjang', 'tanggal_lahir', 'user_photo', 'rekomendasi_kompetisi', 'seni', 'sosial', 'sains', 'sastra', 'bahasa'],
         where: {
           uuid: req.params.id,
         }
@@ -66,8 +66,13 @@ export const getUserById = async (req, res) => {
         jenjang: respons.jenjang,
         tanggal_lahir: respons.tanggal_lahir,
         user_photo: respons.user_photo,
+        seni : respons.seni,
+        sastra : respons.sastra,
+        bahasa : respons.bahasa,
+        sosial : respons.sosial,
+        sains : respons.sains,
         rekomendasi_kompetisi: respons.rekomendasi_kompetisi,
-        rek: rek
+        rek_description: rek
       };
   
       res.status(200).json(responseData);
@@ -109,7 +114,7 @@ export const createUser = async(req, res ) => {
             sains: 0,
             sastra: 0,
             bahasa: 0,
-            rekomendasi_kompetisi: 0
+            rekomendasi_kompetisi: -1
         });
         res.status(201).json({msg : "Registered"});
     } catch (error) {
@@ -169,7 +174,6 @@ export const updateRecomendation = async (req, res) => {
   
     const { sosial, sains, sastra, bahasa, seni } = req.body;
   
-    // Prepare the data to send in the POST request
     const postData = {
       seni: seni,
       science: sains,
@@ -178,16 +182,13 @@ export const updateRecomendation = async (req, res) => {
       bahasa: bahasa,
     };
 
-
     try {
-      // Make a POST request to the external API
       const response = await axios.post('https://48da-104-199-113-173.ngrok.io/rekomendation', JSON.stringify(postData), {
         headers: {
           'Content-Type': 'application/json',
         },
       });
   
-      // Extract the prediction value from the response
       const prediction = response.data.prediction;
   
       await Users.update(
