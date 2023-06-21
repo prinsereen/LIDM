@@ -2,6 +2,10 @@ import Summary from "../models/Summary.js";
 import User from "../models/UserModel.js";
 import File from "../models/FileModel.js";
 import { Op } from "sequelize";
+import fs from "fs";
+import axios from "axios";
+import pdfParser from "pdf-parser"
+
 
 export const getSummary = async (req, res) => {
   try {
@@ -83,14 +87,74 @@ export const getSummaryById = async (req, res) => {
   }
 };
 
+
+export const getPdfByFileId = async (req, res) => {
+  const {fileId} = req.body
+
+  const file = await File.findOne({
+    where: {
+      id: fileId,
+    },
+  });
+
+  try {
+    if (file) {
+      let response = await File.findOne({
+        attributes: ['id', 'file_pdf'],
+        where: {
+          id: fileId,
+        },
+      })
+      const filePath = response.file_pdf;
+
+      pdfParser.pdf2json(filePath, function (error, pdf) {
+        if(error != null){
+            res.status(500).json({ msg: error.message })
+        }else{
+            const texts = pdf.pages.reduce((acc, page) => {
+              const pageTexts = page.texts.map(item => item.text);
+              return acc.concat(pageTexts);
+            }, []);
+            const response = texts
+            const responseJSON = JSON.stringify(response);
+            const cleanedString = responseJSON.replace(/["\\,]/g, '');
+            res.status(200).json({text : cleanedString})
+        }
+    });
+    } else {
+      res.status(403).json({ msg: "File Not Found" });
+    }
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+}
+
+
+
 export const createSummary = async (req, res) => {
   const { summary, fileId } = req.body; // Perlu Konfigurasi Nanti ketika fetch api ML
   // console.log(fileId);
   const file = await File.findOne({
     where: {
-      uuid: fileId,
+      id: fileId,
     },
   });
+
+  try {
+    const file1 = await axios.post('http://localhost:5000/getPdfbyFileId', { fileId: fileId }, {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+  
+    const pdfData = file1.data.text;
+    console.log(pdfData);
+    const jaccard = await axios.post('https://0dd1-34-82-155-60.ngrok.io/jaccard-similarity', {file1: pdfData, file2:summary}, )
+    console.log(jaccard.data.jaccard_similarity)
+  } catch (error) {
+    console.error('Error retrieving the PDF:', error);
+  }
 
   try {
     if (req.role === "user") {

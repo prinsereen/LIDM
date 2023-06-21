@@ -1,6 +1,7 @@
 import Users from "../models/UserModel.js";
 import argon2 from "argon2";
 import axios from "axios";
+import fs from "fs"
 
 
 export const getUser = async(req, res ) => {
@@ -13,6 +14,31 @@ export const getUser = async(req, res ) => {
         res.status(500).json({msg: error.message});
     }
 };
+
+export const getUserPhoto  = async(req, res) =>{
+  const user = await Users.findOne({
+    where: {
+      uuid: req.params.id,
+    },
+  });
+  try {
+    if  (user.user_photo) {
+      const filePath = user.user_photo;
+      fs.readFile(filePath, (error, data) => {     
+      if (error) {
+        return res.status(500).json({ msg: "Error reading file" });
+      }
+      res.contentType('png')
+      res.send(data)
+      })
+    }else {
+      res.status(401).json({msg : "User Photo Not Found"})
+    }
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+}
+
 
 export const getUserById = async (req, res) => {
     try {
@@ -81,9 +107,6 @@ export const getUserById = async (req, res) => {
     }
   };
   
-  
-
-
 
 export const createUser = async(req, res ) => {
     const {name, email, password, confPassword, role} = req.body;
@@ -130,7 +153,7 @@ export const updateUser = async(req, res ) => {
         }
     });
     if(!user) return res.status(404).json({msg : "user not found"});
-    const {name, email, password, confPassword, role, asal_instansi, jenjang,  tanggal_lahir} = req.body;
+    const {name, email, password, confPassword, role, asal_instansi,  tanggal_lahir} = req.body;
     let hashPassword;
     if (password === "" || password == null){
         hashPassword = user.password;
@@ -145,7 +168,6 @@ export const updateUser = async(req, res ) => {
             password: hashPassword,
             role: role, 
             asal_instansi: asal_instansi,
-            jenjang: jenjang,
             tanggal_lahir: tanggal_lahir ,
             user_photo: req.file.path 
         }, {
@@ -153,7 +175,7 @@ export const updateUser = async(req, res ) => {
                 id : user.id
             }
         });
-        console.log(req.file)
+        /* console.log(req.file) */
         res.status(201).json({msg : "User Updated"});
     } catch (error) {
         res.status(400).json({msg: error.message});

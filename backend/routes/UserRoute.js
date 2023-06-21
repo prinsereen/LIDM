@@ -6,6 +6,7 @@ import {
   updateUser,
   deleteUser,
   updateRecomendation,
+  getUserPhoto
 } from "../controllers/Users.js";
 import { verifyUser, adminOnly } from "../middleware/AuthUser.js";
 import multer from "multer";
@@ -39,5 +40,6 @@ router.post("/users/", createUser);
 router.patch("/users/:id", verifyUser, upload.single("user_photo"), updateUser);
 router.patch("/userrec/:id", verifyUser, updateRecomendation);
 router.delete("/users/:id", verifyUser, adminOnly, deleteUser);
+router.get("/userphoto/:id", verifyUser, getUserPhoto);
 
 export default router;
