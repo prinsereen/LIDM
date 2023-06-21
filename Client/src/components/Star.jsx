@@ -36,66 +36,48 @@ const Star = () => {
             </Link>
           </div>
         </div>
-        <div className="flex flex-col">
-          <div className="-m-1.5 overflow-x-auto">
-            <div className="p-1.5 min-w-full inline-block align-middle ">
-              <div className="overflow-hidden h-full w-full bg-white mt-10 rounded-xl">
-                <table className=" h-full w-full bg-white  m-10 ">
-                  <thead>
-                    <tr>
-                      <th
-                        scope="col"
-                        className="bg-white   text-left px-8 py-4 "
-                      >
-                        Nama
-                      </th>
-                      <th
-                        scope="col"
-                        className="bg-white text-left px-8 py-4 "
-                      >
-                        Asal Sekolah
-                      </th>
-                      <th
-                        scope="col"
-                        className="bg-white  text-left px-8 py-4 "
-                      >
-                        Nilai
-                      </th>
-                      <th
-                        scope="col"
-                        className="bg-white  text-left px-8 py-4 "
-                      >
-                        Peringkat
-                      </th>
+
+        <div className=" h-full w-[1000px] bg-white mt-10 rounded-xl shadow-lg ">
+          <table className=" h-full w-[950px] bg-white  m-5 ">
+            <thead>
+              <tr>
+                <th className="bg-white font-semibold text-left px-8 py-4 ">Nama</th>
+                <th className="bg-white font-semibold text-left px-8 py-4 ">Asal Sekolah</th>
+                <th className="bg-white font-semibold text-center px-8 py-4 ">Nilai</th>
+                <th className="bg-white font-semibold text-center px-8 py-4 ">Peringkat</th>
+              </tr>
+            </thead>
+            <tbody>
+              {leaderboard.map((leader, index) => {
+                if (index < 5) {
+                  return (
+                    <tr key={index} className="hover:bg-[#F4F4F4]">
+                      <td className=" border-t-2 font-medium px-8 py-4 border-[#CDCCEE]    ">
+                        <div className="flex items-center  ">
+                          <img
+                            src={profile}
+                            alt="profile"
+                            className="w-10 h-10 mx-2"
+                          />
+                          {leader.user.name}
+                        </div>
+                      </td>
+                      <td className=" border-t-2 font-medium  px-8 py-4 border-[#CDCCEE]    ">
+                        <div>{leader.user.asal_instansi}</div>
+                      </td>
+                      <td className=" border-t-2 text-center  font-medium px-8 py-4 border-[#CDCCEE]   ">
+                        {leader.score}
+                      </td>
+                      <td className="w border-t-2 text-center font-medium px-8  py-4 border-[#CDCCEE]  ">
+                        {index + 1}
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody className="bg-white border-collapse  divide-y divide-gray-200 ">
-                    {leaderboard.map((leader, index) => {
-                      if (index < 5) {
-                        return (
-                          <tr key={index} >
-                            <td className=" border-t-2 px-8 py-4 border-[#CDCCEE] bg-[#F4F4F4]   ">
-                              <div>{leader.user.name}</div>
-                            </td>
-                            <td className=" border-t-2  px-8 py-4 border-[#CDCCEE] bg-[#F4F4F4]    ">
-                              <div>{leader.user.asal_instansi}</div>
-                            </td>
-                            <td className=" border-t-2  px-8 py-4 border-[#CDCCEE] bg-[#F4F4F4]  ">
-                              {leader.score}
-                            </td>
-                            <td className="w border-t-2  px-8 py-4 border-[#CDCCEE] bg-[#F4F4F4]  ">
-                              {index + 1}
-                            </td>
-                          </tr>
-                        );
-                      }
-                      return null;
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+                  );
+                }
+                return null;
+              })}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

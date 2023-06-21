@@ -18,7 +18,7 @@ const Login = () => {
 
   useEffect(() => {
     if (user) {
-      navigate("/profile");
+      navigate(`/profile/${user.uuid}`);
     }
     dispatch(reset());
   }, [user, isSuccess, dispatch, navigate]);

@@ -58,43 +58,41 @@ const History = () => {
             </Link>
           </div>
         </div>
-        <table className="table-auto h-full w-full border-2  border-[#CDCCEE] mt-10 rounded-md bg-white shadow-lg">
-          <thead>
-            <tr>
-              <th className="bg-blue-100 border text-left px-8 py-4">
-                Tanggal
-              </th>
-              <th className="bg-blue-100 border text-left px-8 py-4">Judul</th>
-              <th className="bg-blue-100 border text-left px-8 py-4">
-                Ringkasan
-              </th>
-              <th className="bg-blue-100 border text-left px-8 py-4">Nilai</th>
-            </tr>
-          </thead>
-          <tbody>
-            {summary.map((sum, index) => {
-              if (index < 5) {
-                return (
-                  <tr key={index}>
-                    <td className="border px-8 py-4 hover:bg-gray-50 ">
-                      <div>{getDate(sum.createdAt)}</div>
-                    </td>
-                    <td className="border px-8 py-4 hover:bg-gray-50   ">
-                      <div>{sum.file.title}</div>
-                    </td>
-                    <td className="border px-8 py-4 hover:bg-gray-50">
-                      {getFirstWords(sum.summary, 15)}
-                    </td>
-                    <td className="border px-8 py-4 hover:bg-gray-50">
-                      {sum.grade}
-                    </td>
-                  </tr>
-                );
-              }
-              return null;
-            })}
-          </tbody>
-        </table>
+        <div className="bg-white w-[1000px] mt-10 rounded-lg shadow-lg">
+          <table className="table-auto h-full w-[950px] m-5 rounded-md  ">
+            <thead>
+              <tr>
+                <th className="bg-white text-left px-8 py-4">Tanggal</th>
+                <th className="bg-white text-left px-8 py-4">Judul</th>
+                <th className="bg-white  text-left px-8 py-4">Ringkasan</th>
+                <th className="bg-white  text-center px-8 py-4">Nilai</th>
+              </tr>
+            </thead>
+            <tbody>
+              {summary.map((sum, index) => {
+                if (index < 5) {
+                  return (
+                    <tr key={index} className="hover:bg-[#F4F4F4]">
+                      <td className="border-y-2 px-8 py-4  ">
+                        <div>{getDate(sum.createdAt)}</div>
+                      </td>
+                      <td className="border-y-2 px-8 py-4    ">
+                        <div>{sum.file.title}</div>
+                      </td>
+                      <td className="border-y-2 px-8 py-4 4] ">
+                        {getFirstWords(sum.summary, 15)}
+                      </td>
+                      <td className="border-y-2 text-center px-8 py-4 ">
+                        {sum.grade}
+                      </td>
+                    </tr>
+                  );
+                }
+                return null;
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

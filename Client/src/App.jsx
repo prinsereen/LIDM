@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
+
 import {
   Hero,
   Login,
@@ -14,6 +15,7 @@ import {
   Book,
   Summary,
   Audio,
+  EditProfile
 } from "./components";
 
 import "./index.css";
@@ -28,8 +30,12 @@ function Root() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route
-          path="/profile"
+          path="/profile/:id"
           element={user ? <Profile /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/profile/edit/:id"
+          element={user ? <EditProfile /> : <Navigate to="/" />}
         />
         <Route path="/read" element={user ? <Read /> : <Navigate to="/" />} />
         <Route path="/star" element={user ? <Star /> : <Navigate to="/" />} />
@@ -52,9 +58,10 @@ function Root() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <Root />
-    </BrowserRouter>
+      <BrowserRouter>
+        <Root />
+      </BrowserRouter>
+   
   );
 }
 

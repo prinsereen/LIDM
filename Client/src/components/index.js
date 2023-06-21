@@ -12,6 +12,7 @@ import Card from "./Card";
 import Book from "./Book";
 import Audio from "./Audio";
 import Summary from "./Summary";
+import EditProfile from "./EditProfile";
 
 export {
   Hero,
@@ -28,4 +29,5 @@ export {
   Audio,
   Summary,
   KategoriDengar,
+  EditProfile
 };
