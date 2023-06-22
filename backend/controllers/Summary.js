@@ -132,8 +132,7 @@ export const getPdfByFileId = async (req, res) => {
 
 
 export const createSummary = async (req, res) => {
-  const { summary, fileId } = req.body; // Perlu Konfigurasi Nanti ketika fetch api ML
-  // console.log(fileId);
+  const { summary, fileId } = req.body; 
   const file = await File.findOne({
     where: {
       id: fileId,
@@ -149,7 +148,7 @@ export const createSummary = async (req, res) => {
     });
   
     const pdfData = file1.data.text;
-    const jaccard = await axios.post('https://79b9-34-73-223-208.ngrok.io/jaccard-similarity', {file1: pdfData, file2:summary}, )
+    const jaccard = await axios.post('https://d889-35-188-84-222.ngrok.io/jaccard-similarity', {file1: pdfData, file2:summary}, )
     const jaccard_value  = jaccard.data.jaccard_similarity
     
 
@@ -168,7 +167,6 @@ export const createSummary = async (req, res) => {
     
     const response = await axios.request(options);
 
-
     const spam = response.data.result.spam
     const grammar = response.data.result.grammar
     const sentiment = response.data.result.sentiment
@@ -176,7 +174,7 @@ export const createSummary = async (req, res) => {
     const sexual = response.data.result.sexual
     const scholarly = response.data.result.scholarly
 
-    const grade = await axios.post('https://9b68-34-135-41-132.ngrok.io/rekomendation', 
+    const grade = await axios.post('https://7d09-34-80-141-195.ngrok.io/rekomendation', 
     {jaccard: jaccard_value, 
       spam:spam,
       grammar:grammar,
@@ -189,22 +187,19 @@ export const createSummary = async (req, res) => {
         'Content-Type': 'application/json'
       }})
 
-/*     console.log(jaccard_value)
-    console.log(spam)
-    console.log(grammar)
-    console.log(sentiment)
-    console.log(violence)
-    console.log(sexual)
-    console.log(scholarly)
-    console.log(grade.data.prediction) */
-
-
     if (req.role === "user") {
       await Summary.create({
         summary: summary,
         userId: req.userId,
-        grade: grade.data.prediction,
         fileId: file.id,
+        jaccard: jaccard_value,
+        spam:spam,
+        grammar:grammar,
+        sentiment:sentiment,
+        violence:violence,
+        sexual: sexual,
+        scholarly: scholarly,
+        grade: grade.data.prediction
       });
       res.status(201).json({ msg: "Summary Created Succsessfully" });
     } else {
@@ -222,7 +217,17 @@ export const getSummaryByUser = async (req, res) => {
     let response;
     if (req.role === "user") {
       response = await Summary.findAll({
-        attributes: ["uuid", "summary", "grade", "createdAt"],
+        attributes: [
+          "uuid", 
+          "summary", 
+          "grade", 
+          "createdAt", 
+          "jaccard",
+          "spam",
+          "grammar",
+          "violence", 
+          "sexual", 
+          "scholarly"],
         include: [
           {
             model: User,
@@ -235,11 +240,33 @@ export const getSummaryByUser = async (req, res) => {
           },
         ],
       });
+      let feedback = ""
+      if (response.jaccard === 0) {
+        feedback += "Summary Anda Tidak memiliki Kemiripan dengan Bacaan \n"
+      }else if (response.jaccard > 0.4){
+        feedback += "Summary Terlalu Mirip dengan Bacaan Asli\n"
+      }
+      if (response.spam > 0 && response.spam <= 5)  {
+        feedback += "Summary Anda Terindikasi Spam Ringan \n"
+      }else if (response.spam > 5 && response.spam <= 10){
+        feedback += "Summary Anda Terindikasi Spam Berat\n"
+      }
+      if (response.violence > 0 && response.violence <= 5)  {
+        feedback += "Summary Anda Terindikasi violence Ringan \n"
+      }else if (response.violence > 5 && response.violence <= 10){
+        feedback += "Summary Anda Terindikasi violence Berat\n"
+      }
+      if (response.grammar >= 0 && response.grammar <= 5)  {
+        feedback += "Grammar dalam Summary Anda bisa ditingkatkan lagi \n"
+      }
+      if (response.scholarly >= 0 && response.scholarly <= 5)  {
+        feedback += "Kosa Kata Akademik dalam Summary Anda bisa ditingkatkan lagi \n"
+      }
+      response.feedback = feedback;
+      console.log(feedback)
     } else {
       return res.status(403).json({ msg: "Access Forbidden" });
     }
-
-    res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }

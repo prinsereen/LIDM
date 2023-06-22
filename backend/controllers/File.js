@@ -2,14 +2,13 @@ import File from "../models/FileModel.js";
 import User from "../models/UserModel.js";
 import { Op } from "sequelize";
 import fs from "fs";
-import { Console } from "console";
 
 export const getFile = async (req, res) => {
   try {
     let response;
     if (req.role === "admin") {
       response = await File.findAll({
-        attributes: ["uuid", "title", "classification", "status"],
+        attributes: ["uuid", "title", "classification", "status", "file_pdf", "file_mp3"],
         include: [
           {
             model: User,
