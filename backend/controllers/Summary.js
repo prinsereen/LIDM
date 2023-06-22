@@ -149,7 +149,7 @@ export const createSummary = async (req, res) => {
     });
   
     const pdfData = file1.data.text;
-    const jaccard = await axios.post('https://fde3-35-227-144-8.ngrok.io/jaccard-similarity', {file1: pdfData, file2:summary}, )
+    const jaccard = await axios.post('https://79b9-34-73-223-208.ngrok.io/jaccard-similarity', {file1: pdfData, file2:summary}, )
     const jaccard_value  = jaccard.data.jaccard_similarity
     
 
@@ -176,35 +176,45 @@ export const createSummary = async (req, res) => {
     const sexual = response.data.result.sexual
     const scholarly = response.data.result.scholarly
 
-    console.log(jaccard_value)
+    const grade = await axios.post('https://9b68-34-135-41-132.ngrok.io/rekomendation', 
+    {jaccard: jaccard_value, 
+      spam:spam,
+      grammar:grammar,
+      sentiment:sentiment,
+      violence:violence,
+      sexual: sexual,
+      scholarly: scholarly}, 
+      {  
+      headers: {
+        'Content-Type': 'application/json'
+      }})
+
+/*     console.log(jaccard_value)
     console.log(spam)
     console.log(grammar)
     console.log(sentiment)
     console.log(violence)
     console.log(sexual)
     console.log(scholarly)
-    
-  } catch (error) {
-    res.status(500).json({ msg: error.message });
-  }
-  
+    console.log(grade.data.prediction) */
 
 
-  try {
     if (req.role === "user") {
       await Summary.create({
         summary: summary,
         userId: req.userId,
-        grade: null,
+        grade: grade.data.prediction,
         fileId: file.id,
       });
       res.status(201).json({ msg: "Summary Created Succsessfully" });
     } else {
       res.status(403).json({ msg: "Access Forbidden" });
     }
+    
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
+  
 };
 
 export const getSummaryByUser = async (req, res) => {

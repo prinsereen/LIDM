@@ -23,7 +23,7 @@ const Summary = db.define('summary', {
         }
     },
     grade:{
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         allowNull: true
     },
     userId:{
