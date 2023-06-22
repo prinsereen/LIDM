@@ -18,6 +18,7 @@ import book from "./book.png";
 import medal from './medal.png'
 import calender from './calender.png'
 import flag from './flag.png'
+import trophy from './trophy.jpg'
 
 export {
   logo,
@@ -38,5 +39,6 @@ export {
   book,
   medal,
   calender,
-  flag
+  flag,
+  trophy
 };

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getMe } from "../state/index.js";
-import { calender, flag, book, cover, medal } from "../assets";
+import { calender, flag, book, cover, medal, trophy } from "../assets";
 import axios from "axios";
 
 const Profile = () => {
@@ -31,7 +31,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchFileData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/users/${id}`, {
+        const response = await axios.get(`http://localhost:5000/userphoto/${id}`, {
           responseType: "blob",
         });
         const reader = new FileReader();
@@ -132,7 +132,7 @@ const Profile = () => {
             <h1 className="flex justify-center items-center bg-[#82B3FF] w-[70%] h-14 rounded-xl font-semibold text-white text-xl">
               Rekomendasi Kompetisi
             </h1>
-            <img src={photo} className="h-30 w-30 my-3 shadow-lg" />
+            <img src={trophy} className="h-[35%] w-[50%] object-contain my-3 shadow-lg" />
             <h1 className="flex justify-center items-center rounded-lg font-bold bg-[#E5EFFF] text-sm h-12 w-[50%]">
               {rek_description.nama_kompetisi}
             </h1>

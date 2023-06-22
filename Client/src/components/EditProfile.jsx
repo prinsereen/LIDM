@@ -14,7 +14,6 @@ const EditProfile = () => {
     password: "",
     confPassword: "",
     asal_instansi: "",
-    jenjang: "",
     tanggal_lahir: "",
     user_photo: "",
   });
@@ -38,25 +37,37 @@ const EditProfile = () => {
       setPasswordMatch(false);
       return;
     }
-    console.log(id)
+
     try {
-      // Create a new FormData object
-      const updatedFormData = new FormData();
-      updatedFormData.append("name", formData.nama);
-      updatedFormData.append("email", formData.email);
-      updatedFormData.append("password", formData.password);
-      updatedFormData.append("asal_instansi", formData.asal_instansi);
-      updatedFormData.append("tanggal_lahir", formData.tanggal_lahir);
-      updatedFormData.append("user_photo", selectedAvatar);
+      const updatedData = {
+        name: formData.nama,
+        email: formData.email,
+        password: formData.password,
+        confPassword: formData.confPassword,
+        asal_instansi: formData.asal_instansi,
+        tanggal_lahir: formData.tanggal_lahir,
+      };
+
+      const formDataToSend = new FormData();
+      formDataToSend.append("user_photo", selectedAvatar);
+
+      for (let key in updatedData) {
+        formDataToSend.append(key, updatedData[key]);
+      }
 
       // Send the patch request using Axios
       const response = await axios.patch(
         `http://localhost:5000/users/${id.id}`,
-        updatedFormData
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
 
       // Process the form submission
-      console.log(formData);
+      console.log(response.data);
       // Reset the form
       resetForm();
     } catch (error) {
