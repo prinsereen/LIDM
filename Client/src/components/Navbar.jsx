@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-
 import { logo } from "../assets";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut, reset, getMe } from "../state/index.js";
+import axios from "axios";
 
 const Navbar = () => {
   const [active, setActive] = useState("");
@@ -12,8 +12,27 @@ const Navbar = () => {
   const firstPath = pathSegments[1];
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [data, setData] = useState([]);
+  
 
-  const { isError } = useSelector((state) => state.auth);
+  
+  const { user, isError, isSuccess, isLoading, message } = useSelector(
+    (state) => state.auth
+  );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/me");
+        console.log(response.data)
+        setData(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const logout = () => {
     dispatch(logOut());
@@ -38,7 +57,7 @@ const Navbar = () => {
   return (
     <div className="flex flex-col items-center fixed h-full w-40 bg-white">
       <Link
-        to="/profile"
+        to={`/profile/${data.uuid}`}
         onClick={() => {
           setActive("profile");
           window.scrollTo(0, 0);
@@ -48,7 +67,7 @@ const Navbar = () => {
       </Link>
       <div className="bg-black h-[1px] w-32 mt-6" />
       <Link
-        to="/profile"
+        to={`/profile/${data.uuid}`}
         onClick={() => {
           setActive("profile");
         }}
