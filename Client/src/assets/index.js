@@ -14,6 +14,11 @@ import search from "./search.png";
 import user from "./user.png";
 import cover from "./cover.png";
 import play from "./play.png";
+import book from "./book.png";
+import medal from './medal.png'
+import calender from './calender.png'
+import flag from './flag.png'
+import trophy from './trophy.jpg'
 
 export {
   logo,
@@ -31,4 +36,9 @@ export {
   user,
   cover,
   play,
+  book,
+  medal,
+  calender,
+  flag,
+  trophy
 };

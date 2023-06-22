@@ -1,31 +1,44 @@
+import { useEffect } from "react";
 import { logo1, logo2, logo3 } from "../assets";
 import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
   const navigate = useNavigate();
 
+  
+  
+
   const register = async (values, onSubmitProps) => {
     const formData = new FormData();
     for (let value in values) {
       formData.append(value, values[value]);
+     
     }
+    console.log(formData)
 
-    const savedUserResponse = await fetch("http://localhost:5173/register", {
-      method: "POST",
-      body: formData,
-    });
+    // const savedUserResponse = await fetch("http://localhost:5000/register", {
+    //   method: "POST",
+    //   body: formData,
+    // });
 
-    console.log(body)
-    const savedUser = await savedUserResponse.json();
-    onSubmitProps.resetForm();
+    // console.log(body)
+    // const savedUser = await savedUserResponse.json();
+    // onSubmitProps.resetForm();
 
-    if (savedUser) {
-      navigate("/login");
-    }
+    // if (savedUser) {
+    //   navigate("/login");
+    // }
   };
 
-  const handleSubmit = async (values, onSubmitProps) => {
-    await register(values, onSubmitProps);
+  const handleSubmit = (e, values, onSubmitProps) => {
+    e.preventDefault();
+    // await register(values, onSubmitProps);
+    const formData = new FormData();
+    for (let value in values) {
+      formData.append(value, values[value]);
+     
+    }
+    console.log(formData)
   };
 
   return (
