@@ -149,12 +149,46 @@ export const createSummary = async (req, res) => {
     });
   
     const pdfData = file1.data.text;
-    console.log(pdfData);
-    const jaccard = await axios.post('https://0dd1-34-82-155-60.ngrok.io/jaccard-similarity', {file1: pdfData, file2:summary}, )
-    console.log(jaccard.data.jaccard_similarity)
+    const jaccard = await axios.post('https://fde3-35-227-144-8.ngrok.io/jaccard-similarity', {file1: pdfData, file2:summary}, )
+    const jaccard_value  = jaccard.data.jaccard_similarity
+    
+
+    const options = {
+      method: 'POST',
+      url: 'https://sentimental2.p.rapidapi.com/Analyze',
+      headers: {
+        'content-type': 'application/json',
+        'X-RapidAPI-Key': '8121cbed28msh7b4fdbcaade1734p171d43jsn71f6d6506073',
+        'X-RapidAPI-Host': 'sentimental2.p.rapidapi.com'
+      },
+      data: {
+        Message: summary
+      }
+    };
+    
+    const response = await axios.request(options);
+
+
+    const spam = response.data.result.spam
+    const grammar = response.data.result.grammar
+    const sentiment = response.data.result.sentiment
+    const violence = response.data.result.violence
+    const sexual = response.data.result.sexual
+    const scholarly = response.data.result.scholarly
+
+    console.log(jaccard_value)
+    console.log(spam)
+    console.log(grammar)
+    console.log(sentiment)
+    console.log(violence)
+    console.log(sexual)
+    console.log(scholarly)
+    
   } catch (error) {
-    console.error('Error retrieving the PDF:', error);
+    res.status(500).json({ msg: error.message });
   }
+  
+
 
   try {
     if (req.role === "user") {
