@@ -82,7 +82,7 @@ const Navbar = () => {
         </svg>
       </Link>
       <Link
-        to="/read"
+        to={`/read/${data.uuid}`}
         onClick={() => {
           setActive("read");
         }}
@@ -98,7 +98,7 @@ const Navbar = () => {
         </svg>
       </Link>
       <Link
-        to="/star"
+        to={`/star/${data.uuid}`}
         onClick={() => {
           setActive("star");
         }}
@@ -114,7 +114,7 @@ const Navbar = () => {
         </svg>
       </Link>
       <Link
-        to="/history"
+        to={`/history/${data.uuid}`}
         onClick={() => {
           setActive("history");
         }}

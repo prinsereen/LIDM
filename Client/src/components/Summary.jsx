@@ -1,12 +1,12 @@
-import { useEffect } from "react";
-import Navbar from "./Navbar";
+import { useState, useEffect, useContext } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { profile } from "../assets";
-import { useState } from "react";
-import axios from "axios";
-import { Editor } from "react-draft-wysiwyg";
 import { EditorState, ContentState } from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
 import { convertToHTML } from "draft-convert";
+import { ProfileContext } from "../app/ProfileContext";
+import { profile } from "../assets";
+import Navbar from "./Navbar";
+import axios from "axios";
 import "draft-js/dist/Draft.css";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
@@ -19,13 +19,15 @@ const Summary = () => {
     EditorState.createEmpty()
   );
   const [convertedContent, setConvertedContent] = useState(null);
+  const { profileName, profilePhoto, setProfileName, setProfilePhoto } =
+    useContext(ProfileContext);
 
   useEffect(() => {
     let html = convertToHTML(editorState.getCurrentContent());
     setConvertedContent(html);
   }, [editorState]);
 
-  console.log(convertedContent);
+  // console.log(convertedContent);
   const data = {
     summary: convertedContent,
     fileId: fileId.id,
@@ -50,6 +52,16 @@ const Summary = () => {
     );
   };
 
+  useEffect(() => {
+    // Retrieve the profile name from local storage on page load
+    const storedProfileName = localStorage.getItem("profileName");
+    const storedProfilePhoto = localStorage.getItem("profilePhoto");
+    if (storedProfileName && storedProfilePhoto) {
+      setProfileName(storedProfileName);
+      setProfilePhoto(storedProfilePhoto);
+    }
+  }, []);
+
   return (
     <div>
       <Navbar />
@@ -59,9 +71,9 @@ const Summary = () => {
             <h1 className="font-bold text-4xl">Buat Ringkasan</h1>
           </div>
           <div className="flex mt-9  items-center  ">
-            <img src={profile} alt="profile" className="w-16 h-16" />
+            <img src={profilePhoto} alt="profile" className="w-16 h-16" />
             <Link to="/profile">
-              <h1 className="px-5">Yusnita</h1>
+              <h1 className="px-5">{profileName}</h1>
             </Link>
           </div>
         </div>
@@ -80,18 +92,7 @@ const Summary = () => {
                 onChange={(e) => setTitle(e.target.value)}
               />
             </div>
-            <div className="mb-6 w-full">
-              <label className="text-xl mb-2" htmlFor="total_page">
-                Jumlah Halaman Dibaca <span className="text-red-600">*</span>
-              </label>
-              <input
-                id="total_page"
-                type="number"
-                placeholder="Judul Ringkasan"
-                className="rounded-md px-5 py-3 border border-[#0868F9] w-full"
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </div>
+
             <div className="mb-6 w-full">
               <label className="text-xl mb-2" htmlFor="content">
                 Konten <span className="text-red-600">*</span>

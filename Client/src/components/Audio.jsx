@@ -1,7 +1,9 @@
-import Navbar from "./Navbar";
+import React, { useEffect, useState, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 import { profile, user, cover, play } from "../assets";
-import React, { useEffect, useState, useRef } from "react";
+import { useContext } from "react";
+import { ProfileContext } from "../app/ProfileContext";
+import Navbar from "./Navbar";
 import axios from "axios";
 
 const Audio = () => {
@@ -9,6 +11,7 @@ const Audio = () => {
   const { id } = useParams();
   const [data, setData] = useState();
   const [date, setDate] = useState();
+  const { profileName, profilePhoto, setProfileName, setProfilePhoto } = useContext(ProfileContext);
 
   useEffect(() => {
     const fetchFileData = async () => {
@@ -98,6 +101,17 @@ const Audio = () => {
     };
   }, []);
 
+  useEffect(() => {
+    // Retrieve the profile name from local storage on page load
+    const storedProfileName = localStorage.getItem("profileName");
+    const storedProfilePhoto = localStorage.getItem("profilePhoto");
+    if (storedProfileName && storedProfilePhoto) {
+      setProfileName(storedProfileName);
+      setProfilePhoto(storedProfilePhoto);
+
+    }
+  }, []);
+
   return (
     <div>
       <Navbar />
@@ -113,9 +127,9 @@ const Audio = () => {
               {/* <h1 className=" text-xl">Kategori: {data.classification}</h1> */}
             </div>
             <div className="flex mt-9 ml-52 items-center absolute right-20 ">
-              <img src={profile} alt="profile" className="w-16 h-16" />
+              <img src={profilePhoto} alt="profile" className="w-16 h-16" />
               <Link to="/profile">
-                <h1 className="px-5">Yusnita</h1>
+                <h1 className="px-5">{profileName}</h1>
               </Link>
             </div>
           </div>

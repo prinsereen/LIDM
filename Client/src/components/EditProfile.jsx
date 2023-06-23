@@ -67,9 +67,10 @@ const EditProfile = () => {
       );
 
       // Process the form submission
-      console.log(response.data);
+      // console.log(response.data);
       // Reset the form
       resetForm();
+      navigate(`/profile/${id.id}`);
     } catch (error) {
       console.error(error);
       // Handle error scenarios
