@@ -2,7 +2,6 @@ import Summary from "../models/Summary.js";
 import User from "../models/UserModel.js";
 import File from "../models/FileModel.js";
 import { Op } from "sequelize";
-import fs from "fs";
 import axios from "axios";
 import pdfParser from "pdf-parser"
 
@@ -140,7 +139,7 @@ export const createSummary = async (req, res) => {
   });
 
   try {
-    const file1 = await axios.post('http://localhost:5000/getPdfbyFileId', { fileId: fileId }, {
+    const file1 = await axios.post('https://api.gerakanliterasisekolah.com/getPdfbyFileId', { fileId: fileId }, {
       withCredentials: true,
       headers: {
         'Content-Type': 'application/json'
@@ -187,6 +186,23 @@ export const createSummary = async (req, res) => {
         'Content-Type': 'application/json'
       }})
 
+    const aiSimilarity = {
+      method: 'GET',
+       url: 'https://ai-content-detector1.p.rapidapi.com/',
+      params: {
+        text: summary
+      },
+      headers: {
+        'X-RapidAPI-Key': '8121cbed28msh7b4fdbcaade1734p171d43jsn71f6d6506073',
+        'X-RapidAPI-Host': 'ai-content-detector1.p.rapidapi.com'
+      }
+    };
+
+    let aiDetection = await axios.request(aiSimilarity);
+    aiDetection = aiDetection.data.fake_probability
+    let nilaiAkhir = grade.data.prediction
+    nilaiAkhir = nilaiAkhir - (nilaiAkhir*aiDetection)
+
     if (req.role === "user") {
       await Summary.create({
         summary: summary,
@@ -199,7 +215,8 @@ export const createSummary = async (req, res) => {
         violence:violence,
         sexual: sexual,
         scholarly: scholarly,
-        grade: grade.data.prediction
+        aidetection : aiDetection,
+        grade: nilaiAkhir
       });
       res.status(201).json({ msg: "Summary Created Succsessfully" });
     } else {
@@ -227,7 +244,9 @@ export const getSummaryByUser = async (req, res) => {
           "grammar",
           "violence", 
           "sexual", 
-          "scholarly"],
+          "scholarly",
+          "aidetection"
+        ],
         include: [
           {
             model: User,
@@ -285,5 +304,9 @@ const generateFeedback = (summary) => {
     feedback += "Kosa Kata Akademik dalam Summary Anda bisa ditingkatkan lagi. ";
   }
 
-  return feedback.trim(); // Trim any trailing whitespace
+  if (summary.aidetection > 0.3) {
+    feedback += "Ringkasan Anda Terindikasi Dibuat oleh AI ";
+  }
+
+  return feedback.trim(); 
 };

@@ -64,6 +64,13 @@ const Summary = db.define('summary', {
             notEmpty: true
         }
     },
+    aidetection:{
+        type: DataTypes.FLOAT,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
+    },
     grade:{
         type: DataTypes.FLOAT,
         allowNull: false,
