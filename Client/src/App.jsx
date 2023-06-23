@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-
+import { ProfileProvider } from "./app/ProfileContext";
 
 import {
   Hero,
@@ -15,7 +15,9 @@ import {
   Book,
   Summary,
   Audio,
-  EditProfile
+  EditProfile,
+  Donatur,
+  Donasi,
 } from "./components";
 
 import "./index.css";
@@ -34,17 +36,31 @@ function Root() {
           element={user ? <Profile /> : <Navigate to="/" />}
         />
         <Route
+          path="/donatur/:id"
+          element={user ? <Donatur /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/donasi/:id"
+          element={user ? <Donasi /> : <Navigate to="/" />}
+        />
+        <Route
           path="/profile/edit/:id"
           element={user ? <EditProfile /> : <Navigate to="/" />}
         />
-        <Route path="/read" element={user ? <Read /> : <Navigate to="/" />} />
-        <Route path="/star" element={user ? <Star /> : <Navigate to="/" />} />
         <Route
-          path="/history"
+          path="/read/:id"
+          element={user ? <Read /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/star/:id"
+          element={user ? <Star /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/history/:id"
           element={user ? <History /> : <Navigate to="/" />}
         />
-        <Route path="/read/kategori1" element={<KategoriBaca />} />
-        <Route path="/read/kategori2" element={<KategoriDengar />} />
+        <Route path="/read/kategori1/:id" element={<KategoriBaca />} />
+        <Route path="/read/kategori2/:id" element={<KategoriDengar />} />
         <Route path="/read/kategori1/book/:id" element={<Book />} />
         <Route path="/read/kategori2/audio/:id" element={<Audio />} />
         <Route
@@ -58,10 +74,11 @@ function Root() {
 
 function App() {
   return (
+    <ProfileProvider>
       <BrowserRouter>
         <Root />
       </BrowserRouter>
-   
+    </ProfileProvider>
   );
 }
 

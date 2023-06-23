@@ -1,9 +1,42 @@
 import Navbar from "./Navbar";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { profile, read, listen } from "../assets";
+import { useState, useEffect } from "react";
+import { useContext } from "react";
+import { ProfileContext } from "../app/ProfileContext";
+import axios from "axios";
 
 const Read = () => {
   const navigate = useNavigate();
+  const [data, setData] = useState([]);
+  const { profileName, profilePhoto, setProfileName, setProfilePhoto } = useContext(ProfileContext);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/me");
+        // console.log(response.data);
+        setData(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
+  useEffect(() => {
+    // Retrieve the profile name from local storage on page load
+    const storedProfileName = localStorage.getItem("profileName");
+    const storedProfilePhoto = localStorage.getItem("profilePhoto");
+    if (storedProfileName && storedProfilePhoto) {
+      setProfileName(storedProfileName);
+      setProfilePhoto(storedProfilePhoto);
+
+    }
+  }, []);
+
   return (
     <>
       <Navbar />
@@ -18,9 +51,9 @@ const Read = () => {
             <p>Silahkan pilih format bacaan yang kamu inginkan.</p>
           </div>
           <div className="flex mt-9 ml-52 items-center ">
-            <img src={profile} alt="profile" className="w-16 h-16" />
+            <img src={profilePhoto} alt="profile" className="w-16 h-16" />
             <Link to="/profile">
-              <h1 className="px-5">Yusnita</h1>
+              <h1 className="px-5">{profileName}</h1>
             </Link>
           </div>
         </div>
@@ -39,7 +72,7 @@ const Read = () => {
               tempus pulvinar sit. Sit odio purus pharetra ac.
             </p>
             <button
-              onClick={() => navigate("/read/kategori1")}
+              onClick={() => navigate(`/read/kategori1/${data.uuid}`)}
               className="bg-[#0868F9] text-white w-44 h-12 my-7 rounded-lg"
             >
               Pilih Kategori
@@ -59,7 +92,7 @@ const Read = () => {
               tempus pulvinar sit. Sit odio purus pharetra ac.
             </p>
             <button
-              onClick={() => navigate("/read/kategori2")}
+              onClick={() => navigate(`/read/kategori2/${data.uuid}`)}
               className="bg-[#0868F9] text-white w-44 h-12 my-7 rounded-lg"
             >
               Pilih Kategori

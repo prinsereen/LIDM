@@ -1,11 +1,15 @@
 import Navbar from "./Navbar";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { profile } from "../assets";
 import { useEffect, useState } from "react";
+import { useContext } from "react";
+import { ProfileContext } from "../app/ProfileContext";
 import axios from "axios";
 
 const History = () => {
   const [summary, setSummary] = useState([]);
+  const { profileName, profilePhoto, setProfileName, setProfilePhoto } =
+    useContext(ProfileContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,6 +23,16 @@ const History = () => {
     };
 
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    // Retrieve the profile name from local storage on page load
+    const storedProfileName = localStorage.getItem("profileName");
+    const storedProfilePhoto = localStorage.getItem("profilePhoto");
+    if (storedProfileName && storedProfilePhoto) {
+      setProfileName(storedProfileName);
+      setProfilePhoto(storedProfilePhoto);
+    }
   }, []);
 
   const getFirstWords = (paragraph, count) => {
@@ -43,6 +57,10 @@ const History = () => {
     return formattedDate;
   };
 
+  if (!profileName || !profilePhoto) {
+    return null;
+  }
+
   return (
     <div>
       <Navbar />
@@ -52,9 +70,9 @@ const History = () => {
             <h1 className="font-bold text-4xl">Riwayat Ringkasan</h1>
           </div>
           <div className="flex mt-9  items-center  ">
-            <img src={profile} alt="profile" className="w-16 h-16" />
+            <img src={profilePhoto} alt="profile" className="w-16 h-16" />
             <Link to="/profile">
-              <h1 className="px-5">Yusnita</h1>
+              <h1 className="px-5">{profileName}</h1>
             </Link>
           </div>
         </div>

@@ -13,6 +13,8 @@ import Book from "./Book";
 import Audio from "./Audio";
 import Summary from "./Summary";
 import EditProfile from "./EditProfile";
+import Donatur from "./Donatur";
+import Donasi from "./Donasi";
 
 export {
   Hero,
@@ -29,5 +31,7 @@ export {
   Audio,
   Summary,
   KategoriDengar,
-  EditProfile
+  EditProfile,
+  Donatur,
+  Donasi
 };

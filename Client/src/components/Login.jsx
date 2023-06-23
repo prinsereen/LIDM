@@ -18,14 +18,21 @@ const Login = () => {
 
   useEffect(() => {
     if (user) {
-      navigate(`/profile/${user.uuid}`);
+      if (response.payload.role === "user") {
+        navigate(`/profile/${user.uuid}`);
+      } else if (response.payload.role === "donatur") {
+        navigate(`/donatur/${user.uuid}`);
+      } else if (response.payload.role === "admin") {
+        navigate(`/donatur/${user.uuid}`);
+      }
     }
     dispatch(reset());
   }, [user, isSuccess, dispatch, navigate]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(LoginUser({ email, password }));
+    const response = await dispatch(LoginUser({ email, password }));
+    console.log(response.payload.role);
   };
 
   return (

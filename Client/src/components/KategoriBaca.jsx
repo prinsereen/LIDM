@@ -1,15 +1,17 @@
+import { Link } from "react-router-dom";
+import { profile, search, filter } from "../assets";
+import { useState, useEffect } from "react";
+import { useContext } from "react";
+import { ProfileContext } from "../app/ProfileContext";
 import Navbar from "./Navbar";
-import { Link, useNavigate } from "react-router-dom";
-import { profile, read, listen, search, filter } from "../assets";
-import { useState } from "react";
 import Card from "./Card";
 import axios from "axios";
-import { useEffect } from "react";
 
 const KategoriBaca = () => {
   const [files, setFiles] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterOption, setFilterOption] = useState("");
+  const { profileName, profilePhoto, setProfileName, setProfilePhoto } = useContext(ProfileContext);
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -45,6 +47,17 @@ const KategoriBaca = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    // Retrieve the profile name from local storage on page load
+    const storedProfileName = localStorage.getItem("profileName");
+    const storedProfilePhoto = localStorage.getItem("profilePhoto");
+    if (storedProfileName && storedProfilePhoto) {
+      setProfileName(storedProfileName);
+      setProfilePhoto(storedProfilePhoto);
+
+    }
+  }, []);
+
   return (
     <div>
       <Navbar />
@@ -59,9 +72,9 @@ const KategoriBaca = () => {
             </p>
           </div>
           <div className="flex mt-9 ml-52 items-center ">
-            <img src={profile} alt="profile" className="w-16 h-16" />
+            <img src={profilePhoto} alt="profile" className="w-16 h-16" />
             <Link to="/profile">
-              <h1 className="px-5">Yusnita</h1>
+              <h1 className="px-5">{profileName}</h1>
             </Link>
           </div>
         </div>
@@ -101,7 +114,7 @@ const KategoriBaca = () => {
         <div className="flex flex-wrap gap-10 ">
           {filteredFiles.map((file) => (
             <Link to={`/read/kategori1/book/${file.uuid}`} key={file.uuid}>
-              <Card file={file} />
+              <Card file={file} type="baca" />
             </Link>
           ))}
         </div>

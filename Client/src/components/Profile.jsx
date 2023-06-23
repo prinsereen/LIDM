@@ -1,16 +1,15 @@
 import Navbar from "./Navbar";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { getMe } from "../state/index.js";
 import { calender, flag, book, cover, medal, trophy } from "../assets";
+import { useContext } from "react";
+import { ProfileContext } from "../app/ProfileContext";
 import axios from "axios";
 
 const Profile = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [data, setData] = useState([]);
-  const [photo, setPhoto] = useState();
+  const { profileName, profilePhoto, setProfileName, setProfilePhoto } =
+    useContext(ProfileContext);
 
   const { id } = useParams();
 
@@ -20,6 +19,9 @@ const Profile = () => {
         const response = await axios.get(`http://localhost:5000/users/${id}`);
 
         setData(response.data);
+        setProfileName(response.data.name);
+        // Save the profile name to local storage
+        localStorage.setItem("profileName", response.data.name);
       } catch (error) {
         console.log(error);
       }
@@ -27,19 +29,25 @@ const Profile = () => {
 
     fetchData();
   }, [id]);
-  
+
   useEffect(() => {
     const fetchFileData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/userphoto/${id}`, {
-          responseType: "blob",
-        });
+        const response = await axios.get(
+          `http://localhost:5000/userphoto/${id}`,
+          {
+            responseType: "blob",
+          }
+        );
         const reader = new FileReader();
         reader.readAsDataURL(response.data);
         reader.onloadend = function () {
           var base64data = reader.result;
-          console.log(base64data);
-          setPhoto(base64data);
+          // console.log(base64data);
+
+          setProfilePhoto(base64data);
+          // Save the profile name to local storage
+          localStorage.setItem("profilePhoto", base64data);
         };
       } catch (error) {
         console.log(error);
@@ -56,13 +64,10 @@ const Profile = () => {
 
   const { name, sains, sosial, seni, sastra, bahasa, rek_description } = data;
 
-
-
-
   return (
     <section className="w-full h-full flex justify-start">
       <Navbar />
-      <div className="mx-64 flex flex-col w-full">
+      <div className="ml-72 mr-40 flex flex-col w-full">
         <h1 className="my-[30px] font-bold text-[40px]">Profile</h1>
         <div className="flex w-full gap-10">
           <div className="w-[50%]  bg-white rounded-xl p-5">
@@ -120,8 +125,8 @@ const Profile = () => {
             </div>
           </div>
           <div className="w-[50%]  bg-white rounded-xl flex flex-col gap-3 items-center px-5 py-10">
-            <img src={photo} className="h-24 w-24" />
-            <h1 className="font-semibold text-2xl">{name}</h1>
+            <img src={profilePhoto} className="h-24 w-24" />
+            <h1 className="font-semibold text-2xl">{profileName}</h1>
             <div className="flex gap-2 text-lg">
               <img src={medal} />
               <div className="text-white bg-[#33DF8D] px-3 py-1 rounded-md font-semibold">
@@ -132,7 +137,10 @@ const Profile = () => {
             <h1 className="flex justify-center items-center bg-[#82B3FF] w-[70%] h-14 rounded-xl font-semibold text-white text-xl">
               Rekomendasi Kompetisi
             </h1>
-            <img src={trophy} className="h-[35%] w-[50%] object-contain my-3 shadow-lg" />
+            <img
+              src={trophy}
+              className="h-[35%] w-[50%] object-contain my-3 shadow-lg"
+            />
             <h1 className="flex justify-center items-center rounded-lg font-bold bg-[#E5EFFF] text-sm h-12 w-[50%]">
               {rek_description.nama_kompetisi}
             </h1>
@@ -152,10 +160,11 @@ const Profile = () => {
               Detail
             </button>
             <div className="h-[2px] bg-[#939FB1] w-full my-3" />
-            <Link to={`/profile/edit/${id}`} className="flex items-center justify-center h-10 w-[30%] bg-[#0868F9] font-bold text-white text-base rounded-md">
-              <button>
-                Edit Profil
-              </button>
+            <Link
+              to={`/profile/edit/${id}`}
+              className="flex items-center justify-center h-10 w-[30%] bg-[#0868F9] font-bold text-white text-base rounded-md"
+            >
+              <button>Edit Profil</button>
             </Link>
           </div>
         </div>

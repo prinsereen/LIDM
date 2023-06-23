@@ -1,44 +1,43 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { logo1, logo2, logo3 } from "../assets";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 const Register = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confPassword, setConfPassword] = useState("");
+  const [role, setRole] = useState("");
   const navigate = useNavigate();
+  const [passwordMatch, setPasswordMatch] = useState(true);
 
-  
-  
-
-  const register = async (values, onSubmitProps) => {
-    const formData = new FormData();
-    for (let value in values) {
-      formData.append(value, values[value]);
-     
-    }
-    console.log(formData)
-
-    // const savedUserResponse = await fetch("http://localhost:5000/register", {
-    //   method: "POST",
-    //   body: formData,
-    // });
-
-    // console.log(body)
-    // const savedUser = await savedUserResponse.json();
-    // onSubmitProps.resetForm();
-
-    // if (savedUser) {
-    //   navigate("/login");
-    // }
-  };
-
-  const handleSubmit = (e, values, onSubmitProps) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // await register(values, onSubmitProps);
-    const formData = new FormData();
-    for (let value in values) {
-      formData.append(value, values[value]);
-     
+
+    // Check if the password and confirm password match
+    if (password !== confPassword) {
+      setPasswordMatch(false);
+      return;
     }
-    console.log(formData)
+
+    try {
+      const response = await axios.post("http://localhost:5000/register", {
+        name: name,
+        email: email,
+        password: password,
+        confPassword: confPassword,
+        role: role,
+      });
+
+      if (response) {
+        navigate(`/login`);
+      }
+    } catch (error) {
+      console.error(error);
+      // Handle error scenarios
+    }
   };
 
   return (
@@ -84,6 +83,8 @@ const Register = () => {
             name="name"
             type="text"
             id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             placeholder="nama lengkap"
             className="w-full bg-white py-3 px-5 rounded-xl text-black text-[20px] placeholder-[#939FB1]"
           />
@@ -95,6 +96,8 @@ const Register = () => {
             type="email"
             id="email"
             placeholder="alamat email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="w-full bg-white py-3 px-5 rounded-xl text-black text-[20px] placeholder-[#939FB1]"
           />
           <div className="mt-2" />
@@ -105,6 +108,8 @@ const Register = () => {
             type="password"
             id="password"
             placeholder="kata sandi"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             className="w-full bg-white py-3 px-5 rounded-xl  text-black text-[20px] placeholder-[#939FB1]"
           />
           <div className="mt-2" />
@@ -114,15 +119,26 @@ const Register = () => {
             name="confpassword"
             type="password"
             id="konfirmasi"
+            value={confPassword}
+            onChange={(e) => setConfPassword(e.target.value)}
             placeholder="konfirmasi kata sandi"
             className="w-full bg-white py-3 px-5 rounded-xl  text-black text-[20px] placeholder-[#939FB1]"
           />
+          {!passwordMatch && (
+            <p className="text-red-600 mt-1">
+              Sandi dan Konfirmasi sandi harus sama.
+            </p>
+          )}
           <div className="mt-2" />
           <label>Daftar Sebagai</label>
           <br />
-          <select name="role" 
-          id="role" 
-          className="w-full bg-white py-3 px-5 rounded-xl  text-black text-[20px] placeholder-[#939FB1]">
+          <select
+            name="role"
+            id="role"
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            className="w-full bg-white py-3 px-5 rounded-xl  text-black text-[20px] placeholder-[#939FB1]"
+          >
             <option value="user">Pembaca</option>
             <option value="donatur">Donatur</option>
           </select>
