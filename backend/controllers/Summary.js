@@ -148,7 +148,7 @@ export const createSummary = async (req, res) => {
     });
   
     const pdfData = file1.data.text;
-    const jaccard = await axios.post('https://d889-35-188-84-222.ngrok.io/jaccard-similarity', {file1: pdfData, file2:summary}, )
+    const jaccard = await axios.post('https://web-production-083b.up.railway.app/jaccard-similarity', {file1: pdfData, file2:summary}, )
     const jaccard_value  = jaccard.data.jaccard_similarity
     
 
@@ -174,7 +174,7 @@ export const createSummary = async (req, res) => {
     const sexual = response.data.result.sexual
     const scholarly = response.data.result.scholarly
 
-    const grade = await axios.post('https://7d09-34-80-141-195.ngrok.io/rekomendation', 
+    const grade = await axios.post('https://web-production-4805.up.railway.app/grade', 
     {jaccard: jaccard_value, 
       spam:spam,
       grammar:grammar,
@@ -240,34 +240,50 @@ export const getSummaryByUser = async (req, res) => {
           },
         ],
       });
-      let feedback = ""
-      if (response.jaccard === 0) {
-        feedback += "Summary Anda Tidak memiliki Kemiripan dengan Bacaan \n"
-      }else if (response.jaccard > 0.4){
-        feedback += "Summary Terlalu Mirip dengan Bacaan Asli\n"
-      }
-      if (response.spam > 0 && response.spam <= 5)  {
-        feedback += "Summary Anda Terindikasi Spam Ringan \n"
-      }else if (response.spam > 5 && response.spam <= 10){
-        feedback += "Summary Anda Terindikasi Spam Berat\n"
-      }
-      if (response.violence > 0 && response.violence <= 5)  {
-        feedback += "Summary Anda Terindikasi violence Ringan \n"
-      }else if (response.violence > 5 && response.violence <= 10){
-        feedback += "Summary Anda Terindikasi violence Berat\n"
-      }
-      if (response.grammar >= 0 && response.grammar <= 5)  {
-        feedback += "Grammar dalam Summary Anda bisa ditingkatkan lagi \n"
-      }
-      if (response.scholarly >= 0 && response.scholarly <= 5)  {
-        feedback += "Kosa Kata Akademik dalam Summary Anda bisa ditingkatkan lagi \n"
-      }
-      response.feedback = feedback;
-      console.log(feedback)
+      
+      const feedbackedResponse = response.map((summary) => {
+        const feedback = generateFeedback(summary.dataValues);
+        summary.dataValues.feedback = feedback;
+        return summary;
+      });
+      
+      res.status(200).json(feedbackedResponse);
     } else {
       return res.status(403).json({ msg: "Access Forbidden" });
     }
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
+};
+
+const generateFeedback = (summary) => {
+  let feedback = "";
+
+  if (summary.jaccard === 0) {
+    feedback += "Summary Anda Tidak memiliki Kemiripan dengan Bacaan. ";
+  } else if (summary.jaccard > 0.4) {
+    feedback += "Summary Terlalu Mirip dengan Bacaan Asli. ";
+  }
+
+  if (summary.spam > 0 && summary.spam <= 5) {
+    feedback += "Summary Anda Terindikasi Spam Ringan. ";
+  } else if (summary.spam > 5 && summary.spam <= 10) {
+    feedback += "Summary Anda Terindikasi Spam Berat. ";
+  }
+
+  if (summary.violence > 0 && summary.violence <= 5) {
+    feedback += "Summary Anda Terindikasi violence Ringan. ";
+  } else if (summary.violence > 5 && summary.violence <= 10) {
+    feedback += "Summary Anda Terindikasi violence Berat. ";
+  }
+
+  if (summary.grammar >= 0 && summary.grammar <= 5) {
+    feedback += "Grammar dalam Summary Anda bisa ditingkatkan lagi. ";
+  }
+
+  if (summary.scholarly >= 0 && summary.scholarly <= 5) {
+    feedback += "Kosa Kata Akademik dalam Summary Anda bisa ditingkatkan lagi. ";
+  }
+
+  return feedback.trim(); // Trim any trailing whitespace
 };

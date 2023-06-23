@@ -205,7 +205,7 @@ export const updateRecomendation = async (req, res) => {
     };
 
     try {
-      const response = await axios.post('https://48da-104-199-113-173.ngrok.io/rekomendation', JSON.stringify(postData), {
+      const response = await axios.post('https://web-production-2f9a.up.railway.app/rekomendation', JSON.stringify(postData), {
         headers: {
           'Content-Type': 'application/json',
         },
