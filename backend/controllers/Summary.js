@@ -330,9 +330,16 @@ export const getTotalScoreByUser = async (req, res) => {
       let totalGrade = response.reduce((total, item) => total + item.grade, 0);
       totalGrade = totalGrade/response.length
       const roundedGrade = parseFloat(totalGrade.toFixed(2));
-      
 
-      res.status(200).json({ leaderboard: roundedGrade });
+      await User.update({
+          score : roundedGrade
+      }, {
+          where: {
+            id: req.userId
+          }
+      });
+
+      res.status(200).json({msg : "updated"});
     } else {
       return res.status(403).json({ msg: "Access Forbidden" });
     }
