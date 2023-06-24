@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { profile, user, logo, library } from "../assets";
 import { logOut, reset, getMe } from "../state/index.js";
 import { Document, Page, pdfjs } from "react-pdf";
+import { useDispatch } from "react-redux";
 
 import { useContext } from "react";
 import { ProfileContext } from "../app/ProfileContext";
@@ -18,11 +19,11 @@ const AdminBook = () => {
   const [date, setDate] = useState();
   const { profileName, profilePhoto, setProfileName, setProfilePhoto } =
     useContext(ProfileContext);
-
+  const dispatch = useDispatch()
   useEffect(() => {
     const fetchFileData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/Pdf/${id}`, {
+        const response = await axios.get(`https://apiliterarur.ngrok.app/Pdf/${id}`, {
           responseType: "blob",
         });
         // var file = new File([response.data], "name");
@@ -44,7 +45,7 @@ const AdminBook = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/Files/${id}`);
+        const response = await axios.get(`https://apiliterarur.ngrok.app/Files/${id}`);
         const datetimeString = await response.data.createdAt;
         const dateId = new Date(datetimeString);
         const options = { day: "numeric", month: "long", year: "numeric" };

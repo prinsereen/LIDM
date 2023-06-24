@@ -41,7 +41,7 @@ const Admin = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/Files");
+        const response = await axios.get("https://apiliterarur.ngrok.app/Files");
 
         const donasiData = response.data.map((item) => {
           return {
@@ -124,7 +124,7 @@ const Admin = () => {
 
   const handleUpdateStatus = async (uuid, classification, status) => {
     try {
-      const response = await axios.patch(`http://localhost:5000/Files/${uuid}`, {
+      const response = await axios.patch(`https://apiliterarur.ngrok.app/Files/${uuid}`, {
         classification,
         status
       });

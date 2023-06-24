@@ -9,13 +9,13 @@ import axios from "axios";
 const Star = () => {
   const [leaderboard, setLeaderboard] = useState([]);
 
-  const { profileName, profilePhoto, setProfileName, setProfilePhoto } = useContext(ProfileContext);
- 
+  const { profileName, profilePhoto, setProfileName, setProfilePhoto } =
+    useContext(ProfileContext);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/LeaderBoard");
+        const response = await axios.get("https://apiliterarur.ngrok.app/LeaderBoard");
 
         setLeaderboard(response.data);
       } catch (error) {
@@ -26,7 +26,6 @@ const Star = () => {
     fetchData();
   }, []);
 
-
   useEffect(() => {
     // Retrieve the profile name from local storage on page load
     const storedProfileName = localStorage.getItem("profileName");
@@ -34,11 +33,8 @@ const Star = () => {
     if (storedProfileName && storedProfilePhoto) {
       setProfileName(storedProfileName);
       setProfilePhoto(storedProfilePhoto);
-
     }
   }, []);
-
-
 
   if (!leaderboard || !profileName || !profilePhoto) {
     // Render a loading state or return null if data is not available yet
@@ -91,11 +87,11 @@ const Star = () => {
                             alt="profile"
                             className="w-10 h-10 mx-2"
                           /> */}
-                          {leader.user.name}
+                          {leader.name}
                         </div>
                       </td>
                       <td className=" border-t-2 font-medium  px-8 py-4 border-[#CDCCEE]    ">
-                        <div>{leader.user.asal_instansi}</div>
+                        <div>{leader.asal_instansi}</div>
                       </td>
                       <td className=" border-t-2 text-center  font-medium px-8 py-4 border-[#CDCCEE]   ">
                         {leader.score}

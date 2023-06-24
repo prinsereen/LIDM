@@ -13,10 +13,13 @@ export const LoginUser = createAsyncThunk(
   "user/LoginUser",
   async (user, thunkAPI) => {
     try {
-      const response = await axios.post("http://localhost:5000/login", {
-        email: user.email,
-        password: user.password,
-      });
+      const response = await axios.post(
+        "https://apiliterarur.ngrok.app/login",
+        {
+          email: user.email,
+          password: user.password,
+        }
+      );
       return response.data;
     } catch (error) {
       if (error.response) {
@@ -29,7 +32,7 @@ export const LoginUser = createAsyncThunk(
 
 export const getMe = createAsyncThunk("user/getMe", async (thunkAPI) => {
   try {
-    const response = await axios.get("http://localhost:5000/me");
+    const response = await axios.get("https://apiliterarur.ngrok.app/me");
     return response.data;
   } catch (error) {
     if (error.response) {
@@ -40,7 +43,7 @@ export const getMe = createAsyncThunk("user/getMe", async (thunkAPI) => {
 });
 
 export const logOut = createAsyncThunk("user/logout", async (thunkAPI) => {
-  await axios.delete("http://localhost:5000/logout");
+  await axios.delete("https://apiliterarur.ngrok.app/logout");
 });
 
 export const authSlice = createSlice({
@@ -80,7 +83,6 @@ export const authSlice = createSlice({
       });
   },
 });
-
 
 export const { reset } = authSlice.actions;
 export default authSlice.reducer;

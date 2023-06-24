@@ -1,7 +1,16 @@
 import Navbar from "./Navbar";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { calender, flag, book, cover, medal, trophy } from "../assets";
+import {
+  calender,
+  flag,
+  book,
+  cover,
+  gold,
+  bronze,
+  silver,
+  trophy,
+} from "../assets";
 import { useContext } from "react";
 import { ProfileContext } from "../app/ProfileContext";
 import axios from "axios";
@@ -16,7 +25,9 @@ const Profile = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/users/${id}`);
+        const response = await axios.get(
+          `https://apiliterarur.ngrok.app/users/${id}`
+        );
 
         setData(response.data);
 
@@ -36,7 +47,7 @@ const Profile = () => {
       try {
         if (data) {
           const response = await axios.get(
-            `http://localhost:5000/userphoto/${id}`,
+            `https://apiliterarur.ngrok.app/userphoto/${id}`,
             {
               responseType: "blob",
             }
@@ -60,8 +71,6 @@ const Profile = () => {
     fetchFileData();
   }, [id]);
 
- 
-
   if (!data || !data.rek_description) {
     // Render a loading state or return null if data is not available yet
     return null;
@@ -77,6 +86,26 @@ const Profile = () => {
     rek_description,
     rekomendasi_kompetisi,
   } = data;
+
+  const totalBooksRead =
+    parseInt(sains) +
+    parseInt(sosial) +
+    parseInt(seni) +
+    parseInt(sastra) +
+    parseInt(bahasa);
+
+  let proficiencyLevel;
+  let proficiencyImage;
+  if (totalBooksRead < 10) {
+    proficiencyLevel = "Pemula";
+    proficiencyImage = bronze;
+  } else if (totalBooksRead < 20) {
+    proficiencyLevel = "Menengah";
+    proficiencyImage = silver;
+  } else {
+    proficiencyLevel = "Kutu Buku";
+    proficiencyImage = gold;
+  }
 
   return (
     <section className="w-full h-full flex justify-start">
@@ -142,10 +171,19 @@ const Profile = () => {
             <div className="w-full flex flex-col items-center gap-3  ">
               <img src={profilePhoto} className="h-24 w-24" />
               <h1 className="font-semibold text-2xl">{profileName}</h1>
+
               <div className="flex gap-2 text-lg">
-                <img src={medal} />
-                <div className="text-white bg-[#33DF8D] px-3 py-1 rounded-md font-semibold">
-                  Menengah
+                <img src={proficiencyImage} />
+                <div
+                  className={`text-white px-3 py-1 rounded-md font-semibold ${
+                    proficiencyLevel === "Pemula"
+                      ? "bg-[#6172A7]"
+                      : proficiencyLevel === "Menengah"
+                      ? "bg-[#8BE9FD]"
+                      : "bg-[#33DF8D]"
+                  }`}
+                >
+                  {proficiencyLevel}
                 </div>
               </div>
               <div className="h-[2px] bg-[#939FB1] w-full my-3" />

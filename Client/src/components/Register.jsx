@@ -32,7 +32,7 @@ const Register = () => {
       };
       console.log(updatedData);
       const response = await axios.post(
-        "http://localhost:5000/users",
+        "https://apiliterarur.ngrok.app/users",
         updatedData,
         {
           headers: {

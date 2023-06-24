@@ -18,6 +18,7 @@ const Summary = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState([]);
   const [kategori, setKategori] = useState();
+  const [isLoading, setIsLoading] = useState(false); // Loading state
   const fileId = useParams();
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
@@ -30,11 +31,14 @@ const Summary = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/me");
+        setIsLoading(true);
+        const response = await axios.get("https://apiliterarur.ngrok.app/me");
         // console.log(response.data);
         setId(response.data);
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsLoading(false); // Set loading state to false
       }
     };
 
@@ -45,7 +49,7 @@ const Summary = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/users/${id.uuid}`
+          `https://apiliterarur.ngrok.app/users/${id.uuid}`
         );
 
         setUser(response.data);
@@ -61,7 +65,7 @@ const Summary = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/Files/${fileId.id}`
+          `https://apiliterarur.ngrok.app/Files/${fileId.id}`
         );
 
         setKategori(response.data);
@@ -72,40 +76,6 @@ const Summary = () => {
 
     fetchData();
   }, [fileId]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       if (user) {
-  //         // console.log(data);
-  //         const updatedData = {
-  //           seni: user.seni,
-  //           sosial: user.sosial,
-  //           sains: user.sains,
-  //           sastra: user.sastra,
-  //           bahasa: user.bahasa,
-  //         };
-  //         // console.log(updatedData);
-  //         if (updatedData) {
-  //           const response = await axios.patch(
-  //             `http://localhost:5000/userrec/${id.uuid}`,
-  //             updatedData,
-  //             {
-  //               headers: {
-  //                 "Content-Type": "application/json",
-  //               },
-  //             }
-  //           );
-  //           console.log(response);
-  //         }
-  //       }
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [id, user.seni, user.sains, user.sosial, user.bahasa, user.sastra]);
 
   useEffect(() => {
     let html = convertToHTML(editorState.getCurrentContent());
@@ -119,9 +89,10 @@ const Summary = () => {
   };
 
   const handleSendSummary = async () => {
+    setIsLoading(true);
     console.log(data);
     try {
-      const response = await axios.post(`http://localhost:5000/Summary`, data, {
+      const response = await axios.post(`https://apiliterarur.ngrok.app/Summary`, data, {
         "Content-Type": "application/json",
       });
 
@@ -134,15 +105,25 @@ const Summary = () => {
         console.log(kategori);
         const updatedData = {
           seni: kategori.classification === "Seni" ? user.seni + 1 : user.seni,
-          sosial: kategori.classification === "Sosial" ? user.sosial + 1 : user.sosial,
-          sains: kategori.classification === "Sains" ? user.sains + 1 : user.sains,
-          sastra: kategori.classification === "Sastra" ? user.sastra + 1 : user.sastra,
-          bahasa: kategori.classification === "Bahasa" ? user.bahasa + 1 : user.bahasa,
+          sosial:
+            kategori.classification === "Sosial"
+              ? user.sosial + 1
+              : user.sosial,
+          sains:
+            kategori.classification === "Sains" ? user.sains + 1 : user.sains,
+          sastra:
+            kategori.classification === "Sastra"
+              ? user.sastra + 1
+              : user.sastra,
+          bahasa:
+            kategori.classification === "Bahasa"
+              ? user.bahasa + 1
+              : user.bahasa,
         };
         console.log(updatedData);
         if (updatedData) {
           const response = await axios.patch(
-            `http://localhost:5000/userrec/${id.uuid}`,
+            `https://apiliterarur.ngrok.app/userrec/${id.uuid}`,
             updatedData,
             {
               headers: {
@@ -151,13 +132,20 @@ const Summary = () => {
             }
           );
           console.log(response);
-          if (response) {
-            navigate(`/read/kategori1/book/${fileId.id}`);
-          }
         }
       }
     } catch (error) {
       console.log(error);
+    }
+    try {
+      const response = await axios.get(`https://apiliterarur.ngrok.app/gettotal`);
+      if (response) {
+        navigate(`/read/kategori1/book/${fileId.id}`);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false); // Set loading state to false
     }
   };
 
@@ -209,7 +197,7 @@ const Summary = () => {
             </div>
 
             <div className="mb-6 w-full">
-              <label className="text-xl mb-2" >
+              <label className="text-xl mb-2">
                 Konten <span className="text-red-600">*</span>
               </label>
               <div className="border border-[#0868F9] mb-5">
@@ -240,6 +228,12 @@ const Summary = () => {
             </div>
           </div>
         </div>
+        {/* Show spinner while loading */}
+        {isLoading && (
+          <div className="fixed inset-0 flex items-center justify-center bg-opacity-75 bg-gray-500">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
+        )}
       </div>
     </div>
   );

@@ -50,6 +50,7 @@ function Root() {
         <Route
           path="/profile/:id"
           element={user ? <Profile /> : <Navigate to="/" />}
+          
         />
         <Route
           path="/donatur/:id"

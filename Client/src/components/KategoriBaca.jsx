@@ -11,7 +11,8 @@ const KategoriBaca = () => {
   const [files, setFiles] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterOption, setFilterOption] = useState("");
-  const { profileName, profilePhoto, setProfileName, setProfilePhoto } = useContext(ProfileContext);
+  const { profileName, profilePhoto, setProfileName, setProfilePhoto } =
+    useContext(ProfileContext);
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -37,7 +38,9 @@ const KategoriBaca = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/PdfFiles");
+        const response = await axios.get(
+          "https://apiliterarur.ngrok.app/PdfFiles"
+        );
         setFiles(response.data);
       } catch (error) {
         console.log(error);
@@ -54,7 +57,6 @@ const KategoriBaca = () => {
     if (storedProfileName && storedProfilePhoto) {
       setProfileName(storedProfileName);
       setProfilePhoto(storedProfilePhoto);
-
     }
   }, []);
 
