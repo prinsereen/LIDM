@@ -6,6 +6,9 @@ export const getUserLeadeboard = async (req, res) => {
     const respons = await User.findAll({
         attributes: ["name", "email", "jenjang", "asal_instansi", "score"],
         order: [["score", "DESC"]],
+        where: {
+          role: "user"
+        }
     });
     res.status(200).json(respons);
 } catch (error) {
