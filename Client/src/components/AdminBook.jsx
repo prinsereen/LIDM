@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { profile, user } from "../assets";
+import { profile, user, logo, library } from "../assets";
+import { logOut, reset, getMe } from "../state/index.js";
 import { Document, Page, pdfjs } from "react-pdf";
+
 import { useContext } from "react";
 import { ProfileContext } from "../app/ProfileContext";
 import Navbar from "./Navbar";
@@ -9,12 +11,13 @@ import axios from "axios";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-const Book = () => {
+const AdminBook = () => {
   const [fileData, setFileData] = useState(null);
   const { id } = useParams();
   const [data, setData] = useState();
   const [date, setDate] = useState();
-  const { profileName, profilePhoto, setProfileName, setProfilePhoto } = useContext(ProfileContext);
+  const { profileName, profilePhoto, setProfileName, setProfilePhoto } =
+    useContext(ProfileContext);
 
   useEffect(() => {
     const fetchFileData = async () => {
@@ -56,20 +59,35 @@ const Book = () => {
     fetchData();
   }, [id]);
 
-  useEffect(() => {
-    // Retrieve the profile name from local storage on page load
-    const storedProfileName = localStorage.getItem("profileName");
-    const storedProfilePhoto = localStorage.getItem("profilePhoto");
-    if (storedProfileName && storedProfilePhoto) {
-      setProfileName(storedProfileName);
-      setProfilePhoto(storedProfilePhoto);
-
-    }
-  }, []);
+  const logout = () => {
+    dispatch(logOut());
+    dispatch(reset());
+    navigate("/");
+  };
 
   return (
     <div>
-      <Navbar />
+      <div className="flex flex-col items-center justify-between fixed h-full w-40 bg-white py-10">
+        <div className="flex flex-col items-center gap-2">
+          <Link to={`/admin/${id}`}>
+            <img src={logo} className=" ml-4" />
+          </Link>
+          <div className="bg-black h-[1px] w-32 " />
+          <img src={library} className="mt-6" />
+        </div>
+
+        <button onClick={logout} className=" mt-48">
+          <svg width="45" height="45" fill="none" className="">
+            <path
+              stroke="#3B3A5B"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="4"
+              d="M29.5 2H37a5 5 0 0 1 5 5v30a5 5 0 0 1-5 5h-7.5M12 12 2 22l10 10M2 22h30"
+            />
+          </svg>
+        </button>
+      </div>
       {fileData && (
         <div className="ml-60 flex flex-col overflow-hidden">
           <div className="flex justify-start w-full h-auto ">
@@ -81,26 +99,12 @@ const Book = () => {
               </h1>
               {/* <h1 className=" text-xl">Kategori: {data.classification}</h1> */}
             </div>
-            <div className="flex mt-9 ml-52 items-center absolute right-20 ">
-              <img src={profilePhoto} alt="profile" className="w-16 h-16" />
-              <Link to="/profile">
-                <h1 className="px-5">{profileName}</h1>
-              </Link>
-            </div>
           </div>
-          <Link
-            to={`/read/kategori1/book/ringkasan/${id}`}
-            className="h-12 w-44 mb-10"
-          >
-            <button className="bg-[#0868F9] rounded-lg my-10 h-12 w-44  text-white">
-              Buat Ringkasan
-            </button>
-          </Link>
-          <div className="flex mt-10 gap-5">
+
           <object
             data={`${fileData}#toolbar=0`}
             type="application/pdf"
-            className="h-screen w-[60%] "
+            className="h-screen w-[70%] mt-10"
           >
             {/* <p>
               Alternative text - include a link{" "}
@@ -109,14 +113,10 @@ const Book = () => {
               </a>
             </p> */}
           </object>
-          <div className="bg-white w-w-40 h-[600px] fixed r-10">
-
-          </div>
-          </div>
         </div>
       )}
     </div>
   );
 };
 
-export default Book;
+export default AdminBook;

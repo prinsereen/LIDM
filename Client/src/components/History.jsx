@@ -76,14 +76,15 @@ const History = () => {
             </Link>
           </div>
         </div>
-        <div className="bg-white w-[1000px] mt-10 rounded-lg shadow-lg">
-          <table className="table-auto h-full w-[950px] m-5 rounded-md  ">
+        <div className="bg-white  mt-10 rounded-lg shadow-lg">
+          <table className="table-auto h-full  m-5 rounded-md  ">
             <thead>
               <tr>
                 <th className="bg-white text-left px-8 py-4">Tanggal</th>
                 <th className="bg-white text-left px-8 py-4">Judul</th>
                 <th className="bg-white  text-left px-8 py-4">Ringkasan</th>
                 <th className="bg-white  text-center px-8 py-4">Nilai</th>
+                <th className="bg-white  text-center px-8 py-4">Feedback</th>
               </tr>
             </thead>
             <tbody>
@@ -102,6 +103,9 @@ const History = () => {
                       </td>
                       <td className="border-y-2 text-center px-8 py-4 ">
                         {sum.grade}
+                      </td>
+                      <td className="border-y-2 text-center px-8 py-4 ">
+                        {sum.feedback}
                       </td>
                     </tr>
                   );

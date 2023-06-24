@@ -61,8 +61,8 @@ const Star = () => {
           </div>
         </div>
 
-        <div className=" h-full w-[1000px] bg-white mt-10 rounded-xl shadow-lg ">
-          <table className=" h-full w-[950px] bg-white  m-5 ">
+        <div className=" h-full bg-white mt-10 rounded-xl shadow-lg ">
+          <table className=" h-full w-full  bg-white  m-5 ">
             <thead>
               <tr>
                 <th className="bg-white font-semibold text-left px-8 py-4 ">

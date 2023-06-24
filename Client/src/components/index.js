@@ -15,6 +15,9 @@ import Summary from "./Summary";
 import EditProfile from "./EditProfile";
 import Donatur from "./Donatur";
 import Donasi from "./Donasi";
+import Admin from "./Admin";
+import AdminBook from "./AdminBook";
+import AdminAudio from "./AdminAudio";
 
 export {
   Hero,
@@ -33,5 +36,8 @@ export {
   KategoriDengar,
   EditProfile,
   Donatur,
-  Donasi
+  Donasi,
+  Admin,
+  AdminBook,
+  AdminAudio,
 };

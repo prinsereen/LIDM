@@ -30,9 +30,11 @@ const Summary = () => {
   // console.log(convertedContent);
   const data = {
     summary: convertedContent,
-    fileId: fileId.id,
+    uuid: fileId.id,
   };
+
   const handleSendSummary = async () => {
+    console.log(data);
     try {
       const response = await axios.post(`http://localhost:5000/Summary`, data, {
         "Content-Type": "application/json",
@@ -108,7 +110,7 @@ const Summary = () => {
                   placeholder="write something !"
                 />
               </div>
-              <div className="flex items-center justify-end">
+              <div className="flex  items-center justify-end">
                 <button
                   onClick={handleReset}
                   className="rounded-md text-white bg-[#0868F9] px-8 py-4 mr-6 h-14 w-28 font-semibold"

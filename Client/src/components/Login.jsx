@@ -16,23 +16,19 @@ const Login = () => {
     (state) => state.auth
   );
 
-  useEffect(() => {
-    if (user) {
-      if (response.payload.role === "user") {
-        navigate(`/profile/${user.uuid}`);
-      } else if (response.payload.role === "donatur") {
-        navigate(`/donatur/${user.uuid}`);
-      } else if (response.payload.role === "admin") {
-        navigate(`/donatur/${user.uuid}`);
-      }
-    }
-    dispatch(reset());
-  }, [user, isSuccess, dispatch, navigate]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await dispatch(LoginUser({ email, password }));
-    console.log(response.payload.role);
+
+    if (response.payload.role === "user") {
+      navigate(`/profile/${response.payload.uuid}`);
+    } else if (response.payload.role === "donatur") {
+      navigate(`/donatur/${response.payload.uuid}`);
+    } else if (response.payload.role === "admin") {
+      navigate(`/admin/${response.payload.uuid}`);
+    }
+
+    dispatch(reset());
   };
 
   return (

@@ -20,9 +20,9 @@ const store = new sessionStore({
   db: db,
 });
 
-/*  (async () => {
-   await db.sync();
- })(); */
+// (async () => {
+//   await db.sync();
+// })();
 
 app.use(
   cors({
@@ -44,15 +44,12 @@ app.use(
   })
 );
 
-
 app.use(express.json());
 app.use(UserRoute);
 app.use(UnverifiedFileRoute);
 app.use(AuthRoute);
 app.use(SummaryRoute);
 app.use(LeeaderBoardRoute);
-
-
 
 /* store.sync() */
 

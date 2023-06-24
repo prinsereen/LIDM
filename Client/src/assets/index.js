@@ -15,16 +15,17 @@ import user from "./user.png";
 import cover from "./cover.png";
 import play from "./play.png";
 import book from "./book.png";
-import medal from './medal.png'
-import calender from './calender.png';
-import flag from './flag.png';
-import trophy from './trophy.jpg';
-import diterima from './diterima.png';
-import ditolak from './ditolak.png';
-import draft from './draft.png';
-import donate from './donate.png';
-import notebook from './notebook.png';
-
+import medal from "./medal.png";
+import calender from "./calender.png";
+import flag from "./flag.png";
+import trophy from "./trophy.jpg";
+import diterima from "./diterima.png";
+import ditolak from "./ditolak.png";
+import draft from "./draft.png";
+import donate from "./donate.png";
+import notebook from "./notebook.png";
+import library from "./library.png";
+import paper from "./paper.png";
 
 export {
   logo,
@@ -51,5 +52,7 @@ export {
   ditolak,
   donate,
   draft,
-  notebook
+  library,
+  notebook,
+  paper
 };
