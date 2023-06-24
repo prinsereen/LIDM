@@ -18,6 +18,9 @@ import {
   EditProfile,
   Donatur,
   Donasi,
+  Admin,
+  AdminBook,
+  AdminAudio,
 } from "./components";
 
 import "./index.css";
@@ -31,6 +34,18 @@ function Root() {
         <Route path="/" element={<Hero />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route
+          path="/admin/:id"
+          element={user ? <Admin /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/admin/book/:id"
+          element={user ? <AdminBook /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/admin/audio/:id"
+          element={user ? <AdminAudio /> : <Navigate to="/" />}
+        />
         <Route
           path="/profile/:id"
           element={user ? <Profile /> : <Navigate to="/" />}
