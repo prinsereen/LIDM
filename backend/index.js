@@ -25,13 +25,12 @@ const store = new sessionStore({
 //   await db.sync();
 // })();
 
- app.use(
+app.use(
   cors({
     credentials: true,
-    origin: ["https://gerakanliterasisekolah.com", "https://api.gerakanliterasisekolah.com"],
+    origin: ["http://localhost:5173", "https://api.gerakanliterasisekolah.com"],
   })
 );
-
 
 app.use(
   session({

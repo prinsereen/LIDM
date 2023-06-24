@@ -27,6 +27,7 @@ import "./index.css";
 
 function Root() {
   const user = Boolean(useSelector((state) => state.auth));
+ 
 
   return (
     <div>

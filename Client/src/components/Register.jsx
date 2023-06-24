@@ -9,7 +9,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState("user");
   const navigate = useNavigate();
   const [passwordMatch, setPasswordMatch] = useState(true);
 
@@ -23,13 +23,23 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/register", {
+      const updatedData = {
         name: name,
         email: email,
         password: password,
         confPassword: confPassword,
         role: role,
-      });
+      };
+      console.log(updatedData);
+      const response = await axios.post(
+        "http://localhost:5000/users",
+        updatedData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (response) {
         navigate(`/login`);

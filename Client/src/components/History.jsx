@@ -1,15 +1,18 @@
-import Navbar from "./Navbar";
+import React, { useEffect, useState, useContext } from "react";
 import { Link, useParams } from "react-router-dom";
-import { profile } from "../assets";
-import { useEffect, useState } from "react";
-import { useContext } from "react";
-import { ProfileContext } from "../app/ProfileContext";
 import axios from "axios";
+import Navbar from "./Navbar";
+import { ProfileContext } from "../app/ProfileContext";
+import { profile } from "../assets";
 
 const History = () => {
   const [summary, setSummary] = useState([]);
   const { profileName, profilePhoto, setProfileName, setProfilePhoto } =
     useContext(ProfileContext);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const itemsPerPage = 5;
+  const totalPages = Math.ceil(summary.length / itemsPerPage);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,6 +60,14 @@ const History = () => {
     return formattedDate;
   };
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = summary.slice(startIndex, endIndex);
+
   if (!profileName || !profilePhoto) {
     return null;
   }
@@ -88,32 +99,46 @@ const History = () => {
               </tr>
             </thead>
             <tbody>
-              {summary.map((sum, index) => {
-                if (index < 5) {
-                  return (
-                    <tr key={index} className="hover:bg-[#F4F4F4]">
-                      <td className="border-y-2 px-8 py-4  ">
-                        <div>{getDate(sum.createdAt)}</div>
-                      </td>
-                      <td className="border-y-2 px-8 py-4    ">
-                        <div>{sum.file.title}</div>
-                      </td>
-                      <td className="border-y-2 px-8 py-4 4] ">
-                        {getFirstWords(sum.summary, 15)}
-                      </td>
-                      <td className="border-y-2 text-center px-8 py-4 ">
-                        {sum.grade}
-                      </td>
-                      <td className="border-y-2 text-center px-8 py-4 ">
-                        {sum.feedback}
-                      </td>
-                    </tr>
-                  );
-                }
-                return null;
-              })}
+              {currentItems.map((sum, index) => (
+                <tr key={index} className="hover:bg-[#F4F4F4]">
+                  <td className="border-y-2 px-8 py-4  ">
+                    <div>{getDate(sum.createdAt)}</div>
+                  </td>
+                  <td className="border-y-2 px-8 py-4    ">
+                    <div>{sum.file.title}</div>
+                  </td>
+                  <td className="border-y-2 px-8 py-4 4] ">
+                    {getFirstWords(sum.summary, 15)}
+                  </td>
+                  <td className="border-y-2 text-center px-8 py-4 ">
+                    {sum.grade}
+                  </td>
+                  <td className="border-y-2 text-center px-8 py-4 ">
+                    {sum.feedback}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
+          <div className="flex justify-center my-6">
+            <ul className="flex">
+              {Array.from({ length: totalPages }).map((_, index) => (
+                <li
+                  key={index}
+                  className={`mx-1 ${
+                    currentPage === index + 1 ? "font-bold" : ""
+                  }`}
+                >
+                  <button
+                    onClick={() => handlePageChange(index + 1)}
+                    className="px-3 py-1 bg-gray-200 rounded-md"
+                  >
+                    {index + 1}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </div>
