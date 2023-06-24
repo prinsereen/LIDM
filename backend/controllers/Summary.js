@@ -89,11 +89,11 @@ export const getSummaryById = async (req, res) => {
 
 
 export const getPdfByFileId = async (req, res) => {
-  const {fileId} = req.body
+  const {uuid} = req.body
 
   const file = await File.findOne({
     where: {
-      id: fileId,
+      uuid: uuid,
     },
   });
 
@@ -102,7 +102,7 @@ export const getPdfByFileId = async (req, res) => {
       let response = await File.findOne({
         attributes: ['id', 'file_pdf'],
         where: {
-          id: fileId,
+          uuid: uuid,
         },
       })
       const filePath = response.file_pdf;
@@ -132,15 +132,15 @@ export const getPdfByFileId = async (req, res) => {
 
 
 export const createSummary = async (req, res) => {
-  const { summary, fileId } = req.body; 
+  const { summary, uuid } = req.body; 
   const file = await File.findOne({
     where: {
-      id: fileId,
+      uuid: uuid,
     },
   });
 
   try {
-    const file1 = await axios.post('http://localhost:5000/getPdfbyFileId', { fileId: fileId }, {
+    const file1 = await axios.post('http://localhost:5000/getPdfbyFileId', { uuid: uuid }, {
       withCredentials: true,
       headers: {
         'Content-Type': 'application/json'
