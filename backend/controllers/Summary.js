@@ -310,3 +310,40 @@ const generateFeedback = (summary) => {
 
   return feedback.trim(); 
 };
+
+export const getTotalScoreByUser = async (req, res) => {
+  try {
+    let response;
+    if (req.role === "user") {
+      response = await Summary.findAll({
+        attributes: [
+          "uuid",
+          "grade",
+        ],include: [
+          {
+            model: User,
+            where: { id: req.userId }, // Filter by user ID
+          },
+        ],
+      },
+      );
+      let totalGrade = response.reduce((total, item) => total + item.grade, 0);
+      totalGrade = totalGrade/response.length
+      const roundedGrade = parseFloat(totalGrade.toFixed(2));
+
+      await User.update({
+          score : roundedGrade
+      }, {
+          where: {
+            id: req.userId
+          }
+      });
+
+      res.status(200).json({msg : "updated"});
+    } else {
+      return res.status(403).json({ msg: "Access Forbidden" });
+    }
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};

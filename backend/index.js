@@ -9,7 +9,6 @@ import UnverifiedFileRoute from "./routes/FileRoute.js";
 import AuthRoute from "./routes/AuthRoute.js";
 import SummaryRoute from "./routes/SummaryRoute.js";
 import LeeaderBoardRoute from "./routes/LeaderBoardRoute.js";
-// const PDFDocument = require("pdfkit");
 
 dotenv.config();
 
@@ -28,7 +27,7 @@ const store = new sessionStore({
 app.use(
   cors({
     credentials: true,
-    origin: ["http://localhost:5173", "https://api.gerakanliterasisekolah.com"],
+    origin: ["http://localhost:5000", "http://localhost:5173"],
   })
 );
 
