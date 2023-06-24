@@ -79,6 +79,10 @@ const Users = db.define('users', {
         type: DataTypes.INTEGER,
         allowNull: true,
     },
+    score:{
+        type: DataTypes.INTEGER,
+        allowNull: true,
+    },
     rekomendasi_kompetisi:{
         type: DataTypes.INTEGER,
         allowNull: true,

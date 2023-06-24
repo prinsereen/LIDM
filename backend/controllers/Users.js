@@ -133,10 +133,12 @@ export const createUser = async(req, res ) => {
             jenjang: null,
             tanggal_lahir: null,
             user_photo: null,
+            seni: 0,
             sosial: 0,
             sains: 0,
             sastra: 0,
             bahasa: 0,
+            score: 0,
             rekomendasi_kompetisi: -1
         });
         res.status(201).json({msg : "Registered"});

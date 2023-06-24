@@ -4,7 +4,8 @@ import {
     getSummaryById,
     getSummaryByUser,
     createSummary,
-    getPdfByFileId
+    getPdfByFileId,
+    getTotalScoreByUser
 } from "../controllers/Summary.js";
 import { verifyUser } from "../middleware/AuthUser.js";
 
@@ -15,5 +16,6 @@ router.get('/Summary/:id', verifyUser, getSummaryById);
 router.get('/UserSummary', verifyUser, getSummaryByUser)
 router.post('/Summary',  verifyUser,  createSummary); /*  */
 router.post('/getPdfbyFileId', getPdfByFileId); 
+router.get('/gettotal', verifyUser, getTotalScoreByUser); 
 
 export default router;
