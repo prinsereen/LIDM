@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { profile, user } from "../assets";
+import { profile, user, paper } from "../assets";
 import { Document, Page, pdfjs } from "react-pdf";
 import { useContext } from "react";
 import { ProfileContext } from "../app/ProfileContext";
@@ -14,7 +14,8 @@ const Book = () => {
   const { id } = useParams();
   const [data, setData] = useState();
   const [date, setDate] = useState();
-  const { profileName, profilePhoto, setProfileName, setProfilePhoto } = useContext(ProfileContext);
+  const { profileName, profilePhoto, setProfileName, setProfilePhoto } =
+    useContext(ProfileContext);
 
   useEffect(() => {
     const fetchFileData = async () => {
@@ -63,7 +64,6 @@ const Book = () => {
     if (storedProfileName && storedProfilePhoto) {
       setProfileName(storedProfileName);
       setProfilePhoto(storedProfilePhoto);
-
     }
   }, []);
 
@@ -97,21 +97,30 @@ const Book = () => {
             </button>
           </Link>
           <div className="flex mt-10 gap-5">
-          <object
-            data={`${fileData}#toolbar=0`}
-            type="application/pdf"
-            className="h-screen w-[60%] "
-          >
-            {/* <p>
-              Alternative text - include a link{" "}
-              <a href="http://africau.edu/images/default/sample.pdf">
-                to the PDF!
-              </a>
-            </p> */}
-          </object>
-          <div className="bg-white w-w-40 h-[600px] fixed r-10">
+            <object
+              data={`${fileData}#toolbar=0`}
+              type="application/pdf"
+              className="h-screen w-[65%] "
+            ></object>
+            <div className="bg-white w-[25%] h-[600px] fixed right-5 flex flex-col  items-center justify-evenly">
+              <h1 className="text-3xl absolute top-3">ChatGPT</h1>
 
-          </div>
+              <div className="flex gap-3 justify-center absolute bottom-32 items-center">
+                <form>
+                  <textarea
+                    name="prompt"
+                    rows="1"
+                    cols="30"
+                    wrap="hard"
+                    placeholder="ketikkan pertanyaan"
+                    className="py-2 px-3 shadow-lg  border-2"
+                  ></textarea>
+                  <button type="submit">
+                    <img src={paper} className="m-1" />
+                  </button>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
       )}

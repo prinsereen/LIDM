@@ -5,15 +5,19 @@ import { Editor } from "react-draft-wysiwyg";
 import { convertToHTML } from "draft-convert";
 import { ProfileContext } from "../app/ProfileContext";
 import { profile } from "../assets";
+import { useSelector } from "react-redux";
 import Navbar from "./Navbar";
 import axios from "axios";
 import "draft-js/dist/Draft.css";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
+// eslint-disable-next-line react/prop-types
 const Summary = () => {
   const [title, setTitle] = useState("");
 
   const navigate = useNavigate();
+  const [user, setUser] = useState([]);
+  const [kategori, setKategori] = useState();
   const fileId = useParams();
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
@@ -21,6 +25,87 @@ const Summary = () => {
   const [convertedContent, setConvertedContent] = useState(null);
   const { profileName, profilePhoto, setProfileName, setProfilePhoto } =
     useContext(ProfileContext);
+  const [id, setId] = useState();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/me");
+        // console.log(response.data);
+        setId(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/users/${id.uuid}`
+        );
+
+        setUser(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/Files/${fileId.id}`
+        );
+
+        setKategori(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, [fileId]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       if (user) {
+  //         // console.log(data);
+  //         const updatedData = {
+  //           seni: user.seni,
+  //           sosial: user.sosial,
+  //           sains: user.sains,
+  //           sastra: user.sastra,
+  //           bahasa: user.bahasa,
+  //         };
+  //         // console.log(updatedData);
+  //         if (updatedData) {
+  //           const response = await axios.patch(
+  //             `http://localhost:5000/userrec/${id.uuid}`,
+  //             updatedData,
+  //             {
+  //               headers: {
+  //                 "Content-Type": "application/json",
+  //               },
+  //             }
+  //           );
+  //           console.log(response);
+  //         }
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [id, user.seni, user.sains, user.sosial, user.bahasa, user.sastra]);
 
   useEffect(() => {
     let html = convertToHTML(editorState.getCurrentContent());
@@ -39,10 +124,38 @@ const Summary = () => {
       const response = await axios.post(`http://localhost:5000/Summary`, data, {
         "Content-Type": "application/json",
       });
-      if (response) {
-        navigate(`/read/kategori1/book/${fileId.id}`);
-      }
+
       console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+    try {
+      if (user) {
+        console.log(kategori);
+        const updatedData = {
+          seni: kategori.classification === "Seni" ? user.seni + 1 : user.seni,
+          sosial: kategori.classification === "Sosial" ? user.sosial + 1 : user.sosial,
+          sains: kategori.classification === "Sains" ? user.sains + 1 : user.sains,
+          sastra: kategori.classification === "Sastra" ? user.sastra + 1 : user.sastra,
+          bahasa: kategori.classification === "Bahasa" ? user.bahasa + 1 : user.bahasa,
+        };
+        console.log(updatedData);
+        if (updatedData) {
+          const response = await axios.patch(
+            `http://localhost:5000/userrec/${id.uuid}`,
+            updatedData,
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          console.log(response);
+          if (response) {
+            navigate(`/read/kategori1/book/${fileId.id}`);
+          }
+        }
+      }
     } catch (error) {
       console.log(error);
     }
@@ -96,7 +209,7 @@ const Summary = () => {
             </div>
 
             <div className="mb-6 w-full">
-              <label className="text-xl mb-2" htmlFor="content">
+              <label className="text-xl mb-2" >
                 Konten <span className="text-red-600">*</span>
               </label>
               <div className="border border-[#0868F9] mb-5">

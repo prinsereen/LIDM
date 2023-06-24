@@ -48,8 +48,8 @@ const Star = () => {
   return (
     <div>
       <Navbar />
-      <div className="flex flex-col ml-32 px-24">
-        <div className="flex justify-between w-full h-auto ">
+      <div className="flex flex-col w-[90%] mx-24 px-24">
+        <div className="flex justify-between  h-auto ">
           <div className="mt-12 w-3xl">
             <h1 className="font-bold text-4xl">Leaderboard</h1>
           </div>
@@ -62,7 +62,7 @@ const Star = () => {
         </div>
 
         <div className=" h-full bg-white mt-10 rounded-xl shadow-lg ">
-          <table className=" h-full w-full  bg-white  m-5 ">
+          <table className=" h-full w-[95%]  bg-white  m-5 ">
             <thead>
               <tr>
                 <th className="bg-white font-semibold text-left px-8 py-4 ">

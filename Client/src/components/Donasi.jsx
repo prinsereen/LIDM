@@ -8,7 +8,7 @@ import axios from "axios";
 const Donasi = () => {
   const [formData, setFormData] = useState({
     title: "",
-    classification: "",
+    classification: "Sains",
     status: "Draft",
     author: "",
     file_mp3: "",
