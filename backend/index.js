@@ -33,6 +33,7 @@ app.use(
       "http://localhost:5173",
       "https://literatur-production.up.railway.app",
     ],
+    allowedHeaders: ["Content-Type","Authorization"]
     
   })
 );
