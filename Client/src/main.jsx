@@ -7,7 +7,7 @@ import "./index.css";
 
 import axios from "axios";
 
-axios.defaults.withCredentials = true;
+/* axios.defaults.withCredentials = true; */
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   // <React.StrictMode>
