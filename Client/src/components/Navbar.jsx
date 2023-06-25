@@ -23,7 +23,7 @@ const Navbar = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://apiliterarur.ngrok.app/me");
+        const response = await axios.get("http://localhost:5000/me");
         console.log(response.data)
         setData(response.data);
       } catch (error) {

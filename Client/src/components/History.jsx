@@ -18,7 +18,7 @@ const History = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://apiliterarur.ngrok.app/UserSummary"
+          "http://localhost:5000/UserSummary"
         );
 
         setSummary(response.data);

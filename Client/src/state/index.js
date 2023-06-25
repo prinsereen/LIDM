@@ -14,7 +14,7 @@ export const LoginUser = createAsyncThunk(
   async (user, thunkAPI) => {
     try {
       const response = await axios.post(
-        "https://apiliterarur.ngrok.app/login",
+        "http://localhost:5000/login",
         {
           email: user.email,
           password: user.password,
@@ -32,7 +32,7 @@ export const LoginUser = createAsyncThunk(
 
 export const getMe = createAsyncThunk("user/getMe", async (thunkAPI) => {
   try {
-    const response = await axios.get("https://apiliterarur.ngrok.app/me");
+    const response = await axios.get("http://localhost:5000/me");
     return response.data;
   } catch (error) {
     if (error.response) {
@@ -43,7 +43,7 @@ export const getMe = createAsyncThunk("user/getMe", async (thunkAPI) => {
 });
 
 export const logOut = createAsyncThunk("user/logout", async (thunkAPI) => {
-  await axios.delete("https://apiliterarur.ngrok.app/logout");
+  await axios.delete("http://localhost:5000/logout");
 });
 
 export const authSlice = createSlice({

@@ -26,7 +26,8 @@ const store = new sessionStore({
 
 app.use(
   cors({
-    origin: "*",
+    credentials: true,
+    origin: ["http://localhost:5000", "http://localhost:5173"],
   })
 );
 
@@ -37,8 +38,8 @@ app.use(
     saveUninitialized: true,
     store: store,
     cookie: {
-      secure: true,
-      sameSite: 'none'
+      secure: true/* ,
+      sameSite: 'none' */
     },
   })
 );

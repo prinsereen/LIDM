@@ -15,7 +15,7 @@ const Star = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://apiliterarur.ngrok.app/LeaderBoard");
+        const response = await axios.get("http://localhost:5000/LeaderBoard");
 
         setLeaderboard(response.data);
       } catch (error) {

@@ -26,7 +26,7 @@ const Profile = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://apiliterarur.ngrok.app/users/${id}`
+          `http://localhost:5000/users/${id}`
         );
 
         setData(response.data);
@@ -47,7 +47,7 @@ const Profile = () => {
       try {
         if (data) {
           const response = await axios.get(
-            `https://apiliterarur.ngrok.app/userphoto/${id}`,
+            `http://localhost:5000/userphoto/${id}`,
             {
               responseType: "blob",
             }

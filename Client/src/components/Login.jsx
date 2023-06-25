@@ -27,6 +27,7 @@ const Login = () => {
     } else if (response.payload.role === "admin") {
       navigate(`/admin/${response.payload.uuid}`);
     }
+    console.log(payload)
 
     dispatch(reset());
   };

@@ -39,7 +39,7 @@ const KategoriBaca = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://apiliterarur.ngrok.app/PdfFiles"
+          "http://localhost:5000/PdfFiles"
         );
         setFiles(response.data);
       } catch (error) {
