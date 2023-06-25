@@ -27,9 +27,10 @@ const store = new sessionStore({
 
 app.use(
   cors({
-    credentials: true,
+    credentials: false,
     origin: "*",
     preflightContinue: true,
+
   })
 );
 
