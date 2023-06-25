@@ -80,6 +80,6 @@ app.post("/chatGpt", async (req, res) => {
 
 store.sync();
 
-app.listen(process.env.APP_PORT, () => {
+app.listen(process.env.PORT, "0.0.0.0", () => {
   console.log("server up and running");
 });
