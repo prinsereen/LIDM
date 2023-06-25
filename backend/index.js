@@ -50,6 +50,9 @@ app.use(
 );
 
 app.use(express.json());
+
+app.options('/users/:id', cors())
+app.options('/userrec/:id', cors())
 app.use(UserRoute);
 app.use(UnverifiedFileRoute);
 app.use(AuthRoute);
