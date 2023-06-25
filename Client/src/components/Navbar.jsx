@@ -13,9 +13,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [data, setData] = useState([]);
-  
 
-  
   const { user, isError, isSuccess, isLoading, message } = useSelector(
     (state) => state.auth
   );
@@ -23,8 +21,8 @@ const Navbar = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://apiliterarur.ngrok.app/me");
-        console.log(response.data)
+        const response = await axios.get("http://localhost:5000/me");
+        console.log(response.data);
         setData(response.data);
       } catch (error) {
         console.log(error);

@@ -32,7 +32,7 @@ const Summary = () => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get("https://apiliterarur.ngrok.app/me");
+        const response = await axios.get("http://localhost:5000/me");
         // console.log(response.data);
         setId(response.data);
       } catch (error) {
@@ -49,7 +49,7 @@ const Summary = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://apiliterarur.ngrok.app/users/${id.uuid}`
+          `http://localhost:5000/users/${id.uuid}`
         );
 
         setUser(response.data);
@@ -65,7 +65,7 @@ const Summary = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://apiliterarur.ngrok.app/Files/${fileId.id}`
+          `http://localhost:5000/Files/${fileId.id}`
         );
 
         setKategori(response.data);
@@ -92,7 +92,7 @@ const Summary = () => {
     setIsLoading(true);
     console.log(data);
     try {
-      const response = await axios.post(`https://apiliterarur.ngrok.app/Summary`, data, {
+      const response = await axios.post(`http://localhost:5000/Summary`, data, {
         "Content-Type": "application/json",
       });
 
@@ -123,7 +123,7 @@ const Summary = () => {
         console.log(updatedData);
         if (updatedData) {
           const response = await axios.patch(
-            `https://apiliterarur.ngrok.app/userrec/${id.uuid}`,
+            `http://localhost:5000/userrec/${id.uuid}`,
             updatedData,
             {
               headers: {
@@ -138,7 +138,7 @@ const Summary = () => {
       console.log(error);
     }
     try {
-      const response = await axios.get(`https://apiliterarur.ngrok.app/gettotal`);
+      const response = await axios.get(`http://localhost:5000/gettotal`);
       if (response) {
         navigate(`/read/kategori1/book/${fileId.id}`);
       }
@@ -231,8 +231,8 @@ const Summary = () => {
         {/* Show spinner while loading */}
         {isLoading && (
           <div className="fixed inset-0 flex items-center justify-center bg-opacity-75 bg-gray-500">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-        </div>
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+          </div>
         )}
       </div>
     </div>

@@ -19,7 +19,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await dispatch(LoginUser({ email, password }));
-
+    console.log(response)
     if (response.payload.role === "user") {
       navigate(`/profile/${response.payload.uuid}`);
     } else if (response.payload.role === "donatur") {

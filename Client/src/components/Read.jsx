@@ -9,12 +9,13 @@ import axios from "axios";
 const Read = () => {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
-  const { profileName, profilePhoto, setProfileName, setProfilePhoto } = useContext(ProfileContext);
+  const { profileName, profilePhoto, setProfileName, setProfilePhoto } =
+    useContext(ProfileContext);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://apiliterarur.ngrok.app/me");
+        const response = await axios.get("http://localhost:5000/me");
         // console.log(response.data);
         setData(response.data);
       } catch (error) {
@@ -25,7 +26,6 @@ const Read = () => {
     fetchData();
   }, []);
 
-
   useEffect(() => {
     // Retrieve the profile name from local storage on page load
     const storedProfileName = localStorage.getItem("profileName");
@@ -33,7 +33,6 @@ const Read = () => {
     if (storedProfileName && storedProfilePhoto) {
       setProfileName(storedProfileName);
       setProfilePhoto(storedProfilePhoto);
-
     }
   }, []);
 

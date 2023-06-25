@@ -9,7 +9,7 @@ import UnverifiedFileRoute from "./routes/FileRoute.js";
 import AuthRoute from "./routes/AuthRoute.js";
 import SummaryRoute from "./routes/SummaryRoute.js";
 import LeeaderBoardRoute from "./routes/LeaderBoardRoute.js";
-import { Configuration, OpenAIApi} from "openai";
+import { Configuration, OpenAIApi } from "openai";
 
 dotenv.config();
 
@@ -62,7 +62,7 @@ app.post("/chatGpt", async (req, res) => {
 
     const response = await openai.createCompletion({
       model: "text-davinci-003",
-      prompt:  `${prompt}`,
+      prompt: `${prompt}`,
       temperature: 1,
       max_tokens: 1000,
       top_p: 1,
@@ -71,8 +71,8 @@ app.post("/chatGpt", async (req, res) => {
     });
 
     res.status(200).send({
-       text : response.data.choices[0].text, 
-      });
+      text: response.data.choices[0].text,
+    });
   } catch (error) {
     res.status(500).json({ error: "An error occurred" });
   }

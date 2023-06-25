@@ -17,9 +17,7 @@ const History = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "https://apiliterarur.ngrok.app/UserSummary"
-        );
+        const response = await axios.get("http://localhost:5000/UserSummary");
 
         setSummary(response.data);
         console.log(response.data);

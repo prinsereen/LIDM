@@ -3,8 +3,7 @@ import User from "../models/UserModel.js";
 import File from "../models/FileModel.js";
 import { Op } from "sequelize";
 import axios from "axios";
-import pdfParser from "pdf-parser"
-
+import pdfParser from "pdf-parser";
 
 export const getSummary = async (req, res) => {
   try {
@@ -86,9 +85,8 @@ export const getSummaryById = async (req, res) => {
   }
 };
 
-
 export const getPdfByFileId = async (req, res) => {
-  const {uuid} = req.body
+  const { uuid } = req.body;
 
   const file = await File.findOne({
     where: {
@@ -99,39 +97,37 @@ export const getPdfByFileId = async (req, res) => {
   try {
     if (file) {
       let response = await File.findOne({
-        attributes: ['id', 'file_pdf'],
+        attributes: ["id", "file_pdf"],
         where: {
           uuid: uuid,
         },
-      })
+      });
       const filePath = response.file_pdf;
 
       pdfParser.pdf2json(filePath, function (error, pdf) {
-        if(error != null){
-            res.status(500).json({ msg: error.message })
-        }else{
-            const texts = pdf.pages.reduce((acc, page) => {
-              const pageTexts = page.texts.map(item => item.text);
-              return acc.concat(pageTexts);
-            }, []);
-            const response = texts
-            const responseJSON = JSON.stringify(response);
-            const cleanedString = responseJSON.replace(/["\\,]/g, '');
-            res.status(200).json({text : cleanedString})
+        if (error != null) {
+          res.status(500).json({ msg: error.message });
+        } else {
+          const texts = pdf.pages.reduce((acc, page) => {
+            const pageTexts = page.texts.map((item) => item.text);
+            return acc.concat(pageTexts);
+          }, []);
+          const response = texts;
+          const responseJSON = JSON.stringify(response);
+          const cleanedString = responseJSON.replace(/["\\,]/g, "");
+          res.status(200).json({ text: cleanedString });
         }
-    });
+      });
     } else {
       res.status(403).json({ msg: "File Not Found" });
     }
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
-}
-
-
+};
 
 export const createSummary = async (req, res) => {
-  const { summary, uuid } = req.body; 
+  const { summary, uuid } = req.body;
   const file = await File.findOne({
     where: {
       uuid: uuid,
@@ -139,69 +135,80 @@ export const createSummary = async (req, res) => {
   });
 
   try {
-    const file1 = await axios.post('http://localhost:5000/getPdfbyFileId', { uuid: uuid }, {
-      withCredentials: true,
-      headers: {
-        'Content-Type': 'application/json'
+    const file1 = await axios.post(
+      "http://localhost:5000/getPdfbyFileId",
+      { uuid: uuid },
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
-    });
-  
+    );
+
     const pdfData = file1.data.text;
-    const jaccard = await axios.post('https://web-production-083b.up.railway.app/jaccard-similarity', {file1: pdfData, file2:summary}, )
-    const jaccard_value  = jaccard.data.jaccard_similarity
-    
+    const jaccard = await axios.post(
+      "https://web-production-083b.up.railway.app/jaccard-similarity",
+      { file1: pdfData, file2: summary }
+    );
+    const jaccard_value = jaccard.data.jaccard_similarity;
 
     const options = {
-      method: 'POST',
-      url: 'https://sentimental2.p.rapidapi.com/Analyze',
+      method: "POST",
+      url: "https://sentimental2.p.rapidapi.com/Analyze",
       headers: {
-        'content-type': 'application/json',
-        'X-RapidAPI-Key': '8121cbed28msh7b4fdbcaade1734p171d43jsn71f6d6506073',
-        'X-RapidAPI-Host': 'sentimental2.p.rapidapi.com'
+        "content-type": "application/json",
+        "X-RapidAPI-Key": "8121cbed28msh7b4fdbcaade1734p171d43jsn71f6d6506073",
+        "X-RapidAPI-Host": "sentimental2.p.rapidapi.com",
       },
       data: {
-        Message: summary
-      }
+        Message: summary,
+      },
     };
-    
+
     const response = await axios.request(options);
 
-    const spam = response.data.result.spam
-    const grammar = response.data.result.grammar
-    const sentiment = response.data.result.sentiment
-    const violence = response.data.result.violence
-    const sexual = response.data.result.sexual
-    const scholarly = response.data.result.scholarly
+    const spam = response.data.result.spam;
+    const grammar = response.data.result.grammar;
+    const sentiment = response.data.result.sentiment;
+    const violence = response.data.result.violence;
+    const sexual = response.data.result.sexual;
+    const scholarly = response.data.result.scholarly;
 
-    const grade = await axios.post('https://web-production-4805.up.railway.app/grade', 
-    {jaccard: jaccard_value, 
-      spam:spam,
-      grammar:grammar,
-      sentiment:sentiment,
-      violence:violence,
-      sexual: sexual,
-      scholarly: scholarly}, 
-      {  
-      headers: {
-        'Content-Type': 'application/json'
-      }})
+    const grade = await axios.post(
+      "https://web-production-4805.up.railway.app/grade",
+      {
+        jaccard: jaccard_value,
+        spam: spam,
+        grammar: grammar,
+        sentiment: sentiment,
+        violence: violence,
+        sexual: sexual,
+        scholarly: scholarly,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     const aiSimilarity = {
-      method: 'GET',
-       url: 'https://ai-content-detector1.p.rapidapi.com/',
+      method: "GET",
+      url: "https://ai-content-detector1.p.rapidapi.com/",
       params: {
-        text: summary
+        text: summary,
       },
       headers: {
-        'X-RapidAPI-Key': '8121cbed28msh7b4fdbcaade1734p171d43jsn71f6d6506073',
-        'X-RapidAPI-Host': 'ai-content-detector1.p.rapidapi.com'
-      }
+        "X-RapidAPI-Key": "8121cbed28msh7b4fdbcaade1734p171d43jsn71f6d6506073",
+        "X-RapidAPI-Host": "ai-content-detector1.p.rapidapi.com",
+      },
     };
 
     let aiDetection = await axios.request(aiSimilarity);
-    aiDetection = aiDetection.data.fake_probability
-    let nilaiAkhir = grade.data.prediction
-    nilaiAkhir = nilaiAkhir - (nilaiAkhir*aiDetection)
+    aiDetection = aiDetection.data.fake_probability;
+    let nilaiAkhir = grade.data.prediction;
+    nilaiAkhir = nilaiAkhir - nilaiAkhir * aiDetection;
 
     if (req.role === "user") {
       await Summary.create({
@@ -209,24 +216,22 @@ export const createSummary = async (req, res) => {
         userId: req.userId,
         fileId: file.id,
         jaccard: jaccard_value,
-        spam:spam,
-        grammar:grammar,
-        sentiment:sentiment,
-        violence:violence,
+        spam: spam,
+        grammar: grammar,
+        sentiment: sentiment,
+        violence: violence,
         sexual: sexual,
         scholarly: scholarly,
-        aidetection : aiDetection,
-        grade: nilaiAkhir
+        aidetection: aiDetection,
+        grade: nilaiAkhir,
       });
       res.status(201).json({ msg: "Summary Created Succsessfully" });
     } else {
       res.status(403).json({ msg: "Access Forbidden" });
     }
-    
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
-  
 };
 
 export const getSummaryByUser = async (req, res) => {
@@ -235,17 +240,17 @@ export const getSummaryByUser = async (req, res) => {
     if (req.role === "user") {
       response = await Summary.findAll({
         attributes: [
-          "uuid", 
-          "summary", 
-          "grade", 
-          "createdAt", 
+          "uuid",
+          "summary",
+          "grade",
+          "createdAt",
           "jaccard",
           "spam",
           "grammar",
-          "violence", 
-          "sexual", 
+          "violence",
+          "sexual",
           "scholarly",
-          "aidetection"
+          "aidetection",
         ],
         include: [
           {
@@ -259,13 +264,13 @@ export const getSummaryByUser = async (req, res) => {
           },
         ],
       });
-      
+
       const feedbackedResponse = response.map((summary) => {
         const feedback = generateFeedback(summary.dataValues);
         summary.dataValues.feedback = feedback;
         return summary;
       });
-      
+
       res.status(200).json(feedbackedResponse);
     } else {
       return res.status(403).json({ msg: "Access Forbidden" });
@@ -301,14 +306,15 @@ const generateFeedback = (summary) => {
   }
 
   if (summary.scholarly >= 0 && summary.scholarly <= 5) {
-    feedback += "Kosa Kata Akademik dalam Summary Anda bisa ditingkatkan lagi. ";
+    feedback +=
+      "Kosa Kata Akademik dalam Summary Anda bisa ditingkatkan lagi. ";
   }
 
   if (summary.aidetection > 0.3) {
     feedback += "Ringkasan Anda Terindikasi Dibuat oleh AI ";
   }
 
-  return feedback.trim(); 
+  return feedback.trim();
 };
 
 export const getTotalScoreByUser = async (req, res) => {
@@ -316,30 +322,30 @@ export const getTotalScoreByUser = async (req, res) => {
     let response;
     if (req.role === "user") {
       response = await Summary.findAll({
-        attributes: [
-          "uuid",
-          "grade",
-        ],include: [
+        attributes: ["uuid", "grade"],
+        include: [
           {
             model: User,
             where: { id: req.userId }, // Filter by user ID
           },
         ],
-      },
-      );
+      });
       let totalGrade = response.reduce((total, item) => total + item.grade, 0);
-      totalGrade = totalGrade/response.length
+      totalGrade = totalGrade / response.length;
       const roundedGrade = parseFloat(totalGrade.toFixed(2));
 
-      await User.update({
-          score : roundedGrade
-      }, {
+      await User.update(
+        {
+          score: roundedGrade,
+        },
+        {
           where: {
-            id: req.userId
-          }
-      });
+            id: req.userId,
+          },
+        }
+      );
 
-      res.status(200).json({msg : "updated"});
+      res.status(200).json({ msg: "updated" });
     } else {
       return res.status(403).json({ msg: "Access Forbidden" });
     }

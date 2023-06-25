@@ -17,7 +17,7 @@ const Audio = () => {
   useEffect(() => {
     const fetchFileData = async () => {
       try {
-        const response = await axios.get(`https://apiliterarur.ngrok.app/Mp3/${id}`, {
+        const response = await axios.get(`http://localhost:5000/Mp3/${id}`, {
           responseType: "blob",
         });
         // var file = new File([response.data], "name");
@@ -38,7 +38,7 @@ const Audio = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`https://apiliterarur.ngrok.app/Files/${id}`);
+        const response = await axios.get(`http://localhost:5000/Files/${id}`);
         const datetimeString = await response.data.createdAt;
         const dateId = new Date(datetimeString);
         const options = { day: "numeric", month: "long", year: "numeric" };

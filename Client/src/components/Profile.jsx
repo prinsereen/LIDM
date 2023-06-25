@@ -25,9 +25,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `https://apiliterarur.ngrok.app/users/${id}`
-        );
+        const response = await axios.get(`http://localhost:5000/users/${id}`);
 
         setData(response.data);
 
@@ -47,7 +45,7 @@ const Profile = () => {
       try {
         if (data) {
           const response = await axios.get(
-            `https://apiliterarur.ngrok.app/userphoto/${id}`,
+            `http://localhost:5000/userphoto/${id}`,
             {
               responseType: "blob",
             }
@@ -71,10 +69,10 @@ const Profile = () => {
     fetchFileData();
   }, [id]);
 
-  // if (!data || !data.rek_description) {
-  //   // Render a loading state or return null if data is not available yet
-  //   return null;
-  // }
+  if (!data || !data.rek_description) {
+    // Render a loading state or return null if data is not available yet
+    return null;
+  }
 
   const {
     name,

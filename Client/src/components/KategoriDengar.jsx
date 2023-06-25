@@ -11,7 +11,8 @@ const KategoriDengar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterOption, setFilterOption] = useState("");
   const [files, setFiles] = useState([]);
-  const { profileName, profilePhoto, setProfileName, setProfilePhoto } = useContext(ProfileContext);
+  const { profileName, profilePhoto, setProfileName, setProfilePhoto } =
+    useContext(ProfileContext);
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -37,7 +38,7 @@ const KategoriDengar = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://apiliterarur.ngrok.app/Mp3Files");
+        const response = await axios.get("http://localhost:5000/Mp3Files");
         setFiles(response.data);
       } catch (error) {
         console.log(error);
@@ -54,7 +55,6 @@ const KategoriDengar = () => {
     if (storedProfileName && storedProfilePhoto) {
       setProfileName(storedProfileName);
       setProfilePhoto(storedProfilePhoto);
-
     }
   }, []);
 
