@@ -25,7 +25,16 @@ const store = new sessionStore({
   await db.sync();
 })();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5000",
+      "http://localhost:5173",
+      "https://literatur-production.up.railway.app",
+    ],
+    // allowedHeaders: 
+  })
+);
 
 app.use(
   session({
