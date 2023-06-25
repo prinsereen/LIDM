@@ -13,6 +13,8 @@ import { Configuration, OpenAIApi } from "openai";
 
 dotenv.config();
 
+const router = express.Router();
+
 const app = express();
 
 const sessionStore = sequelizeStore(session.Store);
@@ -37,6 +39,17 @@ app.use(
     methods: ["GET", "POST", "PATCH", "DELETE"],
   })
 );
+
+router.get("/", (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Max-Age", "1800");
+  res.setHeader("Access-Control-Allow-Headers", "content-type");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "PUT, POST, GET, DELETE, PATCH, OPTIONS"
+  );
+});
 
 app.use(
   session({
