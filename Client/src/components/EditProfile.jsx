@@ -57,7 +57,7 @@ const EditProfile = () => {
 
       // Send the patch request using Axios
       const response = await axios.patch(
-        `https://apiliterarur.ngrok.app/users/${id.id}`,
+        `http://localhost:5000/users/${id.id}`,
         formDataToSend,
         {
           headers: {

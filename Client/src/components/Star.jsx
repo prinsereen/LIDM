@@ -15,7 +15,7 @@ const Star = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://apiliterarur.ngrok.app/LeaderBoard");
+        const response = await axios.get("http://localhost:5000/LeaderBoard");
 
         setLeaderboard(response.data);
       } catch (error) {
@@ -36,10 +36,10 @@ const Star = () => {
     }
   }, []);
 
-  if (!leaderboard || !profileName || !profilePhoto) {
-    // Render a loading state or return null if data is not available yet
-    return null;
-  }
+  // if (!leaderboard || !profileName || !profilePhoto) {
+  //   // Render a loading state or return null if data is not available yet
+  //   return null;
+  // }
 
   return (
     <div>

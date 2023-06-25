@@ -18,7 +18,7 @@ const History = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://apiliterarur.ngrok.app/UserSummary"
+          "http://localhost:5000/UserSummary"
         );
 
         setSummary(response.data);
@@ -71,9 +71,9 @@ const History = () => {
   const endIndex = startIndex + itemsPerPage;
   const currentItems = summary.slice(startIndex, endIndex);
 
-  if (!profileName || !profilePhoto) {
-    return null;
-  }
+  // if (!profileName || !profilePhoto) {
+  //   return null;
+  // }
 
   return (
     <div>

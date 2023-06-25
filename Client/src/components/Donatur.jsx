@@ -31,7 +31,7 @@ const Donatur = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://apiliterarur.ngrok.app/Files");
+        const response = await axios.get("http://localhost:5000/Files");
 
         const donasiData = response.data.map((item) => {
           return {
