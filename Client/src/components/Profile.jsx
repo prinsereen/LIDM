@@ -25,7 +25,9 @@ const Profile = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/users/${id}`);
+        const response = await axios.get(
+          `https://lidm-production.up.railway.app/users/${id}`
+        );
 
         setData(response.data);
 
@@ -45,7 +47,7 @@ const Profile = () => {
       try {
         if (data) {
           const response = await axios.get(
-            `http://localhost:5000/userphoto/${id}`,
+            `https://lidm-production.up.railway.app/userphoto/${id}`,
             {
               responseType: "blob",
             }

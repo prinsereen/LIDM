@@ -19,9 +19,12 @@ const Book = () => {
   useEffect(() => {
     const fetchFileData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/Pdf/${id}`, {
-          responseType: "blob",
-        });
+        const response = await axios.get(
+          `https://lidm-production.up.railway.app/Pdf/${id}`,
+          {
+            responseType: "blob",
+          }
+        );
         const reader = new FileReader();
         reader.readAsDataURL(response.data);
         reader.onloadend = function () {
@@ -39,7 +42,9 @@ const Book = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/Files/${id}`);
+        const response = await axios.get(
+          `https://lidm-production.up.railway.app/Files/${id}`
+        );
         const datetimeString = response.data.createdAt;
         const dateId = new Date(datetimeString);
         const options = { day: "numeric", month: "long", year: "numeric" };

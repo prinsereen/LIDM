@@ -17,7 +17,9 @@ const History = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/UserSummary");
+        const response = await axios.get(
+          "https://lidm-production.up.railway.app/UserSummary"
+        );
 
         setSummary(response.data);
         console.log(response.data);

@@ -15,7 +15,9 @@ const Star = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/LeaderBoard");
+        const response = await axios.get(
+          "https://lidm-production.up.railway.app/LeaderBoard"
+        );
 
         setLeaderboard(response.data);
       } catch (error) {

@@ -38,7 +38,9 @@ const KategoriDengar = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/Mp3Files");
+        const response = await axios.get(
+          "https://lidm-production.up.railway.app/Mp3Files"
+        );
         setFiles(response.data);
       } catch (error) {
         console.log(error);

@@ -41,7 +41,9 @@ const Admin = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/Files");
+        const response = await axios.get(
+          "https://lidm-production.up.railway.app/Files"
+        );
 
         const donasiData = response.data.map((item) => {
           return {
@@ -124,17 +126,19 @@ const Admin = () => {
 
   const handleUpdateStatus = async (uuid, classification, status) => {
     try {
-      const response = await axios.patch(`http://localhost:5000/Files/${uuid}`, {
-        classification,
-        status
-      });
+      const response = await axios.patch(
+        `https://lidm-production.up.railway.app/Files/${uuid}`,
+        {
+          classification,
+          status,
+        }
+      );
       console.log(response.data);
       window.location.reload();
     } catch (error) {
       console.log(error);
     }
   };
-  
 
   return (
     <div>
@@ -265,7 +269,15 @@ const Admin = () => {
                             }
                           })()}
                         </select>
-                        <button onClick={() => handleUpdateStatus(data.uuid, data.classification, selectedValue[index])}>
+                        <button
+                          onClick={() =>
+                            handleUpdateStatus(
+                              data.uuid,
+                              data.classification,
+                              selectedValue[index]
+                            )
+                          }
+                        >
                           <img src={paper} />
                         </button>
                       </td>

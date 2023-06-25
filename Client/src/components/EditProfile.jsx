@@ -57,7 +57,7 @@ const EditProfile = () => {
 
       // Send the patch request using Axios
       const response = await axios.patch(
-        `http://localhost:5000/users/${id.id}`,
+        `https://lidm-production.up.railway.app/users/${id.id}`,
         formDataToSend,
         {
           headers: {

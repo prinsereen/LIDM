@@ -136,7 +136,7 @@ export const createSummary = async (req, res) => {
 
   try {
     const file1 = await axios.post(
-      "http://localhost:5000/getPdfbyFileId",
+      "https://lidm-production.up.railway.app/getPdfbyFileId",
       { uuid: uuid },
       {
         withCredentials: true,

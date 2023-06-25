@@ -32,7 +32,9 @@ const Summary = () => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get("http://localhost:5000/me");
+        const response = await axios.get(
+          "https://lidm-production.up.railway.app/me"
+        );
         // console.log(response.data);
         setId(response.data);
       } catch (error) {
@@ -49,7 +51,7 @@ const Summary = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/users/${id.uuid}`
+          `https://lidm-production.up.railway.app/users/${id.uuid}`
         );
 
         setUser(response.data);
@@ -65,7 +67,7 @@ const Summary = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/Files/${fileId.id}`
+          `https://lidm-production.up.railway.app/Files/${fileId.id}`
         );
 
         setKategori(response.data);
@@ -92,9 +94,13 @@ const Summary = () => {
     setIsLoading(true);
     console.log(data);
     try {
-      const response = await axios.post(`http://localhost:5000/Summary`, data, {
-        "Content-Type": "application/json",
-      });
+      const response = await axios.post(
+        `https://lidm-production.up.railway.app/Summary`,
+        data,
+        {
+          "Content-Type": "application/json",
+        }
+      );
 
       console.log(response);
     } catch (error) {
@@ -123,7 +129,7 @@ const Summary = () => {
         console.log(updatedData);
         if (updatedData) {
           const response = await axios.patch(
-            `http://localhost:5000/userrec/${id.uuid}`,
+            `https://lidm-production.up.railway.app/userrec/${id.uuid}`,
             updatedData,
             {
               headers: {
@@ -138,7 +144,9 @@ const Summary = () => {
       console.log(error);
     }
     try {
-      const response = await axios.get(`http://localhost:5000/gettotal`);
+      const response = await axios.get(
+        `https://lidm-production.up.railway.app/gettotal`
+      );
       if (response) {
         navigate(`/read/kategori1/book/${fileId.id}`);
       }

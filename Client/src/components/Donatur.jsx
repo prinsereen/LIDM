@@ -31,7 +31,9 @@ const Donatur = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/Files");
+        const response = await axios.get(
+          "https://lidm-production.up.railway.app/Files"
+        );
 
         const donasiData = response.data.map((item) => {
           return {
