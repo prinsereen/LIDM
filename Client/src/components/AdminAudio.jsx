@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { profile, user, cover, play, logo, library } from "../assets";
 import { useContext } from "react";
 import { ProfileContext } from "../app/ProfileContext";
+import { logOut, reset, getMe } from "../state/index.js";
 import { useDispatch } from "react-redux";
 import Navbar from "./Navbar";
 import axios from "axios";

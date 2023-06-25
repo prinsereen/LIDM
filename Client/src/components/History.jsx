@@ -71,9 +71,9 @@ const History = () => {
   const endIndex = startIndex + itemsPerPage;
   const currentItems = summary.slice(startIndex, endIndex);
 
-  if (!profileName || !profilePhoto) {
-    return null;
-  }
+  // if (!profileName || !profilePhoto) {
+  //   return null;
+  // }
 
   return (
     <div>

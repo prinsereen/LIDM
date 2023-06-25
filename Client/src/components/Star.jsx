@@ -38,10 +38,10 @@ const Star = () => {
     }
   }, []);
 
-  if (!leaderboard || !profileName || !profilePhoto) {
-    // Render a loading state or return null if data is not available yet
-    return null;
-  }
+  // if (!leaderboard || !profileName || !profilePhoto) {
+  //   // Render a loading state or return null if data is not available yet
+  //   return null;
+  // }
 
   return (
     <div>
