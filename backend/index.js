@@ -29,7 +29,7 @@ app.use(
   cors({
     credentials: true,
     origin: "*",
-    preflightContinue: false,
+    preflightContinue: true,
   })
 );
 
