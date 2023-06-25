@@ -13,6 +13,7 @@ import { Configuration, OpenAIApi } from "openai";
 
 dotenv.config();
 
+
 const app = express();
 
 const sessionStore = sequelizeStore(session.Store);
