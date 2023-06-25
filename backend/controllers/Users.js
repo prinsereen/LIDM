@@ -1,5 +1,5 @@
 import Users from "../models/UserModel.js";
-import argon2 from "argon2";
+import bcrypt from "bcrypt";
 import axios from "axios";
 import fs from "fs"
 
@@ -108,44 +108,52 @@ export const getUserById = async (req, res) => {
   };
   
 
-export const createUser = async(req, res ) => {
-    const {name, email, password, confPassword, role} = req.body;
-    if (password !== confPassword) return res.status(400).json({msg : "Password and Confirmation Password not match"});
-    const hashPassword = await argon2.hash(password);
 
-    // Check if email already exists in database
-    const user = await Users.findOne({
-        where: {
-            email: req.body.email
-        }
-    })
-    if (user) {
-        return res.status(400).json({ msg: 'Email already registered' });
-    }
-
-    try {
-        await Users.create({
-            name: name,
-            email: email,
-            password: hashPassword,
-            role: role,
-            asal_instansi: null,
-            jenjang: null,
-            tanggal_lahir: null,
-            user_photo: null,
-            seni: 0,
-            sosial: 0,
-            sains: 0,
-            sastra: 0,
-            bahasa: 0,
-            score: 0,
-            rekomendasi_kompetisi: -1
-        });
-        res.status(201).json({msg : "Registered"});
-    } catch (error) {
-        res.status(400).json({msg: error.message});
-    }
-};
+  export const createUser = async (req, res) => {
+      const { name, email, password, confPassword, role } = req.body;
+      if (password !== confPassword) {
+          return res.status(400).json({ msg: "Password and Confirmation Password do not match" });
+      }
+  
+      try {
+          // Check if email already exists in the database
+          const user = await Users.findOne({
+              where: {
+                  email: req.body.email
+              }
+          });
+          if (user) {
+              return res.status(400).json({ msg: 'Email already registered' });
+          }
+  
+          // Hash the password using bcrypt
+          const saltRounds = 10;
+          const hashPassword = await bcrypt.hash(password, saltRounds);
+  
+          await Users.create({
+              name: name,
+              email: email,
+              password: hashPassword,
+              role: role,
+              asal_instansi: null,
+              jenjang: null,
+              tanggal_lahir: null,
+              user_photo: null,
+              seni: 0,
+              sosial: 0,
+              sains: 0,
+              sastra: 0,
+              bahasa: 0,
+              score: 0,
+              rekomendasi_kompetisi: -1
+          });
+  
+          res.status(201).json({ msg: "Registered" });
+      } catch (error) {
+          res.status(400).json({ msg: error.message });
+      }
+  };
+  
 
 
 export const updateUser = async(req, res ) => {
