@@ -13,7 +13,6 @@ import { Configuration, OpenAIApi } from "openai";
 
 dotenv.config();
 
-
 const app = express();
 
 const sessionStore = sequelizeStore(session.Store);
@@ -79,7 +78,7 @@ app.post("/chatGpt", async (req, res) => {
   }
 });
 
-/* store.sync() */
+store.sync();
 
 app.listen(process.env.APP_PORT, () => {
   console.log("server up and running");
