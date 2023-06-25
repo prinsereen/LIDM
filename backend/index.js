@@ -33,8 +33,8 @@ app.use(
       "http://localhost:5173",
       "https://literatur-production.up.railway.app",
     ],
-    allowedHeaders: ["Content-Type","Authorization"]
-    
+    allowedHeaders: ["Content-Type"],
+    methods: ["GET", "POST", "PATCH", "DELETE"],
   })
 );
 
@@ -52,8 +52,8 @@ app.use(
 
 app.use(express.json());
 
-app.options('/users/:id', cors())
-app.options('/userrec/:id', cors())
+app.options("/users/:id", cors());
+app.options("/userrec/:id", cors());
 app.use(UserRoute);
 app.use(UnverifiedFileRoute);
 app.use(AuthRoute);
