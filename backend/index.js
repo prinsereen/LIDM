@@ -28,7 +28,11 @@ const store = new sessionStore({
 app.use(
   cors({
     credentials: true,
-    origin: ["http://localhost:5000", "http://localhost:5173", ],
+    origin: [
+      "http://localhost:5000",
+      "http://localhost:5173",
+      "https://literatur-production.up.railway.app/",
+    ],
   })
 );
 
