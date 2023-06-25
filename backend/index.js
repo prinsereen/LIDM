@@ -26,9 +26,7 @@ const store = new sessionStore({
 })();
 
 app.use(
-  cors({
-    credentials: true,
-  })
+  cors()
 );
 
 app.use(
