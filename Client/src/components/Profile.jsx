@@ -71,10 +71,10 @@ const Profile = () => {
     fetchFileData();
   }, [id]);
 
-  if (!data || !data.rek_description) {
-    // Render a loading state or return null if data is not available yet
-    return null;
-  }
+  // if (!data || !data.rek_description) {
+  //   // Render a loading state or return null if data is not available yet
+  //   return null;
+  // }
 
   const {
     name,
