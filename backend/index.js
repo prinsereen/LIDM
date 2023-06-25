@@ -25,14 +25,7 @@ const store = new sessionStore({
   await db.sync();
 })();
 
-app.use(
-  cors({
-    credentials: false,
-    origin: "*",
-    preflightContinue: true,
-
-  })
-);
+app.use(cors());
 
 app.use(
   session({
