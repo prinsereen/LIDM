@@ -9,7 +9,6 @@ import UnverifiedFileRoute from "./routes/FileRoute.js";
 import AuthRoute from "./routes/AuthRoute.js";
 import SummaryRoute from "./routes/SummaryRoute.js";
 import LeeaderBoardRoute from "./routes/LeaderBoardRoute.js";
-// const PDFDocument = require("pdfkit");
 
 dotenv.config();
 
@@ -21,14 +20,14 @@ const store = new sessionStore({
   db: db,
 });
 
-/*  (async () => {
-   await db.sync();
- })(); */
+// (async () => {
+//   await db.sync();
+// })();
 
 app.use(
   cors({
     credentials: true,
-    origin: ["http://localhost:5173", "http://localhost:5000"],
+    origin: ["http://localhost:5000", "http://localhost:5173"],
   })
 );
 
@@ -39,11 +38,11 @@ app.use(
     saveUninitialized: true,
     store: store,
     cookie: {
-      secure: "auto",
+      secure: true/* ,
+      sameSite: 'none' */
     },
   })
 );
-
 
 app.use(express.json());
 app.use(UserRoute);
@@ -51,7 +50,6 @@ app.use(UnverifiedFileRoute);
 app.use(AuthRoute);
 app.use(SummaryRoute);
 app.use(LeeaderBoardRoute);
-
 
 
 /* store.sync() */

@@ -133,10 +133,12 @@ export const createUser = async(req, res ) => {
             jenjang: null,
             tanggal_lahir: null,
             user_photo: null,
+            seni: 0,
             sosial: 0,
             sains: 0,
             sastra: 0,
             bahasa: 0,
+            score: 0,
             rekomendasi_kompetisi: -1
         });
         res.status(201).json({msg : "Registered"});
@@ -205,7 +207,7 @@ export const updateRecomendation = async (req, res) => {
     };
 
     try {
-      const response = await axios.post('https://48da-104-199-113-173.ngrok.io/rekomendation', JSON.stringify(postData), {
+      const response = await axios.post('https://web-production-2f9a.up.railway.app/rekomendation', JSON.stringify(postData), {
         headers: {
           'Content-Type': 'application/json',
         },

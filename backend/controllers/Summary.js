@@ -2,7 +2,6 @@ import Summary from "../models/Summary.js";
 import User from "../models/UserModel.js";
 import File from "../models/FileModel.js";
 import { Op } from "sequelize";
-import fs from "fs";
 import axios from "axios";
 import pdfParser from "pdf-parser"
 
@@ -89,11 +88,11 @@ export const getSummaryById = async (req, res) => {
 
 
 export const getPdfByFileId = async (req, res) => {
-  const {fileId} = req.body
+  const {uuid} = req.body
 
   const file = await File.findOne({
     where: {
-      id: fileId,
+      uuid: uuid,
     },
   });
 
@@ -102,7 +101,7 @@ export const getPdfByFileId = async (req, res) => {
       let response = await File.findOne({
         attributes: ['id', 'file_pdf'],
         where: {
-          id: fileId,
+          uuid: uuid,
         },
       })
       const filePath = response.file_pdf;
@@ -132,16 +131,15 @@ export const getPdfByFileId = async (req, res) => {
 
 
 export const createSummary = async (req, res) => {
-  const { summary, fileId } = req.body; // Perlu Konfigurasi Nanti ketika fetch api ML
-  // console.log(fileId);
+  const { summary, uuid } = req.body; 
   const file = await File.findOne({
     where: {
-      id: fileId,
+      uuid: uuid,
     },
   });
 
   try {
-    const file1 = await axios.post('http://localhost:5000/getPdfbyFileId', { fileId: fileId }, {
+    const file1 = await axios.post('http://localhost:5000/getPdfbyFileId', { uuid: uuid }, {
       withCredentials: true,
       headers: {
         'Content-Type': 'application/json'
@@ -149,28 +147,86 @@ export const createSummary = async (req, res) => {
     });
   
     const pdfData = file1.data.text;
-    console.log(pdfData);
-    const jaccard = await axios.post('https://0dd1-34-82-155-60.ngrok.io/jaccard-similarity', {file1: pdfData, file2:summary}, )
-    console.log(jaccard.data.jaccard_similarity)
-  } catch (error) {
-    console.error('Error retrieving the PDF:', error);
-  }
+    const jaccard = await axios.post('https://web-production-083b.up.railway.app/jaccard-similarity', {file1: pdfData, file2:summary}, )
+    const jaccard_value  = jaccard.data.jaccard_similarity
+    
 
-  try {
+    const options = {
+      method: 'POST',
+      url: 'https://sentimental2.p.rapidapi.com/Analyze',
+      headers: {
+        'content-type': 'application/json',
+        'X-RapidAPI-Key': '8121cbed28msh7b4fdbcaade1734p171d43jsn71f6d6506073',
+        'X-RapidAPI-Host': 'sentimental2.p.rapidapi.com'
+      },
+      data: {
+        Message: summary
+      }
+    };
+    
+    const response = await axios.request(options);
+
+    const spam = response.data.result.spam
+    const grammar = response.data.result.grammar
+    const sentiment = response.data.result.sentiment
+    const violence = response.data.result.violence
+    const sexual = response.data.result.sexual
+    const scholarly = response.data.result.scholarly
+
+    const grade = await axios.post('https://web-production-4805.up.railway.app/grade', 
+    {jaccard: jaccard_value, 
+      spam:spam,
+      grammar:grammar,
+      sentiment:sentiment,
+      violence:violence,
+      sexual: sexual,
+      scholarly: scholarly}, 
+      {  
+      headers: {
+        'Content-Type': 'application/json'
+      }})
+
+    const aiSimilarity = {
+      method: 'GET',
+       url: 'https://ai-content-detector1.p.rapidapi.com/',
+      params: {
+        text: summary
+      },
+      headers: {
+        'X-RapidAPI-Key': '8121cbed28msh7b4fdbcaade1734p171d43jsn71f6d6506073',
+        'X-RapidAPI-Host': 'ai-content-detector1.p.rapidapi.com'
+      }
+    };
+
+    let aiDetection = await axios.request(aiSimilarity);
+    aiDetection = aiDetection.data.fake_probability
+    let nilaiAkhir = grade.data.prediction
+    nilaiAkhir = nilaiAkhir - (nilaiAkhir*aiDetection)
+
     if (req.role === "user") {
       await Summary.create({
         summary: summary,
         userId: req.userId,
-        grade: null,
         fileId: file.id,
+        jaccard: jaccard_value,
+        spam:spam,
+        grammar:grammar,
+        sentiment:sentiment,
+        violence:violence,
+        sexual: sexual,
+        scholarly: scholarly,
+        aidetection : aiDetection,
+        grade: nilaiAkhir
       });
       res.status(201).json({ msg: "Summary Created Succsessfully" });
     } else {
       res.status(403).json({ msg: "Access Forbidden" });
     }
+    
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
+  
 };
 
 export const getSummaryByUser = async (req, res) => {
@@ -178,7 +234,19 @@ export const getSummaryByUser = async (req, res) => {
     let response;
     if (req.role === "user") {
       response = await Summary.findAll({
-        attributes: ["uuid", "summary", "grade", "createdAt"],
+        attributes: [
+          "uuid", 
+          "summary", 
+          "grade", 
+          "createdAt", 
+          "jaccard",
+          "spam",
+          "grammar",
+          "violence", 
+          "sexual", 
+          "scholarly",
+          "aidetection"
+        ],
         include: [
           {
             model: User,
@@ -191,11 +259,90 @@ export const getSummaryByUser = async (req, res) => {
           },
         ],
       });
+      
+      const feedbackedResponse = response.map((summary) => {
+        const feedback = generateFeedback(summary.dataValues);
+        summary.dataValues.feedback = feedback;
+        return summary;
+      });
+      
+      res.status(200).json(feedbackedResponse);
     } else {
       return res.status(403).json({ msg: "Access Forbidden" });
     }
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
 
-    res.status(200).json(response);
+const generateFeedback = (summary) => {
+  let feedback = "";
+
+  if (summary.jaccard === 0) {
+    feedback += "Summary Anda Tidak memiliki Kemiripan dengan Bacaan. ";
+  } else if (summary.jaccard > 0.4) {
+    feedback += "Summary Terlalu Mirip dengan Bacaan Asli. ";
+  }
+
+  if (summary.spam > 0 && summary.spam <= 5) {
+    feedback += "Summary Anda Terindikasi Spam Ringan. ";
+  } else if (summary.spam > 5 && summary.spam <= 10) {
+    feedback += "Summary Anda Terindikasi Spam Berat. ";
+  }
+
+  if (summary.violence > 0 && summary.violence <= 5) {
+    feedback += "Summary Anda Terindikasi violence Ringan. ";
+  } else if (summary.violence > 5 && summary.violence <= 10) {
+    feedback += "Summary Anda Terindikasi violence Berat. ";
+  }
+
+  if (summary.grammar >= 0 && summary.grammar <= 5) {
+    feedback += "Grammar dalam Summary Anda bisa ditingkatkan lagi. ";
+  }
+
+  if (summary.scholarly >= 0 && summary.scholarly <= 5) {
+    feedback += "Kosa Kata Akademik dalam Summary Anda bisa ditingkatkan lagi. ";
+  }
+
+  if (summary.aidetection > 0.3) {
+    feedback += "Ringkasan Anda Terindikasi Dibuat oleh AI ";
+  }
+
+  return feedback.trim(); 
+};
+
+export const getTotalScoreByUser = async (req, res) => {
+  try {
+    let response;
+    if (req.role === "user") {
+      response = await Summary.findAll({
+        attributes: [
+          "uuid",
+          "grade",
+        ],include: [
+          {
+            model: User,
+            where: { id: req.userId }, // Filter by user ID
+          },
+        ],
+      },
+      );
+      let totalGrade = response.reduce((total, item) => total + item.grade, 0);
+      totalGrade = totalGrade/response.length
+      const roundedGrade = parseFloat(totalGrade.toFixed(2));
+
+      await User.update({
+          score : roundedGrade
+      }, {
+          where: {
+            id: req.userId
+          }
+      });
+
+      res.status(200).json({msg : "updated"});
+    } else {
+      return res.status(403).json({ msg: "Access Forbidden" });
+    }
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }

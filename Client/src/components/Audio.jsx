@@ -1,7 +1,9 @@
-import Navbar from "./Navbar";
-import { Link, useParams } from "react-router-dom";
-import { profile, user, cover, play } from "../assets";
 import React, { useEffect, useState, useRef } from "react";
+import { Link, useParams } from "react-router-dom";
+import { profile, user, cover, play, paper, bot } from "../assets";
+import { useContext } from "react";
+import { ProfileContext } from "../app/ProfileContext";
+import Navbar from "./Navbar";
 import axios from "axios";
 
 const Audio = () => {
@@ -9,6 +11,8 @@ const Audio = () => {
   const { id } = useParams();
   const [data, setData] = useState();
   const [date, setDate] = useState();
+  const { profileName, profilePhoto, setProfileName, setProfilePhoto } =
+    useContext(ProfileContext);
 
   useEffect(() => {
     const fetchFileData = async () => {
@@ -98,6 +102,58 @@ const Audio = () => {
     };
   }, []);
 
+  useEffect(() => {
+    // Retrieve the profile name from local storage on page load
+    const storedProfileName = localStorage.getItem("profileName");
+    const storedProfilePhoto = localStorage.getItem("profilePhoto");
+    if (storedProfileName && storedProfilePhoto) {
+      setProfileName(storedProfileName);
+      setProfilePhoto(storedProfilePhoto);
+    }
+  }, []);
+
+  const [chatHistory, setChatHistory] = useState([]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const userMessage = e.target.prompt.value;
+    e.target.reset();
+
+    const userStripe = {
+      isAi: false,
+      value: userMessage,
+    };
+
+    setChatHistory((prevHistory) => [...prevHistory, userStripe]);
+
+    const options = {
+      method: "POST",
+      url: "https://chatgpt-api7.p.rapidapi.com/ask",
+      headers: {
+        "content-type": "application/json",
+        "X-RapidAPI-Key": import.meta.env.VITE_API_KEY,
+        "X-RapidAPI-Host": "chatgpt-api7.p.rapidapi.com",
+      },
+      data: {
+        query: userMessage,
+      },
+    };
+
+    try {
+      const response = await axios.request(options);
+      const botMessage = response.data.response;
+
+      const botStripe = {
+        isAi: true,
+        value: botMessage,
+      };
+
+      setChatHistory((prevHistory) => [...prevHistory, botStripe]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div>
       <Navbar />
@@ -113,9 +169,9 @@ const Audio = () => {
               {/* <h1 className=" text-xl">Kategori: {data.classification}</h1> */}
             </div>
             <div className="flex mt-9 ml-52 items-center absolute right-20 ">
-              <img src={profile} alt="profile" className="w-16 h-16" />
+              <img src={profilePhoto} alt="profile" className="w-16 h-16" />
               <Link to="/profile">
-                <h1 className="px-5">Yusnita</h1>
+                <h1 className="px-5">{profileName}</h1>
               </Link>
             </div>
           </div>
@@ -156,6 +212,45 @@ const Audio = () => {
               onClick={handlePlayPause}
               className="self-start cursor-pointer"
             />
+          </div>
+          <div className="bg-white w-[25%] h-[500px] fixed right-5 bottom-0 flex flex-col ">
+            <h1 className="text-3xl absolute top-3 w-full text-center">
+              ChatGPT
+            </h1>
+            <div className="flex flex-col justify-start items-start h-[320px] gap-2 px-5 my-20 overflow-y-auto">
+              {chatHistory.map((stripe, idx) => (
+                <div
+                  key={idx}
+                  className={`flex items-start ${
+                    stripe.isAi ? "bg-gray-200" : "bg-blue-200"
+                  } p-2 rounded-lg w-full  `}
+                >
+                  <div className="flex  justify-center items-start">
+                    <img
+                      src={stripe.isAi ? bot : profilePhoto}
+                      alt={stripe.isAi ? "bot" : "user"}
+                      className="w-8 h-8 my-1 mx-3"
+                    />
+                  </div>
+                  <div className="max-w-[80%]">{stripe.value}</div>
+                </div>
+              ))}
+            </div>
+            <div className="flex gap-3 justify-center absolute bottom-5 items-center w-full">
+              <form onSubmit={handleSubmit}>
+                <textarea
+                  name="prompt"
+                  rows="1"
+                  cols="30"
+                  wrap="hard"
+                  placeholder="Ketikkan pertanyaan"
+                  className="py-2 px-3 shadow-lg border-2"
+                ></textarea>
+                <button type="submit">
+                  <img src={paper} className="m-1" alt="paper" />
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       )}

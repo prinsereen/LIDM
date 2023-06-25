@@ -13,10 +13,13 @@ export const LoginUser = createAsyncThunk(
   "user/LoginUser",
   async (user, thunkAPI) => {
     try {
-      const response = await axios.post("http://localhost:5000/login", {
-        email: user.email,
-        password: user.password,
-      });
+      const response = await axios.post(
+        "http://localhost:5000/login",
+        {
+          email: user.email,
+          password: user.password,
+        }
+      );
       return response.data;
     } catch (error) {
       if (error.response) {
@@ -80,7 +83,6 @@ export const authSlice = createSlice({
       });
   },
 });
-
 
 export const { reset } = authSlice.actions;
 export default authSlice.reducer;

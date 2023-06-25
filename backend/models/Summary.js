@@ -22,9 +22,61 @@ const Summary = db.define('summary', {
             notEmpty: true
         }
     },
-    grade:{
+    jaccard:{
         type: DataTypes.INTEGER,
-        allowNull: true
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
+    },
+    spam:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
+    },
+    grammar:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
+    },
+    violence:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
+    },
+    sexual:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
+    },
+    scholarly:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
+    },
+    aidetection:{
+        type: DataTypes.FLOAT,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
+    },
+    grade:{
+        type: DataTypes.FLOAT,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
     },
     userId:{
         type: DataTypes.INTEGER,
