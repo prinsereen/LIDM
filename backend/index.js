@@ -27,29 +27,29 @@ const store = new sessionStore({
   await db.sync();
 })();
 
-// app.use(
-//   cors({
-//     credentials: true,
-//     origin: [
-//       "http://localhost:5000",
-//       "http://localhost:5173",
-//       "https://literatur-production.up.railway.app",
-//     ],
-//     allowedHeaders: ["Content-Type"],
-//     methods: ["GET", "POST", "PATCH", "DELETE"],
-//   })
-// );
+app.use(
+  cors({
+    credentials: true,
+    origin: [
+      "http://localhost:5000",
+      "http://localhost:5173",
+      "https://literatur-production.up.railway.app",
+    ],
+    allowedHeaders: ["Content-Type"],
+    methods: ["GET", "POST", "PATCH", "DELETE"],
+  })
+);
 
-router.get("/", (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  res.setHeader("Access-Control-Max-Age", "1800");
-  res.setHeader("Access-Control-Allow-Headers", "content-type");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "PUT, POST, GET, DELETE, PATCH, OPTIONS"
-  );
-});
+// router.get("/", (req, res) => {
+//   res.setHeader("Access-Control-Allow-Origin", "*");
+//   res.setHeader("Access-Control-Allow-Credentials", "true");
+//   res.setHeader("Access-Control-Max-Age", "1800");
+//   res.setHeader("Access-Control-Allow-Headers", "content-type");
+//   res.setHeader(
+//     "Access-Control-Allow-Methods",
+//     "PUT, POST, GET, DELETE, PATCH, OPTIONS"
+//   );
+// });
 
 app.use(
   session({
