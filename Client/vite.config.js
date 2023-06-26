@@ -6,4 +6,5 @@ export default defineConfig({
   plugins: [react()],
   appType: "spa",
   base: "/",
+  host: "0.0.0.0",
 });
