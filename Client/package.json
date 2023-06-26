@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "npx  http-server HOST=localhost ./dist ",
+    "start": "npx  http-server -a 0.0.0.0 ./dist ",
     "dev": "vite --host 0.0.0.0 ",
     "build": "vite build",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
