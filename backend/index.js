@@ -17,6 +17,22 @@ const router = express.Router();
 
 const app = express();
 
+const allowedOrigins = [
+  'http://localhost:5000',
+  'http://localhost:5173',
+  'https://literatur-production.up.railway.app'
+];
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    allowedHeaders: ['Content-Type'],
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+    credentials: true
+  })
+);
+
+
 const sessionStore = sequelizeStore(session.Store);
 
 const store = new sessionStore({
@@ -40,25 +56,7 @@ const store = new sessionStore({
 //   })
 // );
 
-app.use(function(req, res, next) {
-  const allowedOrigins = [
-    "http://localhost:5000",
-    "http://localhost:5173",
-    "https://literatur-production.up.railway.app"
-  ];
 
-  const origin = req.headers.origin;
-
-  if (allowedOrigins.includes(origin)) {
-    res.header("Access-Control-Allow-Origin", origin);
-  }
-
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
-  res.header("Access-Control-Allow-Credentials", "true");
-
-  next();
-});
 
 
 // router.get("/", (req, res) => {
