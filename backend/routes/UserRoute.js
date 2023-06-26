@@ -40,9 +40,9 @@ router.get("/users/:id", verifyUser, getUserById);
 router.post("/users", createUser);
 router.patch(
   "/users/:id",
-  cors(),
   verifyUser,
   upload.single("user_photo"),
+  cors(),
   updateUser
 );
 router.patch("/userrec/:id", cors(), verifyUser, updateRecomendation);
