@@ -22,7 +22,7 @@ const allowedOrigins = [
   "http://localhost:5000",
   "http://localhost:5173",
   "https://literatur-production.up.railway.app",
-  "https://literatur.netlify.app"
+  "https://literatur.netlify.app",
 ];
 
 app.use(
@@ -33,14 +33,6 @@ app.use(
     credentials: true,
   })
 );
-
-// Serve static files from the 'dist' directory
-app.use(express.static(path.join(__dirname, "dist")));
-
-// Route all requests to index.html
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "dist", "index.html"));
-});
 
 const sessionStore = sequelizeStore(session.Store);
 
@@ -106,6 +98,14 @@ app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", origin);
   }
   next();
+});
+
+// Serve static files from the 'dist' directory
+app.use(express.static(path.join(__dirname, "dist")));
+
+// Route all requests to index.html
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
 
 app.listen(process.env.PORT, "0.0.0.0", () => {
