@@ -100,14 +100,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// Serve static files from the 'dist' directory
-app.use(express.static(path.join(__dirname, "dist")));
-
-// Route all requests to index.html
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "dist", "index.html"));
-});
-
 app.listen(process.env.PORT, "0.0.0.0", () => {
   console.log("server up and running");
 });
