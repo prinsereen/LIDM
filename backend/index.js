@@ -17,6 +17,7 @@ const router = express.Router();
 
 const app = express();
 
+// Allow CORS for specific origins
 const allowedOrigins = [
   'http://localhost:5000',
   'http://localhost:5173',
@@ -120,6 +121,16 @@ app.post("/chatGpt", async (req, res) => {
 });
 
 store.sync();
+
+
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  next();
+});
+
 
 app.listen(process.env.PORT, "0.0.0.0", () => {
   console.log("server up and running");
