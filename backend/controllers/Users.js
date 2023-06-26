@@ -221,6 +221,17 @@ export const updateUser = async (req, res) => {
       }
     );
     /* console.log(req.file) */
+    // Set CORS headers
+    res.header(
+      "Access-Control-Allow-Origin",
+      "https://literatur-production.up.railway.app"
+    );
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    res.header("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
+    res.header("Access-Control-Allow-Credentials", "true");
     res.status(201).json({ msg: "User Updated" });
   } catch (error) {
     res.status(400).json({ msg: error.message });

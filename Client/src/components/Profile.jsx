@@ -69,7 +69,7 @@ const Profile = () => {
     };
 
     fetchFileData();
-  }, [id]);
+  }, [id, data]);
 
   if (!data || !data.rek_description) {
     // Render a loading state or return null if data is not available yet
