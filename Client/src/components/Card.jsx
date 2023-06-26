@@ -11,7 +11,7 @@ const Card = ({ file, type }) => {
         alt="read"
         className="w-80 h-52 mt-3 object-cover pt-5 "
       />
-      <h1 className=" rounded-lg w-28  flex justify-center items-center text-sm font-bold">
+      <h1 className=" rounded-lg w-28 text-center flex justify-center items-center text-sm font-bold">
         {file.title}
       </h1>
       <div className="w-auto">
