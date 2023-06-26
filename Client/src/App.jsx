@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ProfileProvider } from "./app/ProfileContext";
+import { useEffect } from "react";
 
 import {
   Hero,
