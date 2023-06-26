@@ -224,7 +224,7 @@ export const updateUser = async (req, res) => {
     // Set CORS headers
     res.header(
       "Access-Control-Allow-Origin",
-      "https://literatur-production.up.railway.app"
+      "https://literatur.up.railway.app"
     );
     res.header(
       "Access-Control-Allow-Headers",
