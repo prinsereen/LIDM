@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { profile, user, cover, play, logo, library } from "../assets";
 import { useContext } from "react";
 import { ProfileContext } from "../app/ProfileContext";
@@ -16,6 +16,7 @@ const AdminAudio = () => {
   const { profileName, profilePhoto, setProfileName, setProfilePhoto } =
     useContext(ProfileContext);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchFileData = async () => {

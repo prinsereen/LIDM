@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { profile, user, logo, library } from "../assets";
 import { logOut, reset, getMe } from "../state/index.js";
 import { Document, Page, pdfjs } from "react-pdf";
@@ -20,6 +20,7 @@ const AdminBook = () => {
   const { profileName, profilePhoto, setProfileName, setProfilePhoto } =
     useContext(ProfileContext);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchFileData = async () => {
       try {
