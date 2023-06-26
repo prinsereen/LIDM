@@ -27,18 +27,27 @@ const store = new sessionStore({
   await db.sync();
 })();
 
-app.use(
-  cors({
-    credentials: true,
-    origin: [
-      "http://localhost:5000",
-      "http://localhost:5173",
-      "https://literatur-production.up.railway.app",
-    ],
-    allowedHeaders: ["Content-Type"],
-    methods: ["GET", "POST", "PATCH", "DELETE"],
-  })
-);
+// app.use(
+//   cors({
+//     credentials: true,
+//     origin: [
+//       "http://localhost:5000",
+//       "http://localhost:5173",
+//       "https://literatur-production.up.railway.app",
+//     ],
+//     allowedHeaders: ["Content-Type"],
+//     methods: ["GET", "POST", "PATCH", "DELETE"],
+//   })
+// );
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "https://literatur-production.up.railway.app");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
+  res.header("Access-Control-Allow-Credentials", "true"); // If you are using credentials
+
+  next();
+});
 
 // router.get("/", (req, res) => {
 //   res.setHeader("Access-Control-Allow-Origin", "*");
