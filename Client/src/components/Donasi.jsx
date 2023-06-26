@@ -200,19 +200,18 @@ const Donasi = () => {
                     type="submit"
                     className="rounded-md text-white bg-[#0868F9] px-8 py-4 h-14 w-28 font-semibold"
                   >
-                    {loading ? (
-                      <div className="flex items-center justify-center">
-                        <div className="w-4 h-4 border-2 border-t-2 border-gray-200 rounded-full animate-spin"></div>
-                      </div>
-                    ) : (
-                      "Kirim"
-                    )}
+                    Kirim
                   </button>
                 </div>
               </div>
             </form>
           </div>
         </div>
+        {loading && (
+          <div className="fixed inset-0 flex items-center justify-center bg-opacity-75 bg-gray-500">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+          </div>
+        )}
       </div>
     </div>
   );
