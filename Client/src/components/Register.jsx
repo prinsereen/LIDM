@@ -65,8 +65,8 @@ const Register = () => {
           </h1>
           <h1 className=" text-4xl"></h1>
           <p className=" px-20 mt-7">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum
-            et metus euismod, cursus metus ac, varius orci..
+            Gerakan Literasi Sekolah menumbuhkembangkan budi pekerti peserta
+            didik agar menjadi pembelajar sepanjang hayat
           </p>
           <div className="flex items-center justify-center bg-white w-[517px] h-[109px] mt-[150px] mb-[42px] rounded-xl">
             <img src={logo2} className=" p-2" />

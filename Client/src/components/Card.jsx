@@ -18,8 +18,11 @@ const Card = ({ file, type }) => {
         <div className="bg-[#D9D9D9] h-[1px] w-56" />
       </div>
       <p className="w-auto text-sm mx-10 my-3">
-        Lorem ipsum dolor sit amet consectetur. Nec feugiat adipiscing tempus
-        pulvinar sit
+        {type == "listen" ? (
+          <p> Mari berliterasi dengan audiobook menarik pilihanmu </p>
+        ) : (
+          <p>Mari berliterasi dengan bacaan menarik pilihanmu </p>
+        )}
       </p>
       <div className="w-auto mb-10">
         <div className="bg-[#D9D9D9] h-[1px] w-56" />

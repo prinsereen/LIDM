@@ -71,8 +71,8 @@ const KategoriDengar = () => {
             <h1 className="font-bold text-4xl">Kategori</h1>
             <p className="max-w-3xl">Halo, Sobat Literasi!</p>
             <p>
-              Lorem ipsum dolor sit amet consectetur. Nec feugiat adipiscing
-              tempus pulvinar sit.{" "}
+              Belajar yang menyenangkan adalah belajar sesuai dengan minat dan
+              cara belajarmu.{" "}
             </p>
           </div>
           <div className="flex mt-9 ml-52 items-center ">

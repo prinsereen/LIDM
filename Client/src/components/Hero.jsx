@@ -27,7 +27,7 @@ const Hero = () => {
       <section className="flex flex-row">
         <div className="relative inset-0 top-[220px] max-w-7xl mx-auto  flex flex-col items-start z-1">
           <h1 className="text-[80px] font-bold">LITERATUR</h1>
-          <p className="text-[30px]">Lorem ipsum dolor sit amet</p>
+          <p className="text-[30px]">Digitalisasi Gerakan Literasi Sekolah</p>
         </div>
         <img
           src={bubble2}

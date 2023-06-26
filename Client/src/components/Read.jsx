@@ -45,9 +45,10 @@ const Read = () => {
         <div className="flex justify-start w-full h-auto ">
           <div className="mt-12 w-3xl">
             <h1 className="font-bold text-4xl">Baca</h1>
-            <p className="max-w-3xl">
-              Halo, Sobat Literasi! Lorem ipsum dolor sit amet consectetur. Nec
-              feugiat adipiscing tempus pulvinar sit.{" "}
+            <p className="max-w-3xl">Halo, Sobat Literasi!</p>
+            <p>
+              Belajar yang menyenangkan adalah belajar sesuai dengan minat dan
+              cara belajarmu.
             </p>
             <p>Silahkan pilih format bacaan yang kamu inginkan.</p>
           </div>
@@ -69,8 +70,8 @@ const Read = () => {
               PDF
             </h1>
             <p className="w-64">
-              Lorem ipsum dolor sit amet consectetur. Nec feugiat adipiscing
-              tempus pulvinar sit. Sit odio purus pharetra ac.
+              Mari berliterasi dengan berbagai pilihan bacaan yang menarik
+              sesuai minatmu
             </p>
             <button
               onClick={() => navigate(`/read/kategori1/${data.uuid}`)}
@@ -89,8 +90,8 @@ const Read = () => {
               AudioBook
             </h1>
             <p className="w-64">
-              Lorem ipsum dolor sit amet consectetur. Nec feugiat adipiscing
-              tempus pulvinar sit. Sit odio purus pharetra ac.
+              Mari berliterasi dengan berbagai pilihan bacaan yang menarik
+              sesuai minatmu
             </p>
             <button
               onClick={() => navigate(`/read/kategori2/${data.uuid}`)}
