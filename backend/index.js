@@ -21,7 +21,7 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:5000",
   "http://localhost:5173",
-  "https://literatur-production.up.railway.app",
+  "https://literatur.up.railway.app",
   "https://literatur.netlify.app",
 ];
 
