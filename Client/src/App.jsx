@@ -1,4 +1,10 @@
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ProfileProvider } from "./app/ProfileContext";
 import { useEffect } from "react";
@@ -31,21 +37,10 @@ function Root() {
   const location = useLocation();
 
   useEffect(() => {
-    // Save the current location in localStorage
-    localStorage.setItem("previousLocation", location.pathname);
+    window.onbeforeunload = () => {
+      window.history.replaceState(null, null, location.pathname);
+    };
   }, [location]);
-
-  const navigateToPreviousPage = () => {
-    const previousLocation = localStorage.getItem("previousLocation");
-    if (previousLocation) {
-      // Clear the previousLocation from localStorage
-      localStorage.removeItem("previousLocation");
-      // Navigate to the previous location
-      return <Navigate to={previousLocation} replace />;
-    }
-    // If there's no previous location, navigate to the home page
-    return <Navigate to="/" replace />;
-  };
 
   return (
     <div>
@@ -67,31 +62,31 @@ function Root() {
         />
         <Route
           path="/profile/:id"
-          element={user ? <Profile /> : navigateToPreviousPage()}
+          element={user ? <Profile /> : <Navigate to="/" />}
         />
         <Route
           path="/donatur/:id"
-          element={user ? <Donatur /> : navigateToPreviousPage()}
+          element={user ? <Donatur /> : <Navigate to="/" />}
         />
         <Route
           path="/donasi/:id"
-          element={user ? <Donasi /> : navigateToPreviousPage()}
+          element={user ? <Donasi /> : <Navigate to="/" />}
         />
         <Route
           path="/profile/edit/:id"
-          element={user ? <EditProfile /> : navigateToPreviousPage()}
+          element={user ? <EditProfile /> : <Navigate to="/" />}
         />
         <Route
           path="/read/:id"
-          element={user ? <Read /> : navigateToPreviousPage()}
+          element={user ? <Read /> : <Navigate to="/" />}
         />
         <Route
           path="/star/:id"
-          element={user ? <Star /> : navigateToPreviousPage()}
+          element={user ? <Star /> : <Navigate to="/" />}
         />
         <Route
           path="/history/:id"
-          element={user ? <History /> : navigateToPreviousPage()}
+          element={user ? <History /> : <Navigate to="/" />}
         />
         <Route path="/read/kategori1/:id" element={<KategoriBaca />} />
         <Route path="/read/kategori2/:id" element={<KategoriDengar />} />
