@@ -19,20 +19,28 @@ const app = express();
 
 // Allow CORS for specific origins
 const allowedOrigins = [
-  'http://localhost:5000',
-  'http://localhost:5173',
-  'https://literatur-production.up.railway.app'
+  "http://localhost:5000",
+  "http://localhost:5173",
+  "https://literatur-production.up.railway.app",
+  "https://literatur.netlify.app"
 ];
 
 app.use(
   cors({
     origin: allowedOrigins,
-    allowedHeaders: ['Content-Type'],
-    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-    credentials: true
+    allowedHeaders: ["Content-Type"],
+    methods: ["GET", "POST", "PATCH", "DELETE"],
+    credentials: true,
   })
 );
 
+// Serve static files from the 'dist' directory
+app.use(express.static(path.join(__dirname, "dist")));
+
+// Route all requests to index.html
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
+});
 
 const sessionStore = sequelizeStore(session.Store);
 
@@ -56,9 +64,6 @@ const store = new sessionStore({
 //     methods: ["GET", "POST", "PATCH", "DELETE"],
 //   })
 // );
-
-
-
 
 // router.get("/", (req, res) => {
 //   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -93,18 +98,15 @@ app.use(AuthRoute);
 app.use(SummaryRoute);
 app.use(LeeaderBoardRoute);
 
-
 store.sync();
-
 
 app.use((req, res, next) => {
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader("Access-Control-Allow-Origin", origin);
   }
   next();
 });
-
 
 app.listen(process.env.PORT, "0.0.0.0", () => {
   console.log("server up and running");
