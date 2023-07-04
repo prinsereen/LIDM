@@ -208,14 +208,15 @@ export const createSummary = async (req, res) => {
     let aiDetection = await axios.request(aiSimilarity);
     aiDetection = aiDetection.data.fake_probability;
     let nilaiAkhir = grade.data.prediction;
-    nilaiAkhir = nilaiAkhir - nilaiAkhir * (aiDetection * 30);
+    if (jaccard_value >= 0.025) {
+      nilaiAkhir = nilaiAkhir - nilaiAkhir * (aiDetection * 30);
+    }
+    if (jaccard_value > 0.1 || jaccard_value < 0.025) {
+      nilaiAkhir -= 20;
+    }
     if (nilaiAkhir < 0) {
       nilaiAkhir = 0;
     }
-    if (jaccard_value > 0.1) {
-      nilaiAkhir -= 20;
-    }
-
     if (req.role === "user") {
       await Summary.create({
         summary: summary,
@@ -289,8 +290,8 @@ export const getSummaryByUser = async (req, res) => {
 const generateFeedback = (summary) => {
   let feedback = "";
 
-  if (summary.jaccard === 0) {
-    feedback += "Summary Anda tidak memiliki kemiripan dengan bacaan. ";
+  if (summary.jaccard < 0.025) {
+    feedback += "Summary Anda tidak memiliki kemiripan dengan bacaan atau summary Anda terlalu pendek.";
   } else if (summary.jaccard > 0.1) {
     feedback += "Summary terlalu mirip dengan bacaan asli. ";
   }
@@ -316,8 +317,8 @@ const generateFeedback = (summary) => {
       "Kosa Kata Akademik dalam summary Anda bisa ditingkatkan lagi. ";
   }
 
-  if (summary.aidetection > 0.007) {
-    feedback += "Ringkasan Anda terindikasi dibuat oleh AI ";
+  if (summary.aidetection > 0.007 && summary.aidetection < 0.1) {
+    feedback += "Summary Anda terindikasi dibuat oleh AI ";
   }
 
   if (feedback === "") {
