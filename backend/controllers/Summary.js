@@ -211,8 +211,11 @@ export const createSummary = async (req, res) => {
     if (jaccard_value >= 0.025) {
       nilaiAkhir = nilaiAkhir - nilaiAkhir * (aiDetection * 30);
     }
-    if (jaccard_value > 0.1 || jaccard_value < 0.025) {
+    if (jaccard_value > 0.1) {
       nilaiAkhir -= 20;
+    }
+    if (jaccard_value < 0.025) {
+      nilaiAkhir -= 40;
     }
     if (nilaiAkhir < 0) {
       nilaiAkhir = 0;
@@ -291,7 +294,8 @@ const generateFeedback = (summary) => {
   let feedback = "";
 
   if (summary.jaccard < 0.025) {
-    feedback += "Summary Anda tidak memiliki kemiripan dengan bacaan atau summary Anda terlalu pendek.";
+    feedback +=
+      "Summary Anda tidak memiliki kemiripan dengan bacaan atau summary Anda terlalu pendek. ";
   } else if (summary.jaccard > 0.1) {
     feedback += "Summary terlalu mirip dengan bacaan asli. ";
   }
