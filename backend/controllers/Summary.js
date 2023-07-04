@@ -214,18 +214,12 @@ export const createSummary = async (req, res) => {
     if (jaccard_value > 0.1) {
       nilaiAkhir -= 20;
     } else if (jaccard_value <= 0.015) {
-      nilaiAkhir -= 60;
-    } else if (jaccard_value >= 0.015 && jaccard_value < 0.02) {
       nilaiAkhir -= 50;
-    } else if (jaccard_value >= 0.02 && jaccard_value < 0.025) {
+    } else if (jaccard_value >= 0.015 && jaccard_value < 0.02) {
       nilaiAkhir -= 40;
-    } else if (jaccard_value >= 0.025 && jaccard_value < 0.03) {
+    } else if (jaccard_value >= 0.02 && jaccard_value < 0.025) {
       nilaiAkhir -= 30;
-    } else if (jaccard_value >= 0.03 && jaccard_value < 0.035) {
-      nilaiAkhir -= 20;
-    } else if (jaccard_value >= 0.035 && jaccard_value < 0.04) {
-      nilaiAkhir -= 10;
-    }
+    } 
 
     if (nilaiAkhir < 0) {
       nilaiAkhir = 0;
