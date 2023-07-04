@@ -215,15 +215,15 @@ export const createSummary = async (req, res) => {
       nilaiAkhir -= 20;
     } else if (jaccard_value <= 0.015) {
       nilaiAkhir -= 60;
-    } else if (jaccard_value >= 0.015 && jaccard_value < 0.020) {
+    } else if (jaccard_value >= 0.015 && jaccard_value < 0.02) {
       nilaiAkhir -= 50;
-    } else if (jaccard_value >= 0.020 && jaccard_value < 0.025) {
+    } else if (jaccard_value >= 0.02 && jaccard_value < 0.025) {
       nilaiAkhir -= 40;
-    } else if (jaccard_value >= 0.025 && jaccard_value < 0.030) {
+    } else if (jaccard_value >= 0.025 && jaccard_value < 0.03) {
       nilaiAkhir -= 30;
-    } else if (jaccard_value >= 0.030 && jaccard_value < 0.035) {
+    } else if (jaccard_value >= 0.03 && jaccard_value < 0.035) {
       nilaiAkhir -= 20;
-    } else if (jaccard_value >= 0.035 && jaccard_value < 0.040) {
+    } else if (jaccard_value >= 0.035 && jaccard_value < 0.04) {
       nilaiAkhir -= 10;
     }
 
@@ -331,11 +331,7 @@ const generateFeedback = (summary) => {
       "Kosa Kata Akademik dalam summary Anda bisa ditingkatkan lagi. ";
   }
 
-  if (
-    summary.aidetection > 0.007 &&
-    summary.aidetection < 0.1 &&
-    summary.jaccard >= 0.025
-  ) {
+  if (summary.aidetection > 0.007 && summary.jaccard >= 0.025) {
     feedback += "Summary Anda terindikasi dibuat oleh AI ";
   }
 
