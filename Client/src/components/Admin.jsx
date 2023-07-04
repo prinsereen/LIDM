@@ -13,6 +13,7 @@ const Admin = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -126,6 +127,8 @@ const Admin = () => {
 
   const handleUpdateStatus = async (uuid, classification, status) => {
     try {
+      setLoading(true); // Start loading
+
       const response = await axios.patch(
         `https://lidm-production.up.railway.app/Files/${uuid}`,
         {
@@ -134,9 +137,11 @@ const Admin = () => {
         }
       );
       console.log(response.data);
-      navigate(`/admin/${id}`)
+      navigate(`/admin/${id}`);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -313,6 +318,11 @@ const Admin = () => {
             )}
           </div>
         </div>
+        {loading && (
+          <div className="fixed inset-0 flex items-center justify-center bg-opacity-75 bg-gray-500">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+          </div>
+        )}
       </div>
     </div>
   );
