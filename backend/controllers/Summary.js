@@ -321,7 +321,11 @@ const generateFeedback = (summary) => {
       "Kosa Kata Akademik dalam summary Anda bisa ditingkatkan lagi. ";
   }
 
-  if (summary.aidetection > 0.007 && summary.aidetection < 0.1) {
+  if (
+    summary.aidetection > 0.007 &&
+    summary.aidetection < 0.1 &&
+    summary.jaccard >= 0.025
+  ) {
     feedback += "Summary Anda terindikasi dibuat oleh AI ";
   }
 
