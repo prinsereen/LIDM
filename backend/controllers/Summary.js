@@ -215,15 +215,15 @@ export const createSummary = async (req, res) => {
       nilaiAkhir -= 20;
     } else if (jaccard_value <= 0.015) {
       nilaiAkhir -= 60;
-    } else if (jaccard_value >= 0.015 && jaccard_value < 0.025) {
+    } else if (jaccard_value >= 0.015 && jaccard_value < 0.020) {
       nilaiAkhir -= 50;
-    } else if (jaccard_value >= 0.025 && jaccard_value < 0.035) {
+    } else if (jaccard_value >= 0.020 && jaccard_value < 0.025) {
       nilaiAkhir -= 40;
-    } else if (jaccard_value >= 0.035 && jaccard_value < 0.045) {
+    } else if (jaccard_value >= 0.025 && jaccard_value < 0.030) {
       nilaiAkhir -= 30;
-    } else if (jaccard_value >= 0.045 && jaccard_value < 0.055) {
+    } else if (jaccard_value >= 0.030 && jaccard_value < 0.035) {
       nilaiAkhir -= 20;
-    } else if (jaccard_value >= 0.055 && jaccard_value < 0.065) {
+    } else if (jaccard_value >= 0.035 && jaccard_value < 0.040) {
       nilaiAkhir -= 10;
     }
 
