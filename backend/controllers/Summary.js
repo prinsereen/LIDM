@@ -208,7 +208,10 @@ export const createSummary = async (req, res) => {
     let aiDetection = await axios.request(aiSimilarity);
     aiDetection = aiDetection.data.fake_probability;
     let nilaiAkhir = grade.data.prediction;
-    nilaiAkhir = nilaiAkhir - nilaiAkhir * aiDetection;
+    nilaiAkhir = nilaiAkhir - nilaiAkhir * (aiDetection * 100);
+    if (nilaiAkhir < 0) {
+      nilaiAkhir = 0;
+    }
 
     if (req.role === "user") {
       await Summary.create({
