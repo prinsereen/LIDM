@@ -212,6 +212,9 @@ export const createSummary = async (req, res) => {
     if (nilaiAkhir < 0) {
       nilaiAkhir = 0;
     }
+    if (jaccard_value > 0.1) {
+      nilaiAkhir -= 20;
+    }
 
     if (req.role === "user") {
       await Summary.create({
@@ -288,7 +291,7 @@ const generateFeedback = (summary) => {
 
   if (summary.jaccard === 0) {
     feedback += "Summary Anda tidak memiliki kemiripan dengan bacaan. ";
-  } else if (summary.jaccard > 0.4) {
+  } else if (summary.jaccard > 0.1) {
     feedback += "Summary terlalu mirip dengan bacaan asli. ";
   }
 
