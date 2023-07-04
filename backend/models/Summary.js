@@ -23,7 +23,7 @@ const Summary = db.define('summary', {
         }
     },
     jaccard:{
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         allowNull: false,
         validate: {
             notEmpty: true

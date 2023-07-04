@@ -79,7 +79,7 @@ const Star = () => {
             </thead>
             <tbody>
               {leaderboard.map((leader, index) => {
-                if (index < 5) {
+                if (index < 10) {
                   return (
                     <tr key={index} className="hover:bg-[#F4F4F4]">
                       <td className=" border-t-2 font-medium px-8 py-4 border-[#CDCCEE]    ">

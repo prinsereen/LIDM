@@ -284,34 +284,34 @@ const generateFeedback = (summary) => {
   let feedback = "";
 
   if (summary.jaccard === 0) {
-    feedback += "Summary Anda Tidak memiliki Kemiripan dengan Bacaan. ";
+    feedback += "Summary Anda tidak memiliki kemiripan dengan bacaan. ";
   } else if (summary.jaccard > 0.4) {
-    feedback += "Summary Terlalu Mirip dengan Bacaan Asli. ";
+    feedback += "Summary terlalu mirip dengan bacaan asli. ";
   }
 
   if (summary.spam > 0 && summary.spam <= 5) {
-    feedback += "Summary Anda Terindikasi Spam Ringan. ";
+    feedback += "Summary Anda terindikasi spam ringan. ";
   } else if (summary.spam > 5 && summary.spam <= 10) {
-    feedback += "Summary Anda Terindikasi Spam Berat. ";
+    feedback += "Summary Anda terindikasi spam berat. ";
   }
 
   if (summary.violence > 0 && summary.violence <= 5) {
-    feedback += "Summary Anda Terindikasi violence Ringan. ";
+    feedback += "Summary Anda terindikasi violence ringan. ";
   } else if (summary.violence > 5 && summary.violence <= 10) {
-    feedback += "Summary Anda Terindikasi violence Berat. ";
+    feedback += "Summary Anda terindikasi violence berat. ";
   }
 
   if (summary.grammar >= 0 && summary.grammar <= 5) {
-    feedback += "Grammar dalam Summary Anda bisa ditingkatkan lagi. ";
+    feedback += "Grammar dalam summary Anda bisa ditingkatkan lagi. ";
   }
 
   if (summary.scholarly >= 0 && summary.scholarly <= 5) {
     feedback +=
-      "Kosa Kata Akademik dalam Summary Anda bisa ditingkatkan lagi. ";
+      "Kosa Kata Akademik dalam summary Anda bisa ditingkatkan lagi. ";
   }
 
   if (summary.aidetection > 0.3) {
-    feedback += "Ringkasan Anda Terindikasi Dibuat oleh AI ";
+    feedback += "Ringkasan Anda terindikasi dibuat oleh AI ";
   }
 
   return feedback.trim();

@@ -134,7 +134,7 @@ const Admin = () => {
         }
       );
       console.log(response.data);
-      window.location.reload();
+      navigate(`/admin/${id}`)
     } catch (error) {
       console.log(error);
     }
