@@ -317,6 +317,10 @@ const generateFeedback = (summary) => {
     feedback += "Ringkasan Anda terindikasi dibuat oleh AI ";
   }
 
+  if(feedback === ""){
+    feedback += "Summary Anda sudah bagus. Namun, bisa diperbanyak lagi"
+  }
+
   return feedback.trim();
 };
 
