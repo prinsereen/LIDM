@@ -313,12 +313,12 @@ const generateFeedback = (summary) => {
       "Kosa Kata Akademik dalam summary Anda bisa ditingkatkan lagi. ";
   }
 
-  if (summary.aidetection > 0.3) {
+  if (summary.aidetection > 0.007) {
     feedback += "Ringkasan Anda terindikasi dibuat oleh AI ";
   }
 
-  if(feedback === ""){
-    feedback += "Summary Anda sudah bagus. Namun, bisa diperbanyak lagi"
+  if (feedback === "") {
+    feedback += "Summary Anda sudah bagus. Namun, bisa diperbanyak lagi";
   }
 
   return feedback.trim();
