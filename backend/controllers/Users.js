@@ -83,7 +83,7 @@ export const getUserById = async (req, res) => {
     };
 
     const kospi = {
-      nama_kompetisi: "KOSPI",
+      nama_kompetisi: "OPSI",
       tanggal_penyelanggaraan: "8 - 9 Agustus 2023",
       tingkat: "Nasional",
       path_logo: "../assets/compLogo/undefined_1686416568733.png",

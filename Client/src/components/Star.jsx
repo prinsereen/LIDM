@@ -10,8 +10,9 @@ const Star = () => {
     useContext(ProfileContext);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
   const totalPages = Math.ceil(leaderboard.length / itemsPerPage);
+  const maxPaginationButtons = 5;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,6 +53,52 @@ const Star = () => {
   //   return null;
   // }
 
+  const renderPaginationButtons = () => {
+    const buttons = [];
+
+    let startPage;
+    let endPage;
+
+    if (totalPages <= maxPaginationButtons) {
+      // Case 1: Less than or equal to maxPaginationButtons total pages
+      startPage = 1;
+      endPage = totalPages;
+    } else {
+      // Case 2: More than maxPaginationButtons total pages
+      if (currentPage <= Math.floor(maxPaginationButtons / 2) + 1) {
+        // Current page is near the start
+        startPage = 1;
+        endPage = maxPaginationButtons;
+      } else if (
+        currentPage >=
+        totalPages - Math.floor(maxPaginationButtons / 2)
+      ) {
+        // Current page is near the end
+        startPage = totalPages - maxPaginationButtons + 1;
+        endPage = totalPages;
+      } else {
+        // Current page is in the middle
+        startPage = currentPage - Math.floor(maxPaginationButtons / 2);
+        endPage = currentPage + Math.floor(maxPaginationButtons / 2);
+      }
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      buttons.push(
+        <li key={i} className={`mx-1 ${currentPage === i ? "font-bold" : ""}`}>
+          <button
+            onClick={() => handlePageChange(i)}
+            className="px-3 py-1 bg-gray-200 rounded-md"
+          >
+            {i}
+          </button>
+        </li>
+      );
+    }
+
+    return buttons;
+  };
+
   return (
     <div>
       <Navbar />
@@ -90,9 +137,7 @@ const Star = () => {
               {currentItems.map((leader, index) => (
                 <tr key={index} className="hover:bg-[#F4F4F4]">
                   <td className="border-t-2 font-medium px-8 py-4 border-[#CDCCEE]">
-                    <div className="flex items-center">
-                      {leader.name}
-                    </div>
+                    <div className="flex items-center">{leader.name}</div>
                   </td>
                   <td className="border-t-2 font-medium px-8 py-4 border-[#CDCCEE]">
                     <div>{leader.asal_instansi}</div>
@@ -108,23 +153,7 @@ const Star = () => {
             </tbody>
           </table>
           <div className="flex justify-center my-6">
-            <ul className="flex">
-              {Array.from({ length: totalPages }).map((_, index) => (
-                <li
-                  key={index}
-                  className={`mx-1 ${
-                    currentPage === index + 1 ? "font-bold" : ""
-                  }`}
-                >
-                  <button
-                    onClick={() => handlePageChange(index + 1)}
-                    className="px-3 py-1 bg-gray-200 rounded-md"
-                  >
-                    {index + 1}
-                  </button>
-                </li>
-              ))}
-            </ul>
+            <ul className="flex">{renderPaginationButtons()}</ul>
           </div>
         </div>
       </div>
