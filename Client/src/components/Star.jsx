@@ -1,16 +1,17 @@
-import Navbar from "./Navbar";
-import { Link, useParams } from "react-router-dom";
-import { profile } from "../assets";
-import { useEffect, useState } from "react";
-import { useContext } from "react";
-import { ProfileContext } from "../app/ProfileContext";
+import React, { useEffect, useState, useContext } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
+import Navbar from "./Navbar";
+import { ProfileContext } from "../app/ProfileContext";
 
 const Star = () => {
   const [leaderboard, setLeaderboard] = useState([]);
-
   const { profileName, profilePhoto, setProfileName, setProfilePhoto } =
     useContext(ProfileContext);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const itemsPerPage = 5;
+  const totalPages = Math.ceil(leaderboard.length / itemsPerPage);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,6 +39,14 @@ const Star = () => {
     }
   }, []);
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = leaderboard.slice(startIndex, endIndex);
+
   // if (!leaderboard || !profileName || !profilePhoto) {
   //   // Render a loading state or return null if data is not available yet
   //   return null;
@@ -59,55 +68,64 @@ const Star = () => {
           </div>
         </div>
 
-        <div className=" h-full bg-white mt-10 rounded-xl shadow-lg ">
-          <table className=" h-full w-[95%]  bg-white  m-5 ">
+        <div className="h-full bg-white mt-10 rounded-xl shadow-lg">
+          <table className="h-full w-[95%] bg-white m-5">
             <thead>
               <tr>
-                <th className="bg-white font-semibold text-left px-8 py-4 ">
+                <th className="bg-white font-semibold text-left px-8 py-4">
                   Nama
                 </th>
-                <th className="bg-white font-semibold text-left px-8 py-4 ">
+                <th className="bg-white font-semibold text-left px-8 py-4">
                   Asal Sekolah
                 </th>
-                <th className="bg-white font-semibold text-center px-8 py-4 ">
+                <th className="bg-white font-semibold text-center px-8 py-4">
                   Nilai
                 </th>
-                <th className="bg-white font-semibold text-center px-8 py-4 ">
+                <th className="bg-white font-semibold text-center px-8 py-4">
                   Peringkat
                 </th>
               </tr>
             </thead>
             <tbody>
-              {leaderboard.map((leader, index) => {
-                if (index < 10) {
-                  return (
-                    <tr key={index} className="hover:bg-[#F4F4F4]">
-                      <td className=" border-t-2 font-medium px-8 py-4 border-[#CDCCEE]    ">
-                        <div className="flex items-center  ">
-                          {/* <img
-                            // src={profile}
-                            alt="profile"
-                            className="w-10 h-10 mx-2"
-                          /> */}
-                          {leader.name}
-                        </div>
-                      </td>
-                      <td className=" border-t-2 font-medium  px-8 py-4 border-[#CDCCEE]    ">
-                        <div>{leader.asal_instansi}</div>
-                      </td>
-                      <td className=" border-t-2 text-center  font-medium px-8 py-4 border-[#CDCCEE]   ">
-                        {leader.score}
-                      </td>
-                      <td className="w border-t-2 text-center font-medium px-8  py-4 border-[#CDCCEE]  ">
-                        {index + 1}
-                      </td>
-                    </tr>
-                  );
-                }
-                return null;
-              })}
+              {currentItems.map((leader, index) => (
+                <tr key={index} className="hover:bg-[#F4F4F4]">
+                  <td className="border-t-2 font-medium px-8 py-4 border-[#CDCCEE]">
+                    <div className="flex items-center">
+                      {leader.name}
+                    </div>
+                  </td>
+                  <td className="border-t-2 font-medium px-8 py-4 border-[#CDCCEE]">
+                    <div>{leader.asal_instansi}</div>
+                  </td>
+                  <td className="border-t-2 text-center font-medium px-8 py-4 border-[#CDCCEE]">
+                    {leader.score}
+                  </td>
+                  <td className="border-t-2 text-center font-medium px-8 py-4 border-[#CDCCEE]">
+                    {startIndex + index + 1}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
+          <div className="flex justify-center my-6">
+            <ul className="flex">
+              {Array.from({ length: totalPages }).map((_, index) => (
+                <li
+                  key={index}
+                  className={`mx-1 ${
+                    currentPage === index + 1 ? "font-bold" : ""
+                  }`}
+                >
+                  <button
+                    onClick={() => handlePageChange(index + 1)}
+                    className="px-3 py-1 bg-gray-200 rounded-md"
+                  >
+                    {index + 1}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </div>
