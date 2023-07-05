@@ -179,6 +179,13 @@ const Summary = () => {
     }
   }, []);
 
+  const handlePastedText = (text, html) => {
+    // Prevent pasting of text and HTML content
+    return true;
+  };
+
+ 
+
   return (
     <div>
       <Navbar />
@@ -218,6 +225,7 @@ const Summary = () => {
                 <Editor
                   editorState={editorState}
                   onEditorStateChange={setEditorState}
+                  handlePastedText={handlePastedText}
                   toolbarClassName="border-b border-b-[#0868F9]"
                   editorClassName="px-5  h-[514px]"
                   placeholder="write something !"
