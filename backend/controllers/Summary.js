@@ -218,7 +218,7 @@ export const createSummary = async (req, res) => {
     } else if (jaccard_value >= 0.015 && jaccard_value < 0.02) {
       nilaiAkhir -= 40;
     } else if (jaccard_value >= 0.02 && jaccard_value < 0.025) {
-      nilaiAkhir -= 30;
+      nilaiAkhir -= 25;
     } 
 
     if (nilaiAkhir < 0) {

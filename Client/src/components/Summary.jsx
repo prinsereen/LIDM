@@ -35,7 +35,6 @@ const Summary = () => {
         const response = await axios.get(
           "https://lidm-production.up.railway.app/me"
         );
-        // console.log(response.data);
         setId(response.data);
       } catch (error) {
         console.log(error);
@@ -84,19 +83,12 @@ const Summary = () => {
     setConvertedContent(html);
   }, [editorState]);
 
-  // console.log(convertedContent);
-  const data = {
-    summary: convertedContent,
-    uuid: fileId.id,
-  };
-
   const handleSendSummary = async () => {
     setIsLoading(true);
-    console.log(data);
     try {
       const response = await axios.post(
         `https://lidm-production.up.railway.app/Summary`,
-        data,
+        { summary: convertedContent, uuid: fileId.id },
         {
           "Content-Type": "application/json",
         }
@@ -108,7 +100,6 @@ const Summary = () => {
     }
     try {
       if (user) {
-        console.log(kategori);
         const updatedData = {
           seni: kategori.classification === "Seni" ? user.seni + 1 : user.seni,
           sosial:
@@ -126,7 +117,6 @@ const Summary = () => {
               ? user.bahasa + 1
               : user.bahasa,
         };
-        console.log(updatedData);
         if (updatedData) {
           const response = await axios.patch(
             `https://lidm-production.up.railway.app/userrec/${id.uuid}`,
@@ -173,6 +163,10 @@ const Summary = () => {
     }
   }, []);
 
+  const handleCopyCutPaste = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <div>
       <Navbar />
@@ -214,9 +208,10 @@ const Summary = () => {
                   onEditorStateChange={setEditorState}
                   toolbarClassName="border-b border-b-[#0868F9]"
                   editorClassName="px-5  h-[514px]"
-                  //   editorState={editorState}
-                  //   onEditorStateChange={handleEditorStateChange}
                   placeholder="write something !"
+                  onCopy={handleCopyCutPaste}
+                  onCut={handleCopyCutPaste}
+                  onPaste={handleCopyCutPaste}
                 />
               </div>
               <div className="flex  items-center justify-end">
