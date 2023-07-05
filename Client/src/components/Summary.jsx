@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { EditorState, ContentState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
@@ -27,6 +27,7 @@ const Summary = () => {
   const { profileName, profilePhoto, setProfileName, setProfilePhoto } =
     useContext(ProfileContext);
   const [id, setId] = useState();
+  const editorRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -163,9 +164,21 @@ const Summary = () => {
     }
   }, []);
 
-  const handleCopyCutPaste = (e) => {
-    e.preventDefault();
-  };
+  useEffect(() => {
+    const handleCopyCutPaste = (e) => {
+      e.preventDefault();
+    };
+
+    document.addEventListener("copy", handleCopyCutPaste);
+    document.addEventListener("cut", handleCopyCutPaste);
+    document.addEventListener("paste", handleCopyCutPaste);
+
+    return () => {
+      document.removeEventListener("copy", handleCopyCutPaste);
+      document.removeEventListener("cut", handleCopyCutPaste);
+      document.removeEventListener("paste", handleCopyCutPaste);
+    };
+  }, []);
 
   return (
     <div>
@@ -209,9 +222,7 @@ const Summary = () => {
                   toolbarClassName="border-b border-b-[#0868F9]"
                   editorClassName="px-5  h-[514px]"
                   placeholder="write something !"
-                  onCopy={handleCopyCutPaste}
-                  onCut={handleCopyCutPaste}
-                  onPaste={handleCopyCutPaste}
+                  ref={editorRef}
                 />
               </div>
               <div className="flex  items-center justify-end">
